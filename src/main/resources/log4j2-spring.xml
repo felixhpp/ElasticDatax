@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <!--全局参数-->
+    <Properties>
+        <!-- 日志默认存放的位置,这里设置为项目根路径下,也可指定绝对路径 -->
+        <property name="basePath">D:/logs1</property>
+
+        <!-- 日志文件默认输出格式,不带行号输出(行号显示会影响日志输出性能);%C:大写,类名;%M:方法名;%m:错误信息;%n:换行 -->
+        <!--<property name="log_pattern">[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5level] %C.%M - %m%n</property>-->
+        <property name="log_pattern">[%d{yyyy-MM-dd HH:mm:ss:SSS}-%t] [%p] - %l - %m%n</property>
+
+        <!-- 日志默认切割的最小单位 -->
+        <property name="every_file_size">20MB</property>
+
+        <!-- Info日志默认同一文件夹下可以存放的数量,不设置此属性则默认为7个 -->
+        <property name="info_max">10</property>
+
+        <!-- Error日志默认同一文件夹下可以存放的数量,不设置此属性则默认为7个 -->
+        <property name="error_max">10</property>
+
+        <!-- 控制台显示的日志最低级别 -->
+        <property name="console_print_level">INFO</property>
+    </Properties>
+    <appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <!-- 设置控制台只输出level及以上级别的信息(onMatch),其他的直接拒绝(onMismatch) -->
+            <ThresholdFilter level="${console_print_level}" onMatch="ACCEPT" onMismatch="DENY" />
+            <!-- 设置日志输出的格式 -->
+            <PatternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss:SSS}-%t] [%p] - %l - %m%n"/>
+        </Console>
+        <RollingFile name="RollingFileInfo" fileName="${basePath}/info.log"
+                     filePattern="${basePath}/info-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="${log_pattern}" />
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="${every_file_size}"/>
+            </Policies>
+            <!-- 匹配INFO级别 -->
+            <Filters>
+                <ThresholdFilter level="WARN" onMatch="DENY" onMismatch="NEUTRAL" />
+                <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY" />
+            </Filters>
+        </RollingFile>
+        <!-- 打印ERROR级别的日志到文件 -->
+        <RollingFile name="RollingFileError" fileName="${basePath}/error.log"
+                     filePattern="${basePath}/error-%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout pattern="${log_pattern}" />
+            <SizeBasedTriggeringPolicy size="${every_file_size}" />
+            <DefaultRolloverStrategy max="${error_max}" />
+            <!-- 匹配ERROR级别 -->
+            <Filters>
+                <ThresholdFilter level="FATAL" onMatch="DENY" onMismatch="NEUTRAL" />
+                <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY" />
+            </Filters>
+        </RollingFile>
+    </appenders>
+
+    <loggers>
+        <!--过滤掉spring和hibernate的一些无用的debug信息-->
+        <logger name="org.springframework" level="INFO">
+        </logger>
+        <logger name="org.elasticsearch" level="INFO">
+        </logger>
+        <logger name="com.jd.jsf.gd" level="warn">
+        </logger>
+        <!--<logger name="org.mybatis" level="INFO">-->
+        <!--</logger>-->
+        <!-- 将业务dao接口填写进去,并用控制台输出即可 -->
+        <logger name="com.example.demo.mapper" level="debug" additivity="false">
+            <appender-ref ref="Console"/>
+            <appender-ref ref="RollingFileInfo"/>
+        </logger>
+        <root level="all">
+            <appender-ref ref="Console"/>
+            <appender-ref ref="RollingFileInfo"/>
+            <appender-ref ref="RollingFileError"/>
+        </root>
+    </loggers>
+
+</Configuration>

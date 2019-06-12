@@ -1,0 +1,7 @@
+## 生成环境
+spring:
+  profiles: prod
+  thymeleaf:
+    cache: true
+server:
+  port: 8161

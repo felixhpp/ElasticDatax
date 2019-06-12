@@ -1,0 +1,111 @@
+server:
+  port: 8080
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.example.demo.mapper
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+## 数据库连接
+spring:
+  profiles:
+    active: dev
+  freemarker:
+    template-loader-path: classpath:/templates/
+    suffix: .html
+    cache: true
+    charset: utf-8
+    check-template-location: true
+    content-type: text/html
+    prefix:
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+    check-template: true
+    suffix: .html
+    encoding: utf-8
+    servlet:
+      content-type: text/html
+    mode: HTML5
+  resources:
+    static-locations: classpath:/static/
+  mvc:
+    view:
+      prefix: classpath:/templates/
+      suffix: .html
+    static-path-pattern: /public
+  datasource:
+    ## 主数据库信息
+    primary:
+      # 数据库访问配置, 使用druid数据源
+      type: com.alibaba.druid.pool.DruidDataSource
+      username: root
+      password: 123456
+      url: jdbc:mysql://localhost:3306/elastic?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      # 连接池配置
+      initialSize: 5    # 初始化大小，最小，最大
+      minIdle: 5
+      maxActive: 20
+      maxWait: 60000  # 配置获取连接等待超时的时间
+      timeBetweenEvictionRunsMillis: 60000  # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      validation-query: select 'x'
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      # 打开PSCache，并且指定每个连接上PSCache的大小
+      pool-prepared-statements: true
+      max-open-prepared-statements: 20
+      max-pool-prepared-statement-per-connection-size: 20
+      # 配置监控统计拦截的filters, 去掉后监控界面sql无法统计, 'wall'用于防火墙
+      filters: stat,wall
+      # Spring监控AOP切入点，如x.y.z.service.*,配置多个英文逗号分隔
+      aop-patterns: com.springboot.servie.*
+    ## Cache 数据库信息
+    cache:
+      # 数据库访问配置, 使用druid数据源
+      type: com.alibaba.druid.pool.DruidDataSource
+      username: _system
+      password: SYS
+      url: jdbc:Cache://127.0.0.1:1972/MYCACHE
+      driver-class-name: com.intersys.jdbc.CacheDriver
+      # 连接池配置
+      initialSize: 5    # 初始化大小，最小，最大
+      minIdle: 5
+      maxActive: 20
+      maxWait: 60000  # 配置获取连接等待超时的时间
+      timeBetweenEvictionRunsMillis: 60000  # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      validation-query: select 'x'
+      # cache 不支持缓存、sql防火墙等功能
+  ## 缓存
+  cache:
+    ehcache:
+      config: ehcache.xml
+  ## Elasticsearch配置信息
+  elasticsearch:
+    bulk: 2000
+    username: ""
+    password: ""
+    ips: 127.0.0.1:9200
+    connection-timeout: 20000 #连接超时
+    max-connect-total: 50
+    max-connect-per-route: 10
+    connection-request-timeout-millis: 500
+    socket-timeout-millis: 30000
+    connect-timeout-millis: 1000
+    jest:
+      uris:
+        - http://127.0.0.1:9200
+      username: elastic
+      password: changeme
+      read-timeout: 20000 #读取超时
+      connection-timeout: 20000 #连接超时
+  path:
+    logs: /logs
+    uploadPath: /upload   #文件上次目录
+    templatePath: /upload/tmp #文件临时目录
+    uploaderPath: /uploadPath/file #文件存放地址
+  logging:
+    config: classpath:log4j2-spring.xml
+  system:
+    version: 1
