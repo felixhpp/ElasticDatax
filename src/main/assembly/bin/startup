@@ -1,0 +1,128 @@
+#!/usr/bin/env sh
+# ----------------------------------------------------------------------------
+#  Copyright 2001-2006 The Apache Software Foundation.
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+# ----------------------------------------------------------------------------
+#
+#   Copyright (c) 2001-2006 The Apache Software Foundation.  All rights
+#   reserved.
+
+
+# resolve links - $0 may be a softlink
+PRG="$0"
+
+while [ -h "$PRG" ]; do
+  ls=`ls -ld "$PRG"`
+  link=`expr "$ls" : '.*-> \(.*\)$'`
+  if expr "$link" : '/.*' > /dev/null; then
+    PRG="$link"
+  else
+    PRG=`dirname "$PRG"`/"$link"
+  fi
+done
+
+PRGDIR=`dirname "$PRG"`
+BASEDIR=`cd "$PRGDIR/.." >/dev/null; pwd`
+
+# Reset the REPO variable. If you need to influence this use the environment setup file.
+REPO=
+
+
+# OS specific support.  $var _must_ be set to either true or false.
+cygwin=false;
+darwin=false;
+case "`uname`" in
+  CYGWIN*) cygwin=true ;;
+  Darwin*) darwin=true
+           if [ -z "$JAVA_VERSION" ] ; then
+             JAVA_VERSION="CurrentJDK"
+           else
+             echo "Using Java version: $JAVA_VERSION"
+           fi
+		   if [ -z "$JAVA_HOME" ]; then
+		      if [ -x "/usr/libexec/java_home" ]; then
+			      JAVA_HOME=`/usr/libexec/java_home`
+			  else
+			      JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Versions/${JAVA_VERSION}/Home
+			  fi
+           fi       
+           ;;
+esac
+
+if [ -z "$JAVA_HOME" ] ; then
+  if [ -r /etc/gentoo-release ] ; then
+    JAVA_HOME=`java-config --jre-home`
+  fi
+fi
+
+# For Cygwin, ensure paths are in UNIX format before anything is touched
+if $cygwin ; then
+  [ -n "$JAVA_HOME" ] && JAVA_HOME=`cygpath --unix "$JAVA_HOME"`
+  [ -n "$CLASSPATH" ] && CLASSPATH=`cygpath --path --unix "$CLASSPATH"`
+fi
+
+# If a specific java binary isn't specified search for the standard 'java' binary
+if [ -z "$JAVACMD" ] ; then
+  if [ -n "$JAVA_HOME"  ] ; then
+    if [ -x "$JAVA_HOME/jre/sh/java" ] ; then
+      # IBM's JDK on AIX uses strange locations for the executables
+      JAVACMD="$JAVA_HOME/jre/sh/java"
+    else
+      JAVACMD="$JAVA_HOME/bin/java"
+    fi
+  else
+    JAVACMD=`which java`
+  fi
+fi
+
+if [ ! -x "$JAVACMD" ] ; then
+  echo "Error: JAVA_HOME is not defined correctly." 1>&2
+  echo "  We cannot execute $JAVACMD" 1>&2
+  exit 1
+fi
+
+if [ -z "$REPO" ]
+then
+  REPO="$BASEDIR"/lib
+fi
+
+CLASSPATH="$BASEDIR"/config:"$REPO"/spring-boot-starter-web-2.1.5.RELEASE.jar:"$REPO"/spring-boot-starter-2.1.5.RELEASE.jar:"$REPO"/javax.annotation-api-1.3.2.jar:"$REPO"/spring-boot-starter-json-2.1.5.RELEASE.jar:"$REPO"/jackson-databind-2.9.8.jar:"$REPO"/jackson-datatype-jdk8-2.9.8.jar:"$REPO"/jackson-datatype-jsr310-2.9.8.jar:"$REPO"/jackson-module-parameter-names-2.9.8.jar:"$REPO"/spring-boot-starter-tomcat-2.1.5.RELEASE.jar:"$REPO"/tomcat-embed-core-9.0.19.jar:"$REPO"/tomcat-embed-el-9.0.19.jar:"$REPO"/tomcat-embed-websocket-9.0.19.jar:"$REPO"/hibernate-validator-6.0.16.Final.jar:"$REPO"/validation-api-2.0.1.Final.jar:"$REPO"/jboss-logging-3.3.2.Final.jar:"$REPO"/spring-web-5.1.7.RELEASE.jar:"$REPO"/spring-webmvc-5.1.7.RELEASE.jar:"$REPO"/spring-aop-5.1.7.RELEASE.jar:"$REPO"/spring-expression-5.1.7.RELEASE.jar:"$REPO"/spring-boot-starter-log4j2-2.1.5.RELEASE.jar:"$REPO"/log4j-slf4j-impl-2.11.2.jar:"$REPO"/log4j-api-2.11.2.jar:"$REPO"/log4j-core-2.11.2.jar:"$REPO"/log4j-jul-2.11.2.jar:"$REPO"/jul-to-slf4j-1.7.26.jar:"$REPO"/jackson-dataformat-yaml-2.9.8.jar:"$REPO"/snakeyaml-1.23.jar:"$REPO"/jackson-core-2.9.8.jar:"$REPO"/mybatis-spring-boot-starter-2.0.1.jar:"$REPO"/mybatis-spring-boot-autoconfigure-2.0.1.jar:"$REPO"/mybatis-3.5.1.jar:"$REPO"/mybatis-spring-2.0.1.jar:"$REPO"/spring-boot-starter-thymeleaf-2.1.5.RELEASE.jar:"$REPO"/thymeleaf-spring5-3.0.11.RELEASE.jar:"$REPO"/thymeleaf-3.0.11.RELEASE.jar:"$REPO"/attoparser-2.0.5.RELEASE.jar:"$REPO"/unbescape-1.1.6.RELEASE.jar:"$REPO"/thymeleaf-extras-java8time-3.0.4.RELEASE.jar:"$REPO"/spring-context-support-5.1.7.RELEASE.jar:"$REPO"/spring-beans-5.1.7.RELEASE.jar:"$REPO"/spring-context-5.1.7.RELEASE.jar:"$REPO"/spring-core-5.1.7.RELEASE.jar:"$REPO"/spring-jcl-5.1.7.RELEASE.jar:"$REPO"/spring-boot-devtools-2.1.5.RELEASE.jar:"$REPO"/spring-boot-2.1.5.RELEASE.jar:"$REPO"/spring-boot-autoconfigure-2.1.5.RELEASE.jar:"$REPO"/ehcache-3.5.2.jar:"$REPO"/slf4j-api-1.7.26.jar:"$REPO"/mysql-connector-java-8.0.16.jar:"$REPO"/spring-boot-starter-jdbc-2.1.5.RELEASE.jar:"$REPO"/HikariCP-3.2.0.jar:"$REPO"/spring-jdbc-5.1.7.RELEASE.jar:"$REPO"/spring-tx-5.1.7.RELEASE.jar:"$REPO"/junit-4.12.jar:"$REPO"/hamcrest-core-1.3.jar:"$REPO"/druid-spring-boot-starter-1.1.10.jar:"$REPO"/druid-1.1.10.jar:"$REPO"/spring-boot-starter-actuator-2.1.5.RELEASE.jar:"$REPO"/spring-boot-actuator-autoconfigure-2.1.5.RELEASE.jar:"$REPO"/spring-boot-actuator-2.1.5.RELEASE.jar:"$REPO"/micrometer-core-1.1.4.jar:"$REPO"/LatencyUtils-2.0.3.jar:"$REPO"/gson-2.8.5.jar:"$REPO"/guava-17.0.jar:"$REPO"/fastjson-1.2.37.jar:"$REPO"/springfox-swagger2-2.2.2.jar:"$REPO"/mapstruct-1.0.0.CR1.jar:"$REPO"/swagger-annotations-1.5.3.jar:"$REPO"/swagger-models-1.5.3.jar:"$REPO"/jackson-annotations-2.9.0.jar:"$REPO"/springfox-spi-2.2.2.jar:"$REPO"/springfox-core-2.2.2.jar:"$REPO"/springfox-schema-2.2.2.jar:"$REPO"/springfox-swagger-common-2.2.2.jar:"$REPO"/springfox-spring-web-2.2.2.jar:"$REPO"/classmate-1.4.0.jar:"$REPO"/aspectjrt-1.9.4.jar:"$REPO"/aspectjweaver-1.9.4.jar:"$REPO"/spring-plugin-core-1.2.0.RELEASE.jar:"$REPO"/spring-plugin-metadata-1.2.0.RELEASE.jar:"$REPO"/spring-hateoas-0.25.1.RELEASE.jar:"$REPO"/springfox-swagger-ui-2.2.2.jar:"$REPO"/json-lib-0.9.jar:"$REPO"/commons-beanutils-1.7.0.jar:"$REPO"/commons-lang-2.2.jar:"$REPO"/commons-logging-1.1.jar:"$REPO"/log4j-1.2.12.jar:"$REPO"/logkit-1.0.1.jar:"$REPO"/avalon-framework-4.1.3.jar:"$REPO"/servlet-api-2.3.jar:"$REPO"/xom-1.1.jar:"$REPO"/xmlParserAPIs-2.6.2.jar:"$REPO"/xercesImpl-2.6.2.jar:"$REPO"/xalan-2.7.0.jar:"$REPO"/xml-apis-1.4.01.jar:"$REPO"/jaxen-1.1.6.jar:"$REPO"/ezmorph-0.8.1.jar:"$REPO"/jest-2.4.0.jar:"$REPO"/jest-common-2.4.0.jar:"$REPO"/commons-lang3-3.8.1.jar:"$REPO"/httpcore-nio-4.4.11.jar:"$REPO"/httpcore-4.4.11.jar:"$REPO"/httpclient-4.5.8.jar:"$REPO"/commons-codec-1.11.jar:"$REPO"/httpasyncclient-4.1.4.jar:"$REPO"/elasticsearch-2.3.4.jar:"$REPO"/lucene-core-5.5.0.jar:"$REPO"/lucene-backward-codecs-5.5.0.jar:"$REPO"/lucene-analyzers-common-5.5.0.jar:"$REPO"/lucene-queries-5.5.0.jar:"$REPO"/lucene-memory-5.5.0.jar:"$REPO"/lucene-highlighter-5.5.0.jar:"$REPO"/lucene-queryparser-5.5.0.jar:"$REPO"/lucene-sandbox-5.5.0.jar:"$REPO"/lucene-suggest-5.5.0.jar:"$REPO"/lucene-misc-5.5.0.jar:"$REPO"/lucene-join-5.5.0.jar:"$REPO"/lucene-grouping-5.5.0.jar:"$REPO"/lucene-spatial-5.5.0.jar:"$REPO"/lucene-spatial3d-5.5.0.jar:"$REPO"/spatial4j-0.5.jar:"$REPO"/securesm-1.0.jar:"$REPO"/hppc-0.7.1.jar:"$REPO"/joda-time-2.10.2.jar:"$REPO"/joda-convert-1.2.jar:"$REPO"/jackson-dataformat-smile-2.9.8.jar:"$REPO"/jackson-dataformat-cbor-2.9.8.jar:"$REPO"/netty-3.10.5.Final.jar:"$REPO"/compress-lzf-1.0.2.jar:"$REPO"/t-digest-3.0.jar:"$REPO"/HdrHistogram-2.1.6.jar:"$REPO"/commons-cli-1.3.1.jar:"$REPO"/jsr166e-1.1.0.jar:"$REPO"/demo-2.3.4.RELEASE.jar
+
+ENDORSED_DIR=
+if [ -n "$ENDORSED_DIR" ] ; then
+  CLASSPATH=$BASEDIR/$ENDORSED_DIR/*:$CLASSPATH
+fi
+
+if [ -n "$CLASSPATH_PREFIX" ] ; then
+  CLASSPATH=$CLASSPATH_PREFIX:$CLASSPATH
+fi
+
+# For Cygwin, switch paths to Windows format before running java
+if $cygwin; then
+  [ -n "$CLASSPATH" ] && CLASSPATH=`cygpath --path --windows "$CLASSPATH"`
+  [ -n "$JAVA_HOME" ] && JAVA_HOME=`cygpath --path --windows "$JAVA_HOME"`
+  [ -n "$HOME" ] && HOME=`cygpath --path --windows "$HOME"`
+  [ -n "$BASEDIR" ] && BASEDIR=`cygpath --path --windows "$BASEDIR"`
+  [ -n "$REPO" ] && REPO=`cygpath --path --windows "$REPO"`
+fi
+
+exec "$JAVACMD" $JAVA_OPTS -server -Xmx1G -Xms1G \
+  -classpath "$CLASSPATH" \
+  -Dapp.name="startup" \
+  -Dapp.pid="$$" \
+  -Dapp.repo="$REPO" \
+  -Dapp.home="$BASEDIR" \
+  -Dbasedir="$BASEDIR" \
+  com.example.demo.Application \
+  "$@"

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.mapper.cache.DicOrderItemMappper" >
+    <!-- 医嘱项目字典 -->
+    <resultMap id="OrdItemNameMap" type="com.example.demo.entity.DictionaryMap">
+        <!--column数据库中表的名  property是对应类的属性  -->
+        <result column="CTARCIM_Code" property="dicCode" jdbcType="VARCHAR" />
+        <result column="CTARCIM_Desc" property="dicName" jdbcType="VARCHAR" />
+    </resultMap>
+    <!-- 查询所有医嘱项目-->
+    <select id="getAllOrdItemName" resultMap="OrdItemNameMap">
+        SELECT * FROM  mdm_USER.CT_ARCItmMast
+    </select>
+    <!-- 根据编码查询医嘱项目 -->
+    <select id="getOrdItemNameByCode" resultMap="OrdItemNameMap" parameterType="java.util.Map">
+        SELECT * FROM mdm_USER.CT_ARCItmMast u WHERE 1 = 1 AND CTARCIM_Code = #{code}
+    </select>
+
+    <!-- 医嘱大类字典 -->
+    <resultMap id="OrdCategoryMap" type="com.example.demo.entity.DictionaryMap">
+        <!--column数据库中表的名  property是对应类的属性  -->
+        <result column="CTC_Code" property="dicCode" jdbcType="VARCHAR" />
+        <result column="CTC_Desc" property="dicName" jdbcType="VARCHAR" />
+    </resultMap>
+    <!-- 查询所有医嘱大类 -->
+    <select id="getAllOrdCategory" resultMap="OrdCategoryMap">
+        SELECT * FROM  mdm_USER.CT_Category
+    </select>
+    <!-- 根据编码查询医嘱大类 -->
+    <select id="getOrdCategoryByCode" resultMap="OrdCategoryMap" parameterType="java.util.Map">
+        SELECT * FROM mdm_USER.CT_Category u WHERE 1 = 1 AND CTC_Code = #{code}
+    </select>
+
+    <!--药品通用名字典-->
+    <resultMap id="PHCGenericMap" type="com.example.demo.entity.DictionaryMap">
+        <!--column数据库中表的名  property是对应类的属性  -->
+        <result column="CTPHCG_Code" property="dicCode" jdbcType="VARCHAR" />
+        <result column="CTPHCG_Desc" property="dicName" jdbcType="VARCHAR" />
+    </resultMap>
+    <!-- 查询所有药品通用名 -->
+    <select id="getAllPHCGeneric" resultMap="PHCGenericMap">
+        SELECT * FROM  mdm_USER.CT_PHCGeneric
+    </select>
+    <!-- 根据编码查询药品通用名 -->
+    <select id="getPHCGenericByCode" resultMap="PHCGenericMap" parameterType="java.util.Map">
+        SELECT * FROM mdm_USER.CT_PHCGeneric u WHERE 1 = 1 AND CTPHCG_Code = #{code}
+    </select>
+
+
+    <!--药学项字典-->
+    <resultMap id="PHDrgMaterialItmMap" type="com.example.demo.entity.DictionaryMap">
+        <!--column数据库中表的名  property是对应类的属性  -->
+        <result column="CTPHDMI_Code" property="dicCode" jdbcType="VARCHAR" />
+        <result column="CTPHDMI_Desc" property="dicName" jdbcType="VARCHAR" />
+    </resultMap>
+    <!-- 查询所有药学项字典 -->
+    <select id="getAllPHDrgMaterialItm" resultMap="PHDrgMaterialItmMap">
+        SELECT * FROM  mdm_USER.CT_PHDrgMaterialItm
+    </select>
+    <!-- 根据编码查询药学项字典-->
+    <select id="getPHDrgMaterialItmByCode" resultMap="PHDrgMaterialItmMap" parameterType="java.util.Map">
+        SELECT * FROM mdm_USER.CT_PHDrgMaterialItm u WHERE 1 = 1 AND CTPHDMI_Code = #{code}
+    </select>
+
+    <!--医嘱类型字典-->
+    <resultMap id="PriorityMap" type="com.example.demo.entity.DictionaryMap">
+        <!--column数据库中表的名  property是对应类的属性  -->
+        <result column="CTP_Code" property="dicCode" jdbcType="VARCHAR" />
+        <result column="CTP_Desc" property="dicName" jdbcType="VARCHAR" />
+    </resultMap>
+    <!-- 查询所有医嘱类型 -->
+    <select id="getAllPriority" resultMap="PriorityMap">
+        SELECT * FROM  mdm_USER.CT_Priority
+    </select>
+    <!-- 根据编码查询医嘱类型 -->
+    <select id="getPriorityByCode" resultMap="PriorityMap" parameterType="java.util.Map">
+        SELECT * FROM mdm_USER.CT_Priority u WHERE 1 = 1 AND CTP_Code = #{code}
+    </select>
+
+    <!--医嘱状态字典-->
+    <resultMap id="CT_OrderStatus" type="com.example.demo.entity.DictionaryMap">
+        <!--column数据库中表的名  property是对应类的属性  -->
+        <result column="CTOS_Code" property="dicCode" jdbcType="VARCHAR" />
+        <result column="CTOS_Desc" property="dicName" jdbcType="VARCHAR" />
+    </resultMap>
+    <!-- 查询所有医嘱状态 -->
+    <select id="getAllOrderStatus" resultMap="CT_OrderStatus">
+        SELECT * FROM  mdm_USER.CT_OrderStatus
+    </select>
+    <!-- 根据编码查询医嘱状态 -->
+    <select id="getOrderStatusByCode" resultMap="CT_OrderStatus" parameterType="java.util.Map">
+        SELECT * FROM mdm_USER.CT_OrderStatus u WHERE 1 = 1 AND CTOS_Code = #{code}
+    </select>
+
+    <!--给药频次字典-->
+    <resultMap id="CT_Freq" type="com.example.demo.entity.DictionaryMap">
+        <!--column数据库中表的名  property是对应类的属性  -->
+        <result column="CTF_Code" property="dicCode" jdbcType="VARCHAR" />
+        <result column="CTF_Desc" property="dicName" jdbcType="VARCHAR" />
+    </resultMap>
+    <!-- 查询所有给药频次 -->
+    <select id="getAllFreq" resultMap="CT_Freq">
+        SELECT * FROM  mdm_USER.CT_Freq
+    </select>
+    <!-- 根据编码查询给药频次 -->
+    <select id="getFreqByCode" resultMap="CT_Freq" parameterType="java.util.Map">
+        SELECT * FROM mdm_USER.CT_Freq u WHERE 1 = 1 AND CTF_Code = #{code}
+    </select>
+
+    <!--疗程字典-->
+    <resultMap id="DurationMap" type="com.example.demo.entity.DictionaryMap">
+        <!--column数据库中表的名  property是对应类的属性  -->
+        <result column="CTD_Code" property="dicCode" jdbcType="VARCHAR" />
+        <result column="CTD_Desc" property="dicName" jdbcType="VARCHAR" />
+    </resultMap>
+    <!-- 查询所有疗程 -->
+    <select id="getAllDuration" resultMap="DurationMap">
+        SELECT * FROM  mdm_USER.CT_Duration
+    </select>
+    <!-- 根据编码查询疗程 -->
+    <select id="getDurationByCode" resultMap="DurationMap" parameterType="java.util.Map">
+        SELECT * FROM mdm_USER.CT_Duration u WHERE 1 = 1 AND CTD_Code = #{code}
+    </select>
+</mapper>

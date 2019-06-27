@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<elasticMapper name="medicine">
+    <!--property配置字段映射信息
+        sourceName：源字段名称
+        targetName: 目标字段名称
+        convert： 是否进行转换， 如果true, 则将通过调用方法或者动态执行sql获取转换后的值
+        valueType: 字段数据类型，
+        dicType: 字典类型   com.example.demo.core.dics 包下的类路径
+        -->
+    <!--id字段-->
+    <property sourceName="med_id"  targetName="Med_Id" convert="false" valueType="java.lang.String" idField="true"></property>
+    <!--关联就诊ID-->
+    <property sourceName="med_admno" targetName="Med_AdmNo"  convert="false" valueType="java.lang.String" parentField="true"></property>
+    <!--关联登记号-->
+    <property sourceName="med_regno" targetName="Med_RegNo"  convert="false" valueType="java.lang.String" routingField="true"></property>
+    <!--用药时段-->
+    <property sourceName="med_timeInterval" targetName="Med_TimeInterval"  convert="false" valueType="java.lang.String"></property>
+    <!--用药 - 医嘱名称-->
+    <property sourceName="med_ordcode" targetName="Med_OrdName" convert="true" valueType="java.lang.String">
+        <dicType>com.example.demo.core.dics.OrderItem</dicType>
+        <method>getByCode</method>
+        <parameter type="java.lang.String">med_ordcode</parameter>
+    </property>
+    <!--用药商品名称-->
+    <property sourceName="med_bisname" targetName="Med_BisName" convert="true" valueType="java.lang.String">
+        <dicType>com.example.demo.core.dics.OrderItem</dicType>
+        <method>getByCode</method>
+        <parameter type="java.lang.String">med_bisname</parameter>
+    </property>
+    <!--用药通用名称-->
+    <property sourceName="ord_cate_code" targetName="Med_GenName"  convert="true" valueType="java.lang.String">
+        <dicType>com.example.demo.core.dics.OrdCateage</dicType>
+        <method>getByCode</method>
+        <parameter type="java.lang.String">ord_cate_code</parameter>
+    </property>
+    <!--药物名称（用于统计， 不分词）-->
+    <property sourceName="ord_type_code" targetName="Med_GenDesc"  convert="true" valueType="java.lang.String">
+        <dicType>com.example.demo.core.dics.OrdType</dicType>
+        <method>getByCode</method>
+        <parameter type="java.lang.String">ord_type_code</parameter>
+    </property>
+    <!--药品类别-->
+    <property sourceName="ord_period" targetName="Med_Category" convert="false" valueType="java.lang.String">
+
+    </property>
+    <!--单次剂量-->
+    <property sourceName="ord_duration_code" targetName="Med_SingleDose" convert="true" valueType="java.lang.String">
+        <dicType>com.example.demo.core.dics.Duration</dicType>
+        <method>getByCode</method>
+        <parameter type="java.lang.String">ord_duration_code</parameter>
+    </property>
+    <!--总剂量-->
+    <property sourceName="ord_usage" targetName="Med_TotalDose" convert="false" valueType="java.lang.String">
+
+    </property>
+    <!--频次-->
+    <property sourceName="ord_freq_code" targetName="Ord_Freq" convert="true" valueType="java.lang.String">
+        <dicType>com.example.demo.core.dics.Freq</dicType>
+        <method>getByCode</method>
+        <parameter type="java.lang.String">ord_freq_code</parameter>
+    </property>
+    <!--医嘱开始时间-->
+    <property sourceName="ord_starttime" targetName="Ord_StartTime" convert="false" valueType="java.lang.String">
+    </property>
+    <!--医嘱状态-->
+    <property sourceName="ord_status_code" targetName="Ord_Status" convert="true" valueType="java.lang.String">
+        <dicType>com.example.demo.core.dics.OrderStatus</dicType>
+        <method>getByCode</method>
+        <parameter type="java.lang.String">ord_status_code</parameter>
+    </property>
+    <!--医嘱数量-->
+    <property sourceName="ord_orderqty" targetName="Ord_OrderQty" convert="false" valueType="java.lang.String">
+    </property>
+    <!--医嘱结束时间-->
+    <property sourceName="ord_endtime" targetName="Ord_EndTime" convert="false" valueType="java.lang.String">
+    </property>
+    <!--开医嘱科室-->
+    <property sourceName="ord_dept_code" targetName="Ord_Dept" convert="true" valueType="java.lang.String">
+        <dicType>com.example.demo.core.dics.Deptartment</dicType>
+        <method>getByCode</method>
+        <parameter type="java.lang.String">ord_dept_code</parameter>
+    </property>
+    <!--执行医嘱科室-->
+    <property sourceName="ord_execdept_code" targetName="Ord_ExecDept" convert="true" valueType="java.lang.String">
+        <dicType>com.example.demo.core.dics.Deptartment</dicType>
+        <method>getByCode</method>
+        <parameter type="java.lang.String">ord_execdept_code</parameter>
+    </property>
+    <!--归一后医嘱编码-->
+    <property sourceName="ord_code" targetName="Ord_MedDicCode" convert="false" valueType="java.lang.String">
+    </property>
+    <!--归一后医嘱名称-->
+    <property sourceName="ord_code" targetName="Ord_MedDicName" convert="true" valueType="java.lang.String">
+        <dicType>com.example.demo.core.dics.OrderItem</dicType>
+        <method>getByCode</method>
+        <parameter type="java.lang.String">ord_code</parameter>
+    </property>
+</elasticMapper>

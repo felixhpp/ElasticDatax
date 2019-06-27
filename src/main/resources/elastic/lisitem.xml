@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<elasticMapper name="patient">
+    <!--property配置字段映射信息
+        sourceName：源字段名称
+        targetName: 目标字段名称
+        convert： 是否进行转换， 如果true, 则将通过调用方法或者动态执行sql获取转换后的值
+        valueType: 字段数据类型，
+        dicType: 字典类型  包括：dept，sex， national，admType，diagnoseType，diagnoseName，marital
+        -->
+    <!--
+        parameter: 为源数据字段名称
+    -->
+    <!--检验ID-->
+    <property sourceName="lis_id" targetName="Lis_Id"  convert="false" valueType="java.lang.String" idField="true" ></property>
+    <property sourceName="lis_admno" targetName="Lis_AdmNo"  convert="false" valueType="java.lang.String" parentField="true"></property>
+    <property sourceName="lis_regno" targetName="Lis_RegNo"  convert="false" valueType="java.lang.String" routingField="true"></property>
+    <!--检验名称-->
+    <property sourceName="lis_name_code" targetName="Lis_Name"  convert="true" valueType="java.lang.String">
+        <dicType>com.example.demo.core.dics.LisItem</dicType>
+        <method>getByCode</method>
+        <parameter type="java.lang.String">lis_name_code</parameter>
+    </property>
+    <!--检验值-->
+    <property sourceName="lis_value" targetName="Lis_Value"  convert="false" valueType="java.lang.String">
+    </property>
+    <property sourceName="lis_result" targetName="Lis_Result"  convert="false" valueType="java.lang.String"></property>
+    <property sourceName="lis_name_code" targetName="Lis_GenericCode"  convert="false" valueType="java.lang.String"></property>
+    <!--格式化后的检验值,为了方便比较-->
+    <property sourceName="lis_value" targetName="Lis_FormatVaue"  convert="true" valueType="java.lang.String">
+        <method>formatValue</method>
+        <parameter type="java.lang.String">lis_value</parameter>
+    </property>
+    <!--检验时间-->
+    <property sourceName="lis_date" targetName="Lis_DateTime"  convert="true" valueType="java.lang.String">
+        <method>formatDate</method>
+        <parameter type="java.lang.String">lis_time</parameter>
+    </property>
+    <!--距离手术天数-->
+    <property sourceName="lis_operationdays" targetName="Lis_OperationDays" convert="false" valueType="java.lang.String">
+    </property>
+</elasticMapper>

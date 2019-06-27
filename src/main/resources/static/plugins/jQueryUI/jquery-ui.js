@@ -4431,7 +4431,7 @@ $.extend(Datepicker.prototype, {
 		}
 	},
 
-	/* Filter entered characters - based on date format. */
+	/* filter entered characters - based on date format. */
 	_doKeyPress: function(event) {
 		var chars, chr,
 			inst = $.datepicker._getInst(event.target);
@@ -9223,7 +9223,7 @@ $.ui.ddmanager = {
 				continue;
 			}
 
-			// Filter out elements in the current dragged item
+			// filter out elements in the current dragged item
 			for ( j = 0; j < list.length; j++ ) {
 				if ( list[ j ] === m[ i ].element[ 0 ] ) {
 					m[ i ].proportions().height = 0;

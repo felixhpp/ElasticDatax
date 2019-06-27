@@ -1,35 +1,152 @@
 package com.example.demo.controller;
 
-import com.example.demo.core.entity.RestResult;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.JSONReader;
+import com.example.demo.core.entity.*;
 import com.example.demo.service.ElasticsearchService;
 import com.example.demo.core.utils.ResultUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang.NullArgumentException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
 
-@RequestMapping(path = "esapi", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+import javax.validation.Valid;
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@RequestMapping(path = "indice", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 @RestController
+@Api("Elasticsearch相关的api")
 public class ElasticApiController {
+
+    private Logger logger = LoggerFactory.getLogger(ElasticApiController.class);
 
     @Autowired
     ElasticsearchService elasticsearchService;
 
-    @GetMapping(path = "getMapping/{index}/{type}")
-    public RestResult getMapping(@PathVariable(name = "index")String index, @PathVariable(name = "type")String type){
-        return ResultUtil.success(elasticsearchService.getMapping(index, type));
+    @PostMapping(path = "bulktest")
+    public RestResult bulkTest(@Valid @RequestBody RequetsExportEntity requetsBody){
+        ArrayList<Map<String, Object>> dataList = requetsBody.getData();
+        int size = dataList.size();
+        // 获取indexname
+        String index = requetsBody.getIndex();
+        // 获取typename
+        String type = requetsBody.getType();
+        BulkResponseBody result = elasticsearchService.bulk(index, type, dataList);
+        return ResultUtil.success(result);
     }
 
-    @GetMapping(path = "getMapping/{index}")
-    public RestResult getMapping(@PathVariable(name = "index")String index){
-        return ResultUtil.success(elasticsearchService.getMapping(index,null));
+    /**
+     * 集成平台API调用接口，批量导入ES数据
+     * @param content
+     * @return
+     */
+    @ApiOperation(value = "批量导入ES数据", notes = "批量导入ES数据")
+    @ApiImplicitParam(name = "content", value = "请求json字符串", paramType = "String", required = true, dataType = "String")
+    @PostMapping(path = "bulk")
+    public RestResult bulk(String content){
+        long startTime=System.currentTimeMillis();
+        BulkRequestBody requetsBody = JSONObject.parseObject(content, BulkRequestBody.class);
+        String dataStr = requetsBody.getData();
+        String theme = requetsBody.getTheme();
+        BulkResponseBody result = new BulkResponseBody();
+        try {
+            if(StringUtils.isEmpty(dataStr)){
+                result.setResultCode("-1");
+                result.setResultContent("content参数中data信息为null" );
+            }
+            if(StringUtils.isEmpty(theme)){
+                result.setResultCode("-1");
+                result.setResultContent("content参数中theme信息为null" );
+
+            }
+            List<Map<String, Object>> bulkData = strToMap(dataStr);
+            elasticsearchService.bulk(theme, bulkData);
+            result.setResultCode("0");
+            result.setResultContent("成功" + bulkData.size() + "条");
+            long endTime=System.currentTimeMillis();
+            logger.info("====bulk finish：" + bulkData.size()+ "  tool:" + (endTime-startTime)+"ms");
+        } catch (Exception e){
+            result.setResultCode("-1");
+            result.setResultContent("请求异常，错误信息:" + e.getMessage());
+        }
+
+        return ResultUtil.success(result);
     }
 
-    @GetMapping(path = "getMapping")
-    public RestResult getMapping(){
-        return ResultUtil.success(elasticsearchService.getMapping(null,null));
+    /**
+     * 批量导入数据，数据通过写入body的当时传输
+     * @param content
+     * @return
+     */
+    @PostMapping(path = "bulkBody")
+    public RestResult bulk(@Valid @RequestBody BodyContent content){
+        BulkRequestBody requetsBody = JSONObject.parseObject(content.getContent(), BulkRequestBody.class);
+        String dataStr = requetsBody.getData();
+        String theme = requetsBody.getTheme();
+        List<Map<String, Object>> bulkData = strToMap(dataStr);
+        BulkResponseBody result = elasticsearchService.bulk(theme, bulkData);
+        return ResultUtil.success(result);
     }
 
+    /**
+     * 添加单
+     * @param body
+     * @return
+     */
+    @PostMapping(path = "bulk/casenote")
+    public RestResult bulk(@RequestBody List<BulkCaseRequestBody> body){
+        long startTime = System.currentTimeMillis();
+
+        BulkResponseBody responseBody = elasticsearchService.bulkCase(body);
+        long endTime = System.currentTimeMillis();
+        logger.info("=====bulk [ casenote ],tool：" + (endTime- startTime) + "ms，message:" + responseBody.getResultContent());
+        return ResultUtil.success(responseBody);
+    }
+
+    @ApiOperation(value = "根据登记号获取病人基本信息", notes = "根据登记号获取病人基本信息")
+    @ApiImplicitParam(name = "regNo", value = "登记号", paramType = "path", required = true, dataType = "String")
+    @GetMapping(path = "getPatient/{regNo}")
+    public RestResult getPatientByRegNo(@PathVariable(name = "regNo")String regNo) throws IOException {
+        return ResultUtil.success(elasticsearchService.getPatientByRegNo(regNo));
+    }
+
+    /**
+     * 将json数组字符串解析成List<Map<String, Object>>， 效率高过fastjson JSONArray
+     * @param dataJsonStr
+     * @return
+     */
+    private List<Map<String, Object>> strToMap(String dataJsonStr){
+        JSONReader reader = new JSONReader(new StringReader(dataJsonStr));//已流的方式处理，这里很快
+        reader.startArray();
+        List<Map<String, Object>> rsList = new ArrayList<Map<String, Object>>();
+        Map<String, Object> map = null;
+        int i = 0;
+        while (reader.hasNext()) {
+            i++;
+            reader.startObject();//这边反序列化也是极速
+            map = new HashMap<String, Object>();
+            while (reader.hasNext()) {
+                String arrayListItemKey = reader.readString();
+                String arrayListItemValue = reader.readObject().toString();
+                map.put(arrayListItemKey, arrayListItemValue);
+            }
+            rsList.add(map);
+            reader.endObject();
+        }
+        reader.endArray();
+
+        return  rsList;
+    }
 }

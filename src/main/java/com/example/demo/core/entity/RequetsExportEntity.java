@@ -7,6 +7,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class RequetsExportEntity {
     @JsonProperty("theme")
@@ -27,37 +28,37 @@ public class RequetsExportEntity {
     @NotEmpty(message = "data不能为空")
     @NotNull(message = "data不能为Null")
     @JsonProperty("data")
-    private ArrayList<Object> data;
+    private ArrayList<Map<String, Object>> data;
 
-    public String getTheme() {
+    final public String getTheme() {
         return theme;
     }
 
-    public void setTheme(String theme) {
+    final public void setTheme(String theme) {
         this.theme = theme;
     }
 
-    public String getIndex() {
+    final public String getIndex() {
         return index;
     }
 
-    public void setIndex(String index) {
+    final public void setIndex(String index) {
         this.index = index;
     }
 
-    public String getType() {
+    final public String getType() {
         return type;
     }
 
-    public void setType(String type) {
+    final public void setType(String type) {
         this.type = type;
     }
 
-    public ArrayList<Object> getData() {
+    public ArrayList<Map<String, Object>> getData() {
         return data;
     }
 
-    public void setData(ArrayList<Object> data) {
+    public void setData(ArrayList<Map<String, Object>> data) {
         this.data = data;
     }
 }

@@ -27,7 +27,7 @@ import javax.sql.DataSource;
 @MapperScan(basePackages = "com.example.demo.mapper.primary", sqlSessionTemplateRef  = "primarySqlSessionTemplate"
        , nameGenerator = Application.SpringBeanNameGenerator.class)
 public class PrimaryDataSourceConfig {
-    private static final Logger log = LoggerFactory.getLogger(CacheDataSourceConfig.class);
+    private static final Logger log = LoggerFactory.getLogger(PrimaryDataSourceConfig.class);
 
     @Bean(name = "primaryDataSource")
     @Qualifier("primaryDataSource")

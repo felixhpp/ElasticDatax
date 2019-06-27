@@ -109,19 +109,22 @@ public class WebMvcConfig implements WebMvcConfigurer {
             registry.addInterceptor(new HandlerInterceptorAdapter() {
                 @Override
                 public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+                    //记录请求日志
+                    logger.info("Request API: [{}] - Request IP: [{}]",
+                               request.getRequestURI(), getIpAddress(request));
                     //验证登录
 //                    Object obj = request.getSession().getAttribute(Const.LOGIN_SESSION_KEY);
-                    Object obj = null;
-                    if (obj != null) {
-                        return true;
-                    }
-                   else {
+//                    if (obj != null) {
+//                        return true;
+//                    }
+//                   else {
 //                        logger.warn("请先登录！==> 请求接口：{}，请求IP：{}，请求参数：{}",
 //                                request.getRequestURI(), getIpAddress(request), JSON.toJSONString(request.getParameterMap()));
 //
 //                        responseResult(response, new ResponseMsg(Result.SIGNERROR));
-                        return false;
-                    }
+//                        return false;
+//                    }
+                    return true;
                 }
             });
         }

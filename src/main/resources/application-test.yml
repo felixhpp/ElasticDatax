@@ -1,0 +1,7 @@
+## 测试环境
+spring:
+  profiles: test
+server:
+  port: 8160
+elastic-mapper:
+  onMapper: true

@@ -16,6 +16,8 @@ public class ElasticDataService {
     @Autowired
     ElasticsearchService elasticsearchService;
 
+
+
     /**
      * 重新组装对象
      * @param table

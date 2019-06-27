@@ -1,0 +1,4355 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bundle xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://hl7.org/fhir file:///D:/%e5%b7%a5%e4%bd%9c/FHIR/FHIR%20Schemal/fhir-all-xsd-4/bundle.xsd" xmlns="http://hl7.org/fhir">
+	<!-- 文档流水号 -->
+	<id value="admissionrecord"/>
+	<meta>
+		<!-- 文档版本id：0..1 -->
+		<versionId value="2"/>
+		<!-- 文档生成时间（fhir中的文档只会生成不会更新） -->
+		<lastUpdated value="2019-03-28T19:49:00Z"/>
+		<!-- 文档模板:利用StructureDefinition定义（约束Bundle的结构） -->
+		<profile value="[base]/structureDefinition/123"/>
+	</meta>
+	<!-- 文档内容语言编码 -->
+	<language value="zh-CN"/>
+	<!-- 文档注册模型 必填项：固定值document -->
+	<type value="document"/>
+	<!-- 文档目录 -->
+	<entry>
+		<fullUrl value="[base]/Composition/com01"/>
+		<resource>
+			<Composition>
+				<id value="com01"/>
+				<!-- 病史陈述信息 -->
+				<extension url="[base]/StructureDefinition/extension_historyStatement">
+					<!-- 病史陈述者 -->
+					<extension url="[base]/StructureDefinition/extension_historyPresenter">
+						<valueString value="张玲梅"/>
+					</extension>
+					<!-- 陈述内容可靠性标志 -->
+					<extension url="[base]/StructureDefinition/extension_reliability">
+						<valueString value="基本可靠"/>
+					</extension>
+					<!-- 陈述人与患者之间的关系 -->
+					<extension url="[base]/StructureDefinition/extension_relationshipWithPat">
+						<valueCodeableConcept>
+							<coding>
+								<system/>
+								<code value="01"/>
+								<display value="父母"/>
+							</coding>
+							<text value="父母"/>
+						</valueCodeableConcept>
+					</extension>
+					<!-- 病史陈述者签名 -->
+					<extension url="[base]/StructureDefinition/extension_presenterSignature">
+						<valueSignature>
+							<type>
+								<system/>
+								<code value="01"/>
+								<display value="病史陈述者"/>
+							</type>
+							<when value="2019-05-20T12:00:00-08:00"/>
+							<who>
+								<identifier>
+									<system value="/"/>
+									<value value="1425241242161"/>
+								</identifier>
+								<display value="金盏花"/>
+							</who>
+							<!-- 电子签名-->
+							<data value="qgwretf79237493u3ifkfnjjdfkuf87r"/>
+						</valueSignature>
+					</extension>
+				</extension>
+				<!-- 文档的状态(必填项) -->
+				<status value="final"/>
+				<!-- 文档类型 -->
+				<type>
+					<coding>
+						<system/>
+						<code value="C0034"/>
+						<display value="入院记录"/>
+					</coding>
+				</type>
+				<!-- 患者 -->
+				<subject>
+					<!-- 引用患者的url -->
+					<reference value="[base]/Patient/pat001"/>
+				</subject>
+				<!-- 就诊 -->
+				<encounter>
+					<reference value="[base]/Encounter/en001"/>
+				</encounter>
+				<!-- 编辑Composition的时间 -->
+				<date value="2019-02-27T10:10:10Z"/>
+				<!-- 文档创建者 -->
+				<author>
+					<type value="Practitioner"/>
+					<identifier>
+						<system/>
+						<value value="12345689"/>
+					</identifier>
+					<display value="张医生"/>
+				</author>
+				<!-- 文档标题 -->
+				<title value="入院记录"/>
+				<!-- 文档密级编码 -->
+				<confidentiality value="M">
+					<extension url="[base]/StructureDefinition/extension_confidentiality">
+						<valueCodeableConcept>
+							<coding>
+								<system value="2.16.840.1.113883.5.25"/>
+								<code value="N"/>
+								<display value="正常访问级别"/>
+							</coding>
+						</valueCodeableConcept>
+					</extension>
+				</confidentiality>
+				<!-- 签名人：审核医师 -->
+				<attester>
+					<!--医护人员所属角色 -->
+					<mode value="legal">
+						<extension url="[base]/StructureDefinition/extension_attestermode">
+							<valueCodeableConcept>
+								<coding>
+									<system/>
+									<code value="001"/>
+									<display value="主任医师"/>
+								</coding>
+							</valueCodeableConcept>
+						</extension>
+					</mode>
+					<!-- 签名日期时间 -->
+					<time value="2019-02-27T12:00:00Z"/>
+					<!-- 主任医师信息 -->
+					<party>
+						<type value="Practitioner"/>
+						<identifier>
+							<system/>
+							<value value="12345689"/>
+						</identifier>
+						<display value="张医师"/>
+					</party>
+				</attester>
+				<!-- 签名人：记录医师 -->
+				<attester>
+					<mode value="professional">
+						<extension url="[base]/StructureDefinition/extension_attestermode">
+							<valueCodeableConcept>
+								<coding>
+									<system value="2.16.156.10011.1.4"/>
+									<code value="002"/>
+									<display value="记录医师"/>
+								</coding>
+							</valueCodeableConcept>
+						</extension>
+					</mode>
+					<!-- 签名日期时间 -->
+					<time value="2019-02-27T12:00:00Z"/>
+					<!-- 接诊医师信息 -->
+					<party>
+						<type value="Practitioner"/>
+						<identifier>
+							<system/>
+							<value value="12345689"/>
+						</identifier>
+						<display value="李医师"/>
+					</party>
+				</attester>
+				<!-- 文档保管机构 -->
+				<custodian>
+					<type value="Organization"/>
+					<identifier>
+						<system/>
+						<value value="12345689"/>
+					</identifier>
+					<display value="华西二院"/>
+				</custodian>
+				<!-- 主诉章节 -->
+				<section>
+					<title value="主诉章节"/>
+					<code>
+						<coding>
+							<system/>
+							<code value="zhusu"/>
+							<display value="主诉章节"/>
+						</coding>
+					</code>
+					<entry>
+						<reference value="[base]/List/zhusu"/>
+					</entry>
+				</section>
+				<!-- 现病史章节 -->
+				<section>
+					<title value="现病史章节"/>
+					<code>
+						<coding>
+							<system/>
+							<code value="xianbingshi"/>
+							<display value="现病史章节"/>
+						</coding>
+					</code>
+					<entry>
+						<reference value="[base]/List/xianbingshi"/>
+					</entry>
+				</section>
+				<!-- 既往史章节 -->
+				<section>
+					<title value="既往史章节"/>
+					<code>
+						<coding>
+							<system value="2.16.840.1.113883.6.1"/>
+							<code value="jiwangshi"/>
+							<display value="既往史章节"/>
+						</coding>
+					</code>
+					<!-- 子章节：疾病史 -->
+					<section>
+						<!-- 一般健康状况标志：取值为true时，不包含疾病史(entry) -->
+						<extension url="[base]/StructureDefinition/extension_healthFlag">
+							<valueBoolean value="false"/>
+						</extension>
+						<title value="既往史章节-疾病史子章节"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="jibingshi"/>
+								<display value="疾病史章节"/>
+							</coding>
+						</code>
+						<!-- 如果存在多个，则需要添加多个entry -->
+						<entry>
+							<reference value="[base]/List/jibingshi"/>
+						</entry>
+					</section>
+					<!--  子章节：传染病史 -->
+					<section>
+						<!-- 传染性标志：当取值为false时不包含传染病史（entry) -->
+						<extension url="[base]/StructureDefinition/extension_infectiousFlag">
+							<valueBoolean value="true"/>
+						</extension>
+						<title value="既往史章节-传染病史子章节"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="chuanranbingshi"/>
+								<display value="传染病史章节"/>
+							</coding>
+						</code>
+						<!-- 如果存在多个，则需要添加多个entry -->
+						<entry>
+							<reference value="[base]/List/chuanranbingshi"/>
+						</entry>
+					</section>
+					<!--  子章节：预防接种史 -->
+					<section>
+						<!-- 预防接种史标志：取值为false时，不包含疾病史(entry) -->
+						<extension url="[base]/StructureDefinition/extension_vaccinationFlag">
+							<valueBoolean value="true"/>
+						</extension>
+						<title value="既往史章节-预防接种史子章节"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="yfjzshi"/>
+								<display value="预防接种史章节"/>
+							</coding>
+						</code>
+						<entry>
+							<reference value="[base]/List/yfjzshi"/>
+						</entry>
+					</section>
+					<!--  子章节：过敏史 -->
+					<section>
+						<!-- 一般健康状况标志：取值为true时，不包含疾病史(entry) -->
+						<extension url="[base]/StructureDefinition/extension_allergyFlag">
+							<valueBoolean value="true"/>
+						</extension>
+						<title value="既往史章节-过敏史子章节"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="guominshi"/>
+								<display value="过敏史章节"/>
+							</coding>
+						</code>
+						<entry>
+							<reference value="[base]/List/guominshi"/>
+						</entry>
+					</section>
+					<!-- 子章节：外伤史 -->
+					<section>
+						<!-- 外伤标志：取值为false时，不包含外伤史(entry) -->
+						<extension url="[base]/StructureDefinition/extension_traumaFlag">
+							<valueBoolean value="true"/>
+						</extension>
+						<title value="既往史章节-外伤史子章节"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="waishangshi"/>
+								<display value="外伤史章节"/>
+							</coding>
+						</code>
+						<entry>
+							<reference value="[base]/List/waishangshi"/>
+						</entry>
+					</section>
+					<!--  子章节：手术史条目 -->
+					<section>
+						<!-- 手术标志：取值为false时，不包含手术史(entry) -->
+						<extension url="[base]/StructureDefinition/extension_surgeryFlag">
+							<valueBoolean value="true"/>
+						</extension>
+						<title value="既往史章节-手术史子章节"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="shoushushi"/>
+								<display value="手术史章节"/>
+							</coding>
+						</code>
+						<entry>
+							<reference value="[base]/List/shoushushi"/>
+						</entry>
+					</section>
+					<!--  子章节：输血史条目 -->
+					<section>
+						<!-- 输血标志：取值为false时，不包含输血史(entry) -->
+						<extension url="[base]/StructureDefinition/extension_btransfFlag">
+							<valueBoolean value="true"/>
+						</extension>
+						<title value="既往史章节-输血史子章节"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="shuxueshi"/>
+								<display value="输血史章节"/>
+							</coding>
+						</code>
+						<entry>
+							<reference value="[base]/List/shuxueshi"/>
+						</entry>
+					</section>
+				</section>
+				<!-- 个人史章节 -->
+				<section>
+					<title value="个人史章节"/>
+					<code>
+						<coding>
+							<system/>
+							<code value="gerenshi"/>
+							<display value="个人史章节"/>
+						</coding>
+					</code>
+					<entry>
+						<reference value="[base]/List/gerenshi"/>
+					</entry>
+				</section>
+				<!-- 家族史章节 -->
+				<section>
+					<title value="家族史章节"/>
+					<code>
+						<coding>
+							<system/>
+							<code value="jiazushi"/>
+							<display value="家族史章节"/>
+						</coding>
+					</code>
+					<entry>
+						<reference value="[base]/List/jiazushi"/>
+					</entry>
+				</section>
+				<!-- 月经婚育史章节 -->
+				<section>
+					<title value="月经婚育史章节"/>
+					<code>
+						<coding>
+							<system/>
+							<code value="yjhyshi"/>
+							<display value="月经婚育史章节"/>
+						</coding>
+					</code>
+					<entry>
+						<reference value="[base]/List/yjhyshi"/>
+					</entry>
+				</section>
+				<!-- 体格检查章节 -->
+				<section>
+					<title value="体格检查章节"/>
+					<code>
+						<coding>
+							<system/>
+							<code value="tigejiancha"/>
+							<display value="体格检查章节"/>
+						</coding>
+					</code>
+					<!-- 子章节：一般情况检查  -->
+					<section>
+						<title value="体格检查章节-一般情况检查子章节"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="ybqkjc"/>
+								<display value="一般情况检查章节"/>
+							</coding>
+						</code>
+						<entry>
+							<reference value="[base]/List/ybqkjc"/>
+						</entry>
+					</section>
+					<!-- 子章节：皮肤黏膜检查 -->
+					<section>
+						<title value="体格检查章节-皮肤黏膜检查子章节"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="pfnmjc"/>
+								<display value="皮肤黏膜检查章节"/>
+							</coding>
+						</code>
+						<entry>
+							<reference value="[base]/List/pfnmjc"/>
+						</entry>
+					</section>
+					<!-- 子章节：头颈部检查 -->
+					<section>
+						<title value="体格检查章节-头部颈部检查子章节"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="tjbjc"/>
+								<display value="头颈部检查章节"/>
+							</coding>
+						</code>
+						<entry>
+							<reference value="[base]/List/tjbjc"/>
+						</entry>
+					</section>
+					<!-- 子章节：腹部检查 -->
+					<section>
+						<title value="体格检查章节-腹部检查子章节"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="fbjc"/>
+								<display value="腹部检查章节"/>
+							</coding>
+						</code>
+						<entry>
+							<reference value="[base]/List/fbjc"/>
+						</entry>
+					</section>
+					<!-- 子章节：脊柱四肢神经系统检查 -->
+					<section>
+						<title value="体格检查章节-脊柱四肢神经系统检查子章节"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="jzszsjxtjc"/>
+								<display value="脊柱四肢神经系统检查章节"/>
+							</coding>
+						</code>
+						<entry>
+							<reference value="[base]/List/jzszsjxtjc"/>
+						</entry>
+					</section>
+					<!-- 子章节：胸部检查 -->
+					<section>
+						<title value="体格检查章节-胸部检查子章节"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="xbjc"/>
+								<display value="胸部检查章节"/>
+							</coding>
+						</code>
+						<entry>
+							<reference value="[base]/List/xbjc"/>
+						</entry>
+					</section>
+				</section>
+				<!-- 专科情况章节 -->
+				<section>
+					<title value="专科情况章节"/>
+					<code>
+						<coding>
+							<system/>
+							<code value="zkqkjc"/>
+							<display value="专科情况章节"/>
+						</coding>
+					</code>
+					<entry>
+						<reference value="[base]/List/zkqkjc"/>
+					</entry>
+				</section>
+				<!-- 辅助检查章节 -->
+				<section>
+					<title value="辅助检查章节"/>
+					<code>
+						<coding>
+							<system/>
+							<code value="fzjc"/>
+							<display value="辅助检查章节"/>
+						</coding>
+					</code>
+					<entry>
+						<reference value="[base]/List/fzjc"/>
+					</entry>
+				</section>
+				<!-- 病历摘要 -->
+				<section>
+					<title value="病历摘要章节"/>
+					<code>
+						<coding>
+							<system/>
+							<code value="recordSummary"/>
+							<display value="病历摘要章节"/>
+						</coding>
+					</code>
+					<entry>
+						<reference value="[base]/List/recordSummary"/>
+					</entry>
+				</section>
+				<!-- 初步诊断章节 -->
+				<section>
+					<title value="初步诊断章节"/>
+					<code>
+						<coding>
+							<system/>
+							<code value="initialDiag"/>
+							<display value="初步诊断章节"/>
+						</coding>
+					</code>
+					<entry>
+						<reference value="[base]/List/initialDiag"/>
+					</entry>
+				</section>
+			</Composition>
+		</resource>
+	</entry>
+	<!-- 患者信息 -->
+	<entry>
+		<fullUrl value="[base]/Patient/pat001"/>
+		<resource>
+			<Patient>
+				<id value="pat001"/>
+				<!-- 民族代码 -->
+				<extension url="[base]/StructureDefinition/extension_patientNation">
+					<valueCodeableConcept>
+						<coding>
+							<system/>
+							<code value="01"/>
+							<display value="汉族"/>
+						</coding>
+					</valueCodeableConcept>
+				</extension>
+				<!-- 年龄 -->
+				<extension url="[base]/StructureDefinition/extension_patientAge">
+					<valueString value="5周"/>
+				</extension>
+				<!-- 职业状况 -->
+				<extension url="[base]/StructureDefinition/extension_patientOccupation">
+					<valueCodeableConcept>
+						<coding>
+							<system value="2.16.156.10011.2.3.3.13"/>
+							<code value="11"/>
+							<display value="国家公务员"/>
+						</coding>
+					</valueCodeableConcept>
+				</extension>
+				<!-- 病案号 -->
+				<extension url="[base]/StructureDefinition/extension_patMediNO">
+					<valueString value="BA4547657"/>
+				</extension>
+				<!-- 登记号 -->
+				<identifier>
+					<!-- 卡类型 -->
+					<type>
+						<coding>
+							<system/>
+							<code value="00"/>
+							<display value="登记卡"/>
+						</coding>
+					</type>
+					<system/>
+					<value value="9576933"/>
+				</identifier>
+				<!-- 身份证号 -->
+				<identifier>
+					<!-- 卡类型 -->
+					<type>
+						<coding>
+							<system/>
+							<code value="04"/>
+							<display value="居民身份证"/>
+						</coding>
+					</type>
+					<system/>
+					<value value="1212121212"/>
+				</identifier>
+				<!-- 患者姓名 -->
+				<name>
+					<text value="张金生"/>
+				</name>
+				<!-- 联系电话 -->
+				<telecom>
+					<system value="phone"/>
+					<value value="13212345678"/>
+				</telecom>
+				<!-- 患者性别 -->
+				<gender value="other">
+					<extension url="[base]/StructureDefinition/extension_gender">
+						<valueCodeableConcept>
+							<coding>
+								<system value="2.16.156.10011.2.3.3.4"/>
+								<code value="1"/>
+								<display value="男"/>
+							</coding>
+						</valueCodeableConcept>
+					</extension>
+				</gender>
+				<!-- 现住址 -->
+				<address>
+					<use value="home">
+						<extension url="[base]/StructureDefinition/extension_addressUse">
+							<valueCodeableConcept>
+								<coding>
+									<system value="[base]/ValueSet/addressuse"/>
+									<code value="currentAddress"/>
+									<display value="现住址"/>
+								</coding>
+							</valueCodeableConcept>
+						</extension>
+					</use>
+					<line>
+						<!-- 门牌号 -->
+						<extension url="[base]/StructureDefinition/iso21090-ADXP-houseNumber">
+							<valueString value="中交樾公馆4号楼5单元2楼201"/>
+						</extension>
+						<!-- 街道/村 -->
+						<extension url="[base]/StructureDefinition/iso21090-ADXP-streetName">
+							<valueString value="南北大道"/>
+						</extension>
+						<!-- 乡镇 -->
+						<extension url=" [base]/StructureDefinition/iso21090-ADXP-deliveryInstallationArea">
+							<valueString value="中北镇"/>
+						</extension>
+					</line>
+					<city value="天津市"/>
+					<district value="西青区"/>
+					<state value="天津"/>
+					<postalCode value="300311"/>
+					<country value="中国"/>
+				</address>
+				<!-- 婚姻状况代码 -->
+				<maritalStatus>
+					<coding>
+						<system value="2.16.156.10011.2.3.3.5"/>
+						<code value="10"/>
+						<display value="未婚"/>
+					</coding>
+				</maritalStatus>
+				<!-- 患者联系人信息 -->
+				<contact>
+					<!-- 患者与联系人的关系 -->
+					<relationship>
+						<coding>
+							<system/>
+							<code value="1"/>
+							<display value="母亲"/>
+						</coding>
+					</relationship>
+					<!-- 联系人姓名 -->
+					<name>
+						<text value="罗凡玉"/>
+					</name>
+				</contact>
+			</Patient>
+		</resource>
+	</entry>
+	<!-- 就诊信息 -->
+	<entry>
+		<fullUrl value="[base]/Encounter/en001"/>
+		<resource>
+			<Encounter>
+				<id value="en001"/>
+				<!-- 就诊状态（必填项） -->
+				<status value="in-progress">
+					<extension url="[base]/StructureDefinition/extension_encounterStatus">
+						<valueCodeableConcept>
+							<coding>
+								<system/>
+								<code value="A"/>
+								<display value="在就诊"/>
+							</coding>
+						</valueCodeableConcept>
+					</extension>
+				</status>
+				<!-- 就诊类型（必填项）-->
+				<class>
+					<system/>
+					<code value="I"/>
+					<display value="住院"/>
+				</class>
+				<!-- 患者 -->
+				<subject>
+					<reference value="[base]/Patient/pat001"/>
+				</subject>
+				<!-- 入院时间 -->
+				<period>
+					<start value="2019-04-20T12:00:00-08:00"/>
+				</period>
+				<!-- 当前科室 -->
+				<location>
+					<location>
+						<!-- 资源类型 -->
+						<type value="Location"/>
+						<!-- 科室代码 -->
+						<identifier>
+							<system/>
+							<value value="ZYMZ006"/>
+						</identifier>
+						<display value="内分泌科门诊"/>
+					</location>
+					<!-- 标识科室的状态：当前-->
+					<status value="active"/>
+					<!-- 标识位置类型 -->
+					<physicalType>
+						<coding>
+							<system/>
+							<code value="1"/>
+							<display value="科室"/>
+						</coding>
+					</physicalType>
+				</location>
+				<!-- 当前病区 -->
+				<location>
+					<!-- 病区代码 -->
+					<location>
+						<!-- 资源类型 -->
+						<type value="Location"/>
+						<!-- 病区代码 -->
+						<identifier>
+							<system/>
+							<value/>
+						</identifier>
+						<display/>
+					</location>
+					<!-- 标识科室的状态：当前-->
+					<status value="active"/>
+					<!-- 标识位置类型 -->
+					<physicalType>
+						<coding>
+							<system/>
+							<code value="2"/>
+							<display value="病区"/>
+						</coding>
+					</physicalType>
+				</location>
+				<!-- 当前床号 -->
+				<location>
+					<!-- 床号代码 -->
+					<location>
+						<!-- 资源类型 -->
+						<type value="Location"/>
+						<identifier>
+							<system/>
+							<value/>
+						</identifier>
+						<display/>
+					</location>
+					<!-- 标识科室的状态：当前-->
+					<status value="active"/>
+					<!-- 标识位置类型 -->
+					<physicalType>
+						<coding>
+							<system/>
+							<code value="3"/>
+							<display value="病床"/>
+						</coding>
+					</physicalType>
+				</location>
+			</Encounter>
+		</resource>
+	</entry>
+	<!-- 主诉章节 -->
+	<entry>
+		<fullUrl value="[base]/List/zhusu"/>
+		<resource>
+			<List>
+				<id value="zhusu"/>
+				<!-- 固定值（必填项）-->
+				<status value="current"/>
+				<!-- 固定值（必填项）-->
+				<mode value="snapshot"/>
+				<title value="主诉"/>
+				<!-- 患者 -->
+				<subject>
+					<reference value="[base]/Patient/pat001"/>
+				</subject>
+				<!-- 整体描述 -->
+				<note>
+					<text value="头痛；发烧；咳嗽；"/>
+				</note>
+			</List>
+		</resource>
+	</entry>
+	<!-- 现病史章节 -->
+	<entry>
+		<fullUrl value="http://fhir.org/Condition/xianbingshi"/>
+		<resource>
+			<List>
+				<id value="xianbingshi"/>
+				<!-- 固定值（必填项）-->
+				<status value="current"/>
+				<!-- 固定值（必填项）-->
+				<mode value="snapshot"/>
+				<title value="现病史"/>
+				<!-- 患者 -->
+				<subject>
+					<reference value="[base]/Patient/pat001"/>
+				</subject>
+				<!-- 整体描述 -->
+				<note>
+					<text value="慢性胆囊炎；轻度脂肪肝"/>
+				</note>
+			</List>
+		</resource>
+	</entry>
+	<!-- 既往史章节（平素健康状况） -->
+	<entry>
+		<fullUrl value="[base]/List/psjkzk"/>
+		<resource>
+			<List>
+				<id value="psjkzk"/>
+				<status value="current"/>
+				<mode value="snapshot"/>
+				<title value="平素健康状况"/>
+				<!-- 患者 -->
+				<subject>
+					<reference value="[base]/Patient/pat001"/>
+				</subject>
+				<!-- 整体描述 -->
+				<note>
+					<text value="良好"/>
+				</note>
+			</List>
+		</resource>
+	</entry>
+	<!-- 既往史章节-疾病史子章节 -->
+	<entry>
+		<fullUrl value="[base]/List/jibingshi"/>
+		<resource>
+			<List>
+				<id value="jibingshi"/>
+				<!-- 固定值（必填项）-->
+				<status value="current"/>
+				<!-- 固定值（必填项）-->
+				<mode value="snapshot"/>
+				<title value="疾病史"/>
+				<!-- 患者 -->
+				<subject>
+					<reference value="[base]/Patient/pat001"/>
+				</subject>
+				<!-- 整体描述 -->
+				<note>
+					<text value="慢性胆囊炎；轻度脂肪肝；急性心肌炎"/>
+				</note>
+			</List>
+		</resource>
+	</entry>
+	<!-- 既往史章节-传染病史子章节 -->
+	<entry>
+		<fullUrl value="[base]/List/chuanranbingshi"/>
+		<resource>
+			<List>
+				<id value="chuanranbingshi"/>
+				<!-- 固定值（必填项）-->
+				<status value="current"/>
+				<!-- 固定值（必填项）-->
+				<mode value="snapshot"/>
+				<title value="传染病史"/>
+				<!-- 患者 -->
+				<subject>
+					<reference value="[base]/Patient/pat001"/>
+				</subject>
+				<!-- 整体描述 -->
+				<note>
+					<text value="乙肝；肺结核"/>
+				</note>
+			</List>
+		</resource>
+	</entry>
+	<!-- 既往史章节-预防免疫史子章节 -->
+	<entry>
+		<fullUrl value="[base]/List/yfjzshi"/>
+		<resource>
+			<List>
+				<id value="yfmy"/>
+				<!-- 固定值（必填项）-->
+				<status value="current"/>
+				<!-- 固定值（必填项）-->
+				<mode value="snapshot"/>
+				<title value="预防接种史"/>
+				<!-- 患者 -->
+				<subject>
+					<reference value="[base]/Patient/pat001"/>
+				</subject>
+				<!-- 整体描述 -->
+				<note>
+					<text value="于2019年3月12日，注射乙肝疫苗"/>
+				</note>
+			</List>
+		</resource>
+	</entry>
+	<!-- 既往史章节-过敏史子章节 -->
+	<entry>
+		<fullUrl value="[base]/List/guominshi"/>
+		<resource>
+			<List>
+				<id value="guomin"/>
+				<!-- 固定值（必填项）-->
+				<status value="current"/>
+				<!-- 固定值（必填项）-->
+				<mode value="snapshot"/>
+				<title value="过敏史"/>
+				<!-- 患者 -->
+				<subject>
+					<reference value="[base]/Patient/pat001"/>
+				</subject>
+				<note>
+					<text value="牛奶过敏"/>
+				</note>
+			</List>
+		</resource>
+	</entry>
+	<!-- 既往史章节-外伤史子章节 -->
+	<entry>
+		<fullUrl value="[base]/List/waishangshi"/>
+		<resource>
+			<List>
+				<id value="waishangshi"/>
+				<!-- 固定值（必填项）-->
+				<status value="current"/>
+				<!-- 固定值（必填项）-->
+				<mode value="snapshot"/>
+				<title value="疾病史"/>
+				<!-- 患者 -->
+				<subject>
+					<reference value="[base]/Patient/pat001"/>
+				</subject>
+				<!-- 整体描述 -->
+				<note>
+					<text value="肋骨骨折；左膝半月板损伤"/>
+				</note>
+			</List>
+		</resource>
+	</entry>
+	<!-- 既往史章节-手术史子章节 -->
+	<entry>
+		<fullUrl value="[base]/List/shoushushi"/>
+		<resource>
+			<List>
+				<id value="shoushushi"/>
+				<!-- 固定值（必填项）-->
+				<status value="current"/>
+				<!-- 固定值（必填项）-->
+				<mode value="snapshot"/>
+				<title value="手术史"/>
+				<!-- 患者 -->
+				<subject>
+					<reference value="[base]/Patient/pat001"/>
+				</subject>
+				<!-- 整体描述 -->
+				<note>
+					<text value="心脏搭桥；右肾切除手术；开颅手术"/>
+				</note>
+			</List>
+		</resource>
+	</entry>
+	<!-- 既往史章节-输血史子章节 -->
+	<entry>
+		<fullUrl value="[base]/List/shuxueshi"/>
+		<resource>
+			<List>
+				<id value="shuxueshi"/>
+				<!-- 固定值（必填项）-->
+				<status value="current"/>
+				<!-- 固定值（必填项）-->
+				<mode value="snapshot"/>
+				<title value="输血史"/>
+				<!-- 患者 -->
+				<subject>
+					<reference value="[base]/Patient/pat001"/>
+				</subject>
+				<note>
+					<text value="2019年2月12日，输血量200ml,血型o型；2019年3月2日，输血量100ml,血型O型"/>
+				</note>
+			</List>
+		</resource>
+	</entry>
+	<!-- 个人史章节 -->
+	<entry>
+		<fullUrl value="[base]/List/grs"/>
+		<resource>
+			<List>
+				<id value="grs"/>
+				<!-- 固定值（必填项）-->
+				<status value="current"/>
+				<!-- 固定值（必填项）-->
+				<mode value="snapshot"/>
+				<title value="个人史"/>
+				<note>
+					<text value="烟龄3年；酗酒十年；"/>
+				</note>
+			</List>
+		</resource>
+	</entry>
+	<!-- 家族史章节 -->
+	<entry>
+		<fullUrl value="[base]/List/jzs"/>
+		<resource>
+			<List>
+				<id value="jzs"/>
+				<!-- 父亲：结肠癌 -->
+				<contained>
+					<FamilyMemberHistory>
+						<id value="jca"/>
+						<!-- 必填项 -->
+						<status value="completed"/>
+						<!-- 患者 -->
+						<patient>
+							<reference value="[base]/Patient/pat001"/>
+						</patient>
+						<!-- 家庭成员姓名 -->
+						<name value="张国明"/>
+						<!-- 与患者的关系 -->
+						<relationship>
+							<coding>
+								<system/>
+								<code value="FX"/>
+								<display value="父亲"/>
+							</coding>
+						</relationship>
+						<!-- 整体描述 -->
+						<note>
+							<text value="精神疾病；高血压"/>
+						</note>
+						<!-- 具体症状 -->
+						<condition>
+							<code>
+								<coding>
+									<system/>
+									<code value="140003"/>
+									<display value="精神疾病"/>
+								</coding>
+							</code>
+						</condition>
+						<condition>
+							<code>
+								<coding>
+									<system/>
+									<code value="140006"/>
+									<display value="高血压"/>
+								</coding>
+							</code>
+						</condition>
+					</FamilyMemberHistory>
+				</contained>
+				<!-- 母亲：慢性咽炎 -->
+				<contained>
+					<FamilyMemberHistory>
+						<id value="mxyy"/>
+						<!-- 必填项 -->
+						<status value="completed"/>
+						<!-- 患者 -->
+						<patient>
+							<reference value="[base]/Patient/pat001"/>
+						</patient>
+						<!-- 家庭成员姓名 -->
+						<name value="王晓丽"/>
+						<!-- 与患者的关系 -->
+						<relationship>
+							<coding>
+								<system/>
+								<code value="MTH"/>
+								<display value="母亲"/>
+							</coding>
+						</relationship>
+						<!-- 整体描述 -->
+						<note>
+							<text value="慢性咽炎"/>
+						</note>
+						<!-- 结构化 -->
+						<condition>
+							<code>
+								<coding>
+									<system/>
+									<code value="140004"/>
+									<display value="慢性咽炎"/>
+								</coding>
+							</code>
+						</condition>
+					</FamilyMemberHistory>
+				</contained>
+				<!-- 兄弟姐妹：无 -->
+				<contained>
+					<FamilyMemberHistory>
+						<id value="gxy"/>
+						<!-- 必填项 -->
+						<status value="completed"/>
+						<!-- 患者 -->
+						<patient>
+							<reference value="[base]/Patient/pat001"/>
+						</patient>
+						<!-- 家庭成员姓名 -->
+						<name value="张汪玲"/>
+						<!-- 与患者的关系 -->
+						<relationship>
+							<coding>
+								<system/>
+								<code value="xdjm"/>
+								<display value="兄弟姐妹"/>
+							</coding>
+						</relationship>
+						<!-- 整体描述 -->
+						<note>
+							<text value="无"/>
+						</note>
+					</FamilyMemberHistory>
+				</contained>
+				<!-- 遗传病史 -->
+				<contained>
+					<FamilyMemberHistory>
+						<id value="tnb"/>
+						<!-- 必填项 -->
+						<status value="completed"/>
+						<!-- 患者 -->
+						<patient>
+							<reference value="[base]/Patient/pat001"/>
+						</patient>
+						<!-- 家庭成员姓名 -->
+						<name value="李氏家族"/>
+						<!-- 与患者的关系 -->
+						<relationship>
+							<coding>
+								<system/>
+								<code value="jz"/>
+								<display value="家族"/>
+							</coding>
+						</relationship>
+						<!-- 整体描述 -->
+						<note>
+							<text value="否认家族遗传倾向的疾病"/>
+						</note>
+					</FamilyMemberHistory>
+				</contained>
+				<!-- 其他：无 -->
+				<contained>
+					<FamilyMemberHistory>
+						<id value="px"/>
+						<!-- 必填项 -->
+						<status value="completed"/>
+						<!-- 患者 -->
+						<patient>
+							<reference value="[base]/Patient/pat001"/>
+						</patient>
+						<!-- 与患者的关系 -->
+						<relationship>
+							<coding>
+								<system/>
+								<code/>
+								<display value="/"/>
+							</coding>
+						</relationship>
+						<!-- 整体描述 -->
+						<note>
+							<text value="无"/>
+						</note>
+					</FamilyMemberHistory>
+				</contained>
+				<!-- 固定值（必填项）-->
+				<status value="current"/>
+				<!-- 固定值（必填项）-->
+				<mode value="snapshot"/>
+				<title value="家族史"/>
+				<note>
+					<text value="父亲：精神病 高血压；母亲：无；兄弟姐妹：无；遗传病史：无；其他：无"/>
+				</note>
+				<!-- 结构化-父亲 -->
+				<entry>
+					<item>
+						<reference value="#jca"/>
+					</item>
+				</entry>
+				<!-- 结构化-母亲 -->
+				<entry>
+					<item>
+						<reference value="#mxyy"/>
+					</item>
+				</entry>
+				<!-- 结构化—兄弟姐妹 -->
+				<entry>
+					<item>
+						<reference value="#gxy"/>
+					</item>
+				</entry>
+				<!-- 结构化-遗传病史-->
+				<entry>
+					<item>
+						<reference value="#tyb"/>
+					</item>
+				</entry>
+				<!-- 结构化-其他 -->
+				<entry>
+					<item>
+						<reference value="#px"/>
+					</item>
+				</entry>
+			</List>
+		</resource>
+	</entry>
+	<!-- 月经婚育史 -->
+	<entry>
+		<fullUrl value="[base]/List/yjhyshi"/>
+		<resource>
+			<List>
+				<id value="yjs"/>
+				<!-- 月经史 -->
+				<extension url="[base]/StructureDefinition/extension_menstrualHistory">
+					<valueString value="有"/>
+				</extension>
+				<!-- 痛经 -->
+				<extension url="[base]/StructureDefinition/extension_dysmenorrheaFlag">
+					<valueString value="无"/>
+				</extension>
+				<!-- 月经量 -->
+				<extension url="[base]/StructureDefinition/extension_menstrualVolume">
+					<valueString value="正常"/>
+				</extension>
+				<!-- 白带 -->
+				<extension url="[base]/StructureDefinition/extension_leucorrheaFlag">
+					<valueString value="正常"/>
+				</extension>
+				<!-- 初潮 -->
+				<extension url="[base]/StructureDefinition/extension_menarcheAge">
+					<valueString value="14岁"/>
+				</extension>
+				<!-- 月经周期 -->
+				<extension url="[base]/StructureDefinition/extension_menarcheCycle">
+					<valueString value="30天"/>
+				</extension>
+				<!-- 月经经期 -->
+				<extension url="[base]/StructureDefinition/extension_menarchePeriod">
+					<valueString value="5天"/>
+				</extension>
+				<!-- 末次月经日期 -->
+				<extension url="[base]/StructureDefinition/extension_lastMensDate">
+					<valueDate value="2018-10-11"/>
+				</extension>
+				<!-- 预产期 -->
+				<extension url="[base]/StructureDefinition/extension_expectedDate">
+					<valueDate value="2019-10-11"/>
+				</extension>
+				<!-- 配偶情况 -->
+				<extension url="[base]/StructureDefinition/extension_spouseSituation">
+					<valueString value="健康"/>
+				</extension>
+				<!-- 初次性生活年龄 -->
+				<extension url="[base]/StructureDefinition/extension_firstSexLifeAge">
+					<valueString value="26岁"/>
+				</extension>
+				<!-- 结婚年龄 -->
+				<extension url="[base]/StructureDefinition/extension_marriageAge">
+					<valueString value="26岁"/>
+				</extension>
+				<!-- 婚外性伴侣 -->
+				<extension url="[base]/StructureDefinition/extension_affairPartner">
+					<valueString value="无"/>
+				</extension>
+				<!-- 近亲婚配 -->
+				<extension url="[base]/StructureDefinition/extension_closerelatives">
+					<valueString value="否"/>
+				</extension>
+				<!-- 孕次 -->
+				<extension url="[base]/StructureDefinition/extension_pregnantTimes">
+					<valueString value="1"/>
+				</extension>
+				<!-- 产次 -->
+				<extension url="[base]/StructureDefinition/extension_birthTimes">
+					<valueString value="1"/>
+				</extension>
+				<!-- 顺产次数 -->
+				<extension url="[base]/StructureDefinition/extension_deliveryTimes">
+					<valueString value="1"/>
+				</extension>
+				<!-- 刨宫产次数 -->
+				<extension url="[base]/StructureDefinition/extension_planingTimes">
+					<valueString value="0"/>
+				</extension>
+				<!-- 流产次数 -->
+				<extension url="[base]/StructureDefinition/extension_abortionsTimes">
+					<valueString value="0"/>
+				</extension>
+				<!-- 葡萄胎 -->
+				<extension url="[base]/StructureDefinition/extension_hydatidiformMole">
+					<valueString value="否认"/>
+				</extension>
+				<!-- 宫外孕 -->
+				<extension url="[base]/StructureDefinition/extension_ectopicPregnancy">
+					<valueString value="0"/>
+				</extension>
+				<!-- 计划生育措施 -->
+				<extension url="[base]/StructureDefinition/extension_familyPlanMeasures">
+					<valueString value="无"/>
+				</extension>
+				<!-- 其他异常月经婚育史 -->
+				<extension url="[base]/StructureDefinition/extension_otherAbnorMenMarHistory">
+					<valueString value="无"/>
+				</extension>
+				<!-- 固定值（必填项）-->
+				<status value="current"/>
+				<!-- 固定值（必填项）-->
+				<mode value="snapshot"/>
+				<title value="月经婚育史"/>
+				<note>
+					<text value="痛经：无。经量：中等。白带：正常。预产期：2019-10-11。14岁初潮，经期5天，周期为30天；末次月经日期：2018-10-11。
+								配偶情况：有。初次性生活年龄26岁。结婚年龄26岁。婚外性伴侣：无；近亲婚配：无；
+					            孕次：1次、产次：1次、顺产次数：1次、刨宫产次数：0次、流产次数：0次、葡萄胎：否、计划生育措施：无
+					            其他异常月经婚育史：无		
+					"/>
+				</note>
+			</List>
+		</resource>
+	</entry>
+	<!-- 体格检查章节-一般体格检查子章节 -->
+	<entry>
+		<fullUrl value="[base]/List/ybqkjc"/>
+		<resource>
+			<List>
+				<id value="ybqkjc"/>
+				<!-- 体温 -->
+				<contained>
+					<Observation>
+						<id value="temp"/>
+						<!-- 描述 -->
+						<extension url="[base]/StructureDefinition/extension_observationText">
+							<valueString value="37.5℃"/>
+						</extension>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="temp"/>
+								<display value="体温"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<valueQuantity>
+							<value value="37.5"/>
+							<unit value="℃"/>
+						</valueQuantity>
+					</Observation>
+				</contained>
+				<!-- 脉搏 -->
+				<contained>
+					<Observation>
+						<id value="pulse"/>
+						<!-- 描述 -->
+						<extension url="[base]/StructureDefinition/extension_observationText">
+							<valueString value="70次/min"/>
+						</extension>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="pulse"/>
+								<display value="脉率"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<valueQuantity>
+							<value value="70"/>
+							<unit value="次/min"/>
+						</valueQuantity>
+					</Observation>
+				</contained>
+				<!-- 呼吸频率 -->
+				<contained>
+					<Observation>
+						<id value="breathe"/>
+						<!-- 描述 -->
+						<extension url="[base]/StructureDefinition/extension_observationText">
+							<valueString value="18次/min"/>
+						</extension>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="breathe"/>
+								<display value="呼吸频率"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<valueQuantity>
+							<value value="18"/>
+							<unit value="次/min"/>
+						</valueQuantity>
+					</Observation>
+				</contained>
+				<!-- 血压 -->
+				<contained>
+					<Observation>
+						<id value="bloodPressure"/>
+						<status value="corrected"/>
+						<!-- 生命体征项目：血压 -->
+						<code>
+							<!-- 原文档无代码 -->
+							<coding>
+								<system/>
+								<code value="bloodPressure"/>
+								<display value="血压"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<!-- 整体描述 -->
+						<note>
+							<text value="180/90mmHg"/>
+						</note>
+						<!-- 收缩压 -->
+						<component>
+							<!-- 描述 -->
+							<extension url="[base]/StructureDefinition/extension_observationText">
+								<valueString value="180mmHg"/>
+							</extension>
+							<code>
+								<coding>
+									<system/>
+									<code value="systolic"/>
+									<display value="收缩压"/>
+								</coding>
+							</code>
+							<valueQuantity>
+								<value value="180"/>
+								<unit value="mmHg"/>
+							</valueQuantity>
+						</component>
+						<!-- 舒张压 -->
+						<component>
+							<!-- 描述 -->
+							<extension url="[base]/StructureDefinition/extension_observationText">
+								<valueString value="90mmHg"/>
+							</extension>
+							<code>
+								<coding>
+									<system/>
+									<code value="diastolic"/>
+									<display value="舒张压"/>
+								</coding>
+							</code>
+							<valueQuantity>
+								<value value="90"/>
+								<unit value="mmHg"/>
+							</valueQuantity>
+						</component>
+					</Observation>
+				</contained>
+				<!-- 体重 -->
+				<contained>
+					<Observation>
+						<id value="weight"/>
+						<!-- 描述 -->
+						<extension url="[base]/StructureDefinition/extension_observationText">
+							<valueString value="70kg"/>
+						</extension>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="weight"/>
+								<display value="体重（kg）"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]//pat001"/>
+						</subject>
+						<valueQuantity>
+							<value value="70"/>
+							<unit value="kg"/>
+						</valueQuantity>
+					</Observation>
+				</contained>
+				<!-- 身高 -->
+				<contained>
+					<Observation>
+						<id value="height"/>
+						<!-- 描述 -->
+						<extension url="[base]/StructureDefinition/extension_observationText">
+							<valueString value="165cm"/>
+						</extension>
+						<status value="final"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="height"/>
+								<display value="身高（cm）"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]//pat001"/>
+						</subject>
+						<valueQuantity>
+							<value value="165"/>
+							<unit value="cm"/>
+						</valueQuantity>
+					</Observation>
+				</contained>
+				<!-- 体表面积 -->
+				<contained>
+					<Observation>
+						<id value="bodySurAArea"/>
+						<!-- 描述 -->
+						<extension url="[base]/StructureDefinition/extension_observationText">
+							<valueString value="20cm²"/>
+						</extension>
+						<status value="final"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="bodySurAArea"/>
+								<display value="体表面积（cm²）"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<valueQuantity>
+							<value value="20"/>
+							<unit value="cm²"/>
+						</valueQuantity>
+					</Observation>
+				</contained>
+				<!-- 面容：无急性、慢性病容 -->
+				<contained>
+					<Observation>
+						<id value="face"/>
+						<status value="final"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="face"/>
+								<display value="面容"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<valueString value="无病容"/>
+					</Observation>
+				</contained>
+				<!-- 体位：正常 -->
+				<contained>
+					<Observation>
+						<id value="position"/>
+						<status value="final"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="position"/>
+								<display value="体位"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<valueString value="自主体位"/>
+					</Observation>
+				</contained>
+				<!-- 发育：正常 -->
+				<contained>
+					<Observation>
+						<id value="developed"/>
+						<status value="final"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="developed"/>
+								<display value="发育"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<valueString value="正常"/>
+					</Observation>
+				</contained>
+				<!-- 营养：良好 -->
+				<contained>
+					<Observation>
+						<id value="nutrition"/>
+						<status value="final"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="nutrition"/>
+								<display value="营养"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<valueString value="良好"/>
+					</Observation>
+				</contained>
+				<!-- 表情：自然 -->
+				<contained>
+					<Observation>
+						<id value="expression"/>
+						<status value="final"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="expression"/>
+								<display value="表情"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<valueString value="自然"/>
+					</Observation>
+				</contained>
+				<!-- 神志：清楚 -->
+				<contained>
+					<Observation>
+						<id value="consciousness"/>
+						<status value="final"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="consciousness"/>
+								<display value="神志"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<valueString value="清楚"/>
+					</Observation>
+				</contained>
+				<!-- 步态： 步态-->
+				<contained>
+					<Observation>
+						<id value="gait"/>
+						<status value="final"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="gait"/>
+								<display value="步态"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<valueString value="正常"/>
+					</Observation>
+				</contained>
+				<!-- 配合检查：查体合作 -->
+				<contained>
+					<Observation>
+						<id value="coordCheck"/>
+						<status value="final"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="coordCheck"/>
+								<display value="配合检查"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<valueString value="查体合作"/>
+					</Observation>
+				</contained>
+				<!-- 其他： -->
+				<contained>
+					<Observation>
+						<id value="otherGenExam"/>
+						<status value="final"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="otherGenExam"/>
+								<display value="其他一般情况检查项"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<valueString value="无特殊"/>
+					</Observation>
+				</contained>
+				<!-- 固定值（必填项）-->
+				<status value="current"/>
+				<!-- 固定值（必填项）-->
+				<mode value="snapshot"/>
+				<title value="体格检查-一般情况检查"/>
+				<note>
+					<text value="体温：36.6℃ 脉搏：72次/分 呼吸：20次/分 血压：104/71mmHg 体重：64.5Kg 身高：161cm  发育：正常  营养：良好 面容：无病容  表情：自如  神志：清楚 体位：自主体位  步态：正常  配合检查：（3岁以上填写）合作  其他：无特殊"/>
+				</note>
+				<!-- 结构化：体温 -->
+				<entry>
+					<item>
+						<reference value="#temp"/>
+					</item>
+				</entry>
+				<!-- 结构化：脉搏 -->
+				<entry>
+					<item>
+						<reference value="#pulse"/>
+					</item>
+				</entry>
+				<!-- 结构化：呼吸 -->
+				<entry>
+					<item>
+						<reference value="#breathe"/>
+					</item>
+				</entry>
+				<!-- 结构化：血压 -->
+				<entry>
+					<item>
+						<reference value="#bloodPressure"/>
+					</item>
+				</entry>
+				<!-- 结构化：体重 -->
+				<entry>
+					<item>
+						<reference value="#weight"/>
+					</item>
+				</entry>
+				<!-- 结构化：身高 -->
+				<entry>
+					<item>
+						<reference value="#height"/>
+					</item>
+				</entry>
+				<!-- 结构化：体表面积 -->
+				<entry>
+					<item>
+						<reference value="#bodySurAArea"/>
+					</item>
+				</entry>
+				<!-- 结构化：面容 -->
+				<entry>
+					<item>
+						<reference value="#face"/>
+					</item>
+				</entry>
+				<!-- 结构化：体位 -->
+				<entry>
+					<item>
+						<reference value="#position"/>
+					</item>
+				</entry>
+				<!-- 结构化：发育 -->
+				<entry>
+					<item>
+						<reference value="#developed"/>
+					</item>
+				</entry>
+				<!-- 结构化：营养 -->
+				<entry>
+					<item>
+						<reference value="#nutrition"/>
+					</item>
+				</entry>
+				<!-- 结构化：表情 -->
+				<entry>
+					<item>
+						<reference value="#expression"/>
+					</item>
+				</entry>
+				<!-- 结构化：神志 -->
+				<entry>
+					<item>
+						<reference value="#consciousness"/>
+					</item>
+				</entry>
+				<!-- 结构化：步态 -->
+				<entry>
+					<item>
+						<reference value="#gait"/>
+					</item>
+				</entry>
+				<!-- 结构化：配合检查 -->
+				<entry>
+					<item>
+						<reference value="#coordCheck"/>
+					</item>
+				</entry>
+				<!-- 结构化：其他 -->
+				<entry>
+					<item>
+						<reference value="#otherGenExam"/>
+					</item>
+				</entry>
+			</List>
+		</resource>
+	</entry>
+	<!-- 体格检查章节-皮肤黏膜检查子章节 -->
+	<entry>
+		<fullUrl value="[base]/List/pfnmjc"/>
+		<resource>
+			<List>
+				<id value="pfnmjc"/>
+				<!-- 色泽：正常 -->
+				<contained>
+					<Observation>
+						<id value="skinColor"/>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="skinColor"/>
+								<display value="色泽"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<valueString value="正常"/>
+					</Observation>
+				</contained>
+				<!-- 毛发分布：均匀 -->
+				<contained>
+					<Observation>
+						<id value="hairDist"/>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="hairDist"/>
+								<display value="毛发分布"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<valueString value="正常"/>
+					</Observation>
+				</contained>
+				<!-- 皮下出血：无 -->
+				<contained>
+					<Observation>
+						<id value="subcutHemorrhage"/>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="subcutHemorrhage"/>
+								<display value="皮下出血"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<valueString value="无"/>
+					</Observation>
+				</contained>
+				<!--皮疹：无 -->
+				<contained>
+					<Observation>
+						<id value="rash"/>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="rash"/>
+								<display value="皮疹"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<valueString value="全身皮肤未见皮疹"/>
+					</Observation>
+				</contained>
+				<!--湿度与温度：正常 -->
+				<contained>
+					<Observation>
+						<id value="humTemp"/>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="humTemp"/>
+								<display value="湿度与温度"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<valueString value="正常"/>
+					</Observation>
+				</contained>
+				<!-- 弹性 -->
+				<contained>
+					<Observation>
+						<id value="elasticity"/>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="elasticity"/>
+								<display value="弹性"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<valueString value="正常"/>
+					</Observation>
+				</contained>
+				<!--水肿：未见水肿 -->
+				<contained>
+					<Observation>
+						<id value="edema"/>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="edema"/>
+								<display value="水肿"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<valueString value="未见水肿"/>
+					</Observation>
+				</contained>
+				<!-- 全身浅表淋巴结：全身浅表淋巴结未触及肿大 -->
+				<contained>
+					<Observation>
+						<id value="superLymphNode"/>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="superLymphNode"/>
+								<display value="全身浅表淋巴结"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<valueString value="全身浅表淋巴结未触及肿大"/>
+					</Observation>
+				</contained>
+				<!--其他：其他皮肤黏膜检查结果 -->
+				<contained>
+					<Observation>
+						<id value="otherSkinMuc"/>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="otherSkinMuc"/>
+								<display value="其他皮肤黏膜检查"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<valueString value="无特殊"/>
+					</Observation>
+				</contained>
+				<!-- 固定值（必填项）-->
+				<status value="current"/>
+				<!-- 固定值（必填项）-->
+				<mode value="snapshot"/>
+				<title value="体格检查-皮肤黏膜检查"/>
+				<note>
+					<text value="色泽：正常  毛发分布：正常  皮疹：全身皮肤未见皮疹  皮下出血：无  温度与湿度：正常  弹性：正常  水肿：全身无水肿  全身淋巴结：未扪及肿大  其他：无特殊"/>
+				</note>
+				<!-- 结构化：色泽 -->
+				<entry>
+					<item>
+						<reference value="#skinColor"/>
+					</item>
+				</entry>
+				<!-- 结构化：毛发分布 -->
+				<entry>
+					<item>
+						<reference value="#hairDist"/>
+					</item>
+				</entry>
+				<!-- 结构化：皮下出血 -->
+				<entry>
+					<item>
+						<reference value="#subcutHemorrhage"/>
+					</item>
+				</entry>
+				<!-- 结构化：皮疹 -->
+				<entry>
+					<item>
+						<reference value="#rash"/>
+					</item>
+				</entry>
+				<!-- 结构化：湿度与温度 -->
+				<entry>
+					<item>
+						<reference value="#humTemp"/>
+					</item>
+				</entry>
+				<!-- 结构化：弹性 -->
+				<entry>
+					<item>
+						<reference value="#elasticity"/>
+					</item>
+				</entry>
+				<!-- 结构化：水肿 -->
+				<entry>
+					<item>
+						<reference value="#edema"/>
+					</item>
+				</entry>
+				<!-- 结构化：全身浅表淋巴结 -->
+				<entry>
+					<item>
+						<reference value="#superLymphNode"/>
+					</item>
+				</entry>
+				<!-- 结构化：其他皮肤黏膜检查 -->
+				<entry>
+					<item>
+						<reference value="#otherSkinMuc"/>
+					</item>
+				</entry>
+			</List>
+		</resource>
+	</entry>
+	<!-- 体格检查章节-头颈部检查子章节 -->
+	<entry>
+		<fullUrl value="[base]/List/tjbjc"/>
+		<resource>
+			<List>
+				<id value="tjbjc"/>
+				<!-- 头颅 -->
+				<contained>
+					<Observation>
+						<id value="skull"/>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="skull"/>
+								<display value="头颅"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<!-- 颅骨软化 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="skullSoft"/>
+									<display value="颅骨软化"/>
+								</coding>
+							</code>
+							<valueString value="无"/>
+						</component>
+						<!-- 头围 -->
+						<component>
+							<!-- 头围值（无单位情况下） -->
+							<extension url="[base]/StructureDefinition/extension_headCirValue">
+								<valueString value="20cm"/>
+							</extension>
+							<code>
+								<coding>
+									<system/>
+									<code value="headCir"/>
+									<display value="头围"/>
+								</coding>
+							</code>
+							<valueQuantity>
+								<value value="20"/>
+								<unit value="cm"/>
+							</valueQuantity>
+						</component>
+						<!-- 包块 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="block"/>
+									<display value="包块"/>
+								</coding>
+							</code>
+							<valueString value="无"/>
+						</component>
+						<!-- 前卤 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="preHalogen"/>
+									<display value="前卤"/>
+								</coding>
+							</code>
+							<valueString value="凹陷"/>
+						</component>
+						<!-- 后卤 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="postHalogen"/>
+									<display value="后卤"/>
+								</coding>
+							</code>
+							<valueString value="凹陷"/>
+						</component>
+						<!-- 骨缝 -->
+						<component>
+							<!-- 骨缝值（无单位情况下） -->
+							<extension url="[base]/StructureDefinition/extension_sutureValue">
+								<valueString value="10cm"/>
+							</extension>
+							<code>
+								<coding>
+									<system/>
+									<code value="suture"/>
+									<display value="骨缝"/>
+								</coding>
+							</code>
+							<valueQuantity>
+								<value value="10"/>
+								<unit value="cm"/>
+							</valueQuantity>
+						</component>
+					</Observation>
+				</contained>
+				<!-- 眼 -->
+				<contained>
+					<Observation>
+						<id value="eye"/>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="eye"/>
+								<display value="眼 "/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<!-- 眼睑 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="eyelid"/>
+									<display value="眼睑"/>
+								</coding>
+							</code>
+							<valueString value="正常"/>
+						</component>
+						<!-- 瞳孔 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="pupil"/>
+									<display value="瞳孔"/>
+								</coding>
+							</code>
+							<valueString value="等大等圆，左3mm，右3mm"/>
+						</component>
+						<!-- 结膜 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="conjunctiva"/>
+									<display value="结膜"/>
+								</coding>
+							</code>
+							<valueString value="无水肿，无充血"/>
+						</component>
+						<!-- 对光反射 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="lightReflect"/>
+									<display value="对光反射"/>
+								</coding>
+							</code>
+							<valueString value="灵敏"/>
+						</component>
+						<!-- 眼球 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="eyeball"/>
+									<display value="眼球"/>
+								</coding>
+							</code>
+							<valueString value="正常"/>
+						</component>
+						<!-- 虹膜 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="iris"/>
+									<display value="虹膜"/>
+								</coding>
+							</code>
+							<valueString value="无黄染"/>
+						</component>
+					</Observation>
+				</contained>
+				<!-- 耳 -->
+				<contained>
+					<Observation>
+						<id value="ear"/>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="ear"/>
+								<display value="耳"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<!-- 耳廓 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="auricle"/>
+									<display value="耳廓"/>
+								</coding>
+							</code>
+							<valueString value="未见畸形"/>
+						</component>
+						<!-- 乳突压痛 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="MastTend"/>
+									<display value="乳突压痛"/>
+								</coding>
+							</code>
+							<valueString value="无乳突压痛"/>
+						</component>
+						<!-- 外耳道分泌物 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="extAuditSecretion"/>
+									<display value="外耳道分泌物"/>
+								</coding>
+							</code>
+							<valueString value="双侧外耳无分泌物"/>
+						</component>
+					</Observation>
+				</contained>
+				<!-- 鼻 -->
+				<contained>
+					<Observation>
+						<id value="nose"/>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="nose"/>
+								<display value="鼻"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<!-- 外形 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="shape"/>
+									<display value="外形"/>
+								</coding>
+							</code>
+							<valueString value="正常"/>
+						</component>
+						<!-- 鼻翼煽动 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="noseFlap"/>
+									<display value="鼻翼煽动"/>
+								</coding>
+							</code>
+							<valueString value="无"/>
+						</component>
+						<!-- 鼻腔分泌物 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="nasSecretion"/>
+									<display value="鼻腔分泌物"/>
+								</coding>
+							</code>
+							<valueString value="无异常分泌物"/>
+						</component>
+						<!-- 鼻旁窦压痛 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="parSinusTend"/>
+									<display value="鼻旁窦压痛"/>
+								</coding>
+							</code>
+							<valueString value="无"/>
+						</component>
+					</Observation>
+				</contained>
+				<!--  口 -->
+				<contained>
+					<Observation>
+						<id value="mouth"/>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="mouth"/>
+								<display value="口"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<!-- 唇 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="lip"/>
+									<display value="唇"/>
+								</coding>
+							</code>
+							<valueString value="口唇无紫绀"/>
+						</component>
+						<!-- 黏膜 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="mucosa"/>
+									<display value="黏膜"/>
+								</coding>
+							</code>
+							<valueString value="黏膜粉红无溃疡"/>
+						</component>
+						<!-- 齿列 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="toothColumn"/>
+									<display value="齿列"/>
+								</coding>
+							</code>
+							<valueString value="无缺齿龋齿义齿"/>
+						</component>
+						<!-- 牙龈 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="gum"/>
+									<display value="牙龈"/>
+								</coding>
+							</code>
+							<valueString value="牙龈无出血无溢脓"/>
+						</component>
+						<!-- 扁桃体 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="tonsil"/>
+									<display value="扁桃体"/>
+								</coding>
+							</code>
+							<valueString value="未见肿大"/>
+						</component>
+						<!-- 咽 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="pharynx"/>
+									<display value="咽"/>
+								</coding>
+							</code>
+							<valueString value="无充血"/>
+						</component>
+						<!-- 声音 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="sound"/>
+									<display value="声音"/>
+								</coding>
+							</code>
+							<valueString value="洪亮"/>
+						</component>
+					</Observation>
+				</contained>
+				<!-- 颈部 -->
+				<contained>
+					<Observation>
+						<id value="neck"/>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="neck"/>
+								<display value="颈部"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<!-- 颈强直 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="neckStiffness"/>
+									<display value="颈强直"/>
+								</coding>
+							</code>
+							<valueString value="颈软无抵抗"/>
+						</component>
+						<!-- 颈动脉 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="carotidArtery"/>
+									<display value="颈动脉"/>
+								</coding>
+							</code>
+							<valueString value="未见异常"/>
+						</component>
+						<!-- 颈静脉 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="jugularVein"/>
+									<display value="颈静脉"/>
+								</coding>
+							</code>
+							<valueString value="怒张"/>
+						</component>
+						<!-- 气管 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="trachea"/>
+									<display value="气管"/>
+								</coding>
+							</code>
+							<valueString value="居中"/>
+						</component>
+						<!-- 肝静脉回流征 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="hepatVenous"/>
+									<display value="肝静脉回流征"/>
+								</coding>
+							</code>
+							<valueString value="阳性"/>
+						</component>
+						<!-- 甲状腺 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="thyroid"/>
+									<display value="甲状腺"/>
+								</coding>
+							</code>
+							<valueString value="无压痛，未扪及肿大及结节"/>
+						</component>
+					</Observation>
+				</contained>
+				<!-- 其他头颈部位阳性体征 -->
+				<contained>
+					<Observation>
+						<id value="otherNeckPosSigns"/>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="otherNeckPosSigns"/>
+								<display value="其他颈部位阳性体征"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<valueString value="其他颈部位阳性体征的文本描述"/>
+					</Observation>
+				</contained>
+				<!-- 固定值（必填项）-->
+				<status value="current"/>
+				<!-- 固定值（必填项）-->
+				<mode value="snapshot"/>
+				<title value="体格检查-头颈部检查"/>
+				<note>
+					<text value="头部：头颅：颅骨软化：无  头围：未测cm 包块：头部未见包块 前囟：已闭  后囟：已闭   骨缝：已闭
+								眼：眼睑：正常瞳孔：等大等圆，左3mm，右3mm 	结膜：正常对光反射：正常眼球：正常巩膜：无黄染
+								耳：耳廓：正常乳突压痛：无外耳道分泌物：无
+								鼻：外形：正常鼻翼扇动：无扇动鼻腔分泌物：无鼻旁窦压痛：无
+								口：唇：红润粘膜：正常舌：正常齿列：齐牙龈：正常 扁桃体：无肿大咽：无充血声音：正常
+								颈：颈强直：无  颈动脉：搏动正常  颈静脉：正常	气管：居中  肝静脉回流征：阴性  甲状腺：无压痛，未扪及肿大及结节
+								其他：无特殊"/>
+				</note>
+				<!-- 结构化：头颅 -->
+				<entry>
+					<item>
+						<reference value="#skull"/>
+					</item>
+				</entry>
+				<!-- 结构化：眼 -->
+				<entry>
+					<item>
+						<reference value="#eye"/>
+					</item>
+				</entry>
+				<!-- 结构化：耳 -->
+				<entry>
+					<item>
+						<reference value="#ear"/>
+					</item>
+				</entry>
+				<!-- 结构化：鼻 -->
+				<entry>
+					<item>
+						<reference value="#nose"/>
+					</item>
+				</entry>
+				<!-- 结构化：口 -->
+				<entry>
+					<item>
+						<reference value="#mouth"/>
+					</item>
+				</entry>
+				<!-- 结构化：颈部 -->
+				<entry>
+					<item>
+						<reference value="#neck"/>
+					</item>
+				</entry>
+				<!-- 结构化：其他颈部位阳性体征 -->
+				<entry>
+					<item>
+						<reference value="#otherNeckPosSigns"/>
+					</item>
+				</entry>
+			</List>
+		</resource>
+	</entry>
+	<!-- 体格检查章节-腹部检查子章节 -->
+	<entry>
+		<fullUrl value="[base]/List/fbjc"/>
+		<resource>
+			<List>
+				<id value="fbjc"/>
+				<!-- 视诊 -->
+				<contained>
+					<Observation>
+						<id value="abdomen-visInsp"/>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="abdomen-visInsp"/>
+								<display value="腹-视诊"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<!-- 外形 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="shape"/>
+									<display value="外形"/>
+								</coding>
+							</code>
+							<valueString value="腹部平坦"/>
+						</component>
+						<!-- 腹围 -->
+						<component>
+							<code>
+								<!-- 腰围值（无单位情况下） -->
+								<extension url="[base]/StructureDefinition/extension_waistlineValue">
+									<valueString value="60cm"/>
+								</extension>
+								<coding>
+									<system/>
+									<code value="AbdCir"/>
+									<display value="腹围"/>
+								</coding>
+							</code>
+							<valueQuantity>
+								<value value="60"/>
+								<unit value="cm"/>
+							</valueQuantity>
+						</component>
+						<!-- 脐部 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="umbilical"/>
+									<display value="脐部"/>
+								</coding>
+							</code>
+							<valueString value="正常"/>
+						</component>
+						<!-- 腹壁静脉曲张 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="AbdoWallVarices"/>
+									<display value="腹壁静脉曲张"/>
+								</coding>
+							</code>
+							<valueString value="无"/>
+						</component>
+					</Observation>
+				</contained>
+				<!-- 触诊 -->
+				<contained>
+					<Observation>
+						<id value="abdomen-palpat"/>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="abdomen-palpat"/>
+								<display value="腹-触诊"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<!-- 全腹柔软 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="FullBellySoft"/>
+									<display value="全腹柔软"/>
+								</coding>
+							</code>
+							<valueString value="全腹柔软"/>
+						</component>
+						<!-- 压痛反跳痛 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="TendRebPain"/>
+									<display value="压痛反跳痛"/>
+								</coding>
+							</code>
+							<valueString value="无"/>
+						</component>
+						<!-- 波动感 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="fluctuation"/>
+									<display value="波动感"/>
+								</coding>
+							</code>
+							<valueString value="无"/>
+						</component>
+						<!-- 震水声 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="dewSound"/>
+									<display value="镇水声"/>
+								</coding>
+							</code>
+							<valueString value="未及液波震颤及水音"/>
+						</component>
+						<!-- 腹部包块 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="abdMass"/>
+									<display value="腹部包块"/>
+								</coding>
+							</code>
+							<valueString value="未及"/>
+						</component>
+						<!-- 肝脏 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="liver"/>
+									<display value="肝脏"/>
+								</coding>
+							</code>
+							<valueString value="未触及"/>
+						</component>
+						<!-- 胆囊 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="gallbladder"/>
+									<display value="胆囊"/>
+								</coding>
+							</code>
+							<valueString value="未触及"/>
+						</component>
+						<!-- 脾脏 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="spleen"/>
+									<display value="脾脏"/>
+								</coding>
+							</code>
+							<valueString value="未触及"/>
+						</component>
+						<!-- 肾脏 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="kidney"/>
+									<display value="肾脏"/>
+								</coding>
+							</code>
+							<valueString value="未触及"/>
+						</component>
+						<!-- 输尿管压痛点 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="UretTenderPoint"/>
+									<display value="输尿管压痛点"/>
+								</coding>
+							</code>
+							<valueString value="无压痛"/>
+						</component>
+					</Observation>
+				</contained>
+				<!-- 叩诊 -->
+				<contained>
+					<Observation>
+						<id value="abdomen-percus"/>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="abdomen-percus"/>
+								<display value="腹-叩诊"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<!-- 浑浊音界 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="turbidTone"/>
+									<display value="浑浊音界"/>
+								</coding>
+							</code>
+							<valueString value="鼓音"/>
+						</component>
+						<!-- 移动浊音 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="movMoving voicedVoiced"/>
+									<display value="移动浊音"/>
+								</coding>
+							</code>
+							<valueString value="无"/>
+						</component>
+						<!-- 肝上界位于锁骨中线第几肋间 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="uHepMid"/>
+									<display value="肝上界位于锁骨中线第几肋间"/>
+								</coding>
+							</code>
+							<valueString value="2"/>
+						</component>
+						<!-- 肾区叩痛 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="kidAreaPain"/>
+									<display value="肾区叩痛"/>
+								</coding>
+							</code>
+							<valueString value="无"/>
+						</component>
+					</Observation>
+				</contained>
+				<!-- 听诊 -->
+				<contained>
+					<Observation>
+						<id value="abdomen-auscult"/>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="abdomen-auscult"/>
+								<display value="腹-听诊"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<!-- 肠鸣音 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="D"/>
+									<display value="肠鸣音"/>
+								</coding>
+							</code>
+							<valueString value="正常存在，无亢进"/>
+						</component>
+					</Observation>
+				</contained>
+				<!-- 肛门直肠 -->
+				<contained>
+					<Observation>
+						<id value="anorectal"/>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="anorectal"/>
+								<display value="肛门直肠"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<valueString value="无肿瘤，有痔疮肛裂"/>
+					</Observation>
+				</contained>
+				<!-- 外生殖器 -->
+				<contained>
+					<Observation>
+						<id value="extGenital"/>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="extGenital"/>
+								<display value="外生殖器"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<valueString value="未查"/>
+					</Observation>
+				</contained>
+				<!-- 其他腹部阳性体征 -->
+				<contained>
+					<Observation>
+						<id value="otherAbdPosSigns"/>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="otherAbdPosSigns"/>
+								<display value="其他腹部阳性体征"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<valueString value="未查"/>
+					</Observation>
+				</contained>
+				<!-- 固定值（必填项）-->
+				<status value="current"/>
+				<!-- 固定值（必填项）-->
+				<mode value="snapshot"/>
+				<title value="体格检查-腹部检查结果"/>
+				<note>
+					<text value="视诊：外形：正常  腹围：未测cm  脐部：正常  腹壁静脉曲张：未见
+								 触诊：全腹柔软  压痛反跳痛：无  波动感：无  震水声：无 	腹部包块：未触及包块	脾脏：未触及 肝脏：肋下未触及	肾脏：未触及 胆囊：未触及，Murphy征阴性	输尿管压痛点：无
+								 叩诊：肝浊音界：正常  移动浊音：阴性  肝上界位于锁骨中线第五肋间  肾区叩痛：无
+								 听诊：肠鸣音：正常
+								 肛门直肠：未见异常"/>
+				</note>
+				<!-- 结构化：腹部-视诊 -->
+				<entry>
+					<item>
+						<reference value="#abdomen-visInsp"/>
+					</item>
+				</entry>
+				<!-- 结构化：腹部-触诊 -->
+				<entry>
+					<item>
+						<reference value="#abdomen-palpat"/>
+					</item>
+				</entry>
+				<!-- 结构化：腹部-叩诊 -->
+				<entry>
+					<item>
+						<reference value="#abdomen-percus"/>
+					</item>
+				</entry>
+				<!-- 结构化：腹部-听诊 -->
+				<entry>
+					<item>
+						<reference value="#abdomen-auscult"/>
+					</item>
+				</entry>
+				<!-- 结构化：肛门直肠 -->
+				<entry>
+					<item>
+						<reference value="#anorectal"/>
+					</item>
+				</entry>
+				<!-- 结构化：外生殖器 -->
+				<entry>
+					<item>
+						<reference value="#extGenital"/>
+					</item>
+				</entry>
+				<!-- 结构化：其他腹部阳性体征 -->
+				<entry>
+					<item>
+						<reference value="#otherAbdPosSigns "/>
+					</item>
+				</entry>
+			</List>
+		</resource>
+	</entry>
+	<!-- 体格检查章节-脊柱四肢神经系统检查子章节 -->
+	<entry>
+		<fullUrl value="[base]/List/jzszsjxtjc"/>
+		<resource>
+			<List>
+				<id value="jzszsjxtjc"/>
+				<!-- 脊柱 -->
+				<contained>
+					<Observation>
+						<id value="spine"/>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="spine"/>
+								<display value="脊柱检查"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<valueString value="脊柱无畸形，无疼痛，活动正常"/>
+					</Observation>
+				</contained>
+				<!-- 四肢 -->
+				<contained>
+					<Observation>
+						<id value="limbs"/>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="limbs"/>
+								<display value="四肢检查"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<valueString value="四肢无畸形，无水肿"/>
+					</Observation>
+				</contained>
+				<!--关节-->
+				<contained>
+					<Observation>
+						<id value="joint"/>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="joint"/>
+								<display value="关节检查"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<valueString value="无水肿"/>
+					</Observation>
+				</contained>
+				<!-- 肌张力 -->
+				<contained>
+					<Observation>
+						<id value="muscTens"/>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="muscTens"/>
+								<display value="肌张力"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<valueString value="正常"/>
+					</Observation>
+				</contained>
+				<!-- 肢体瘫痪 -->
+				<contained>
+					<Observation>
+						<id value="limbParaly"/>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="limbParaly"/>
+								<display value="肢体瘫痪"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<valueString value="肌肉无萎缩"/>
+					</Observation>
+				</contained>
+				<!-- 肌力 -->
+				<contained>
+					<Observation>
+						<id value="MuscStrength"/>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="MuscStrength"/>
+								<display value="肌力"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<valueString value="正常对称"/>
+					</Observation>
+				</contained>
+				<!-- 腹部反射 -->
+				<contained>
+					<Observation>
+						<id value="AbdReflex"/>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="AbdReflex"/>
+								<display value="腹部反射"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<valueString value="腹壁浅反射存在，双侧肱二头肌、肱三头肌反射存在"/>
+					</Observation>
+				</contained>
+				<!-- 膝腱反射 -->
+				<contained>
+					<Observation>
+						<id value="kneeReflex"/>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="kneeReflex"/>
+								<display value="膝腱反射"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<valueString value="双侧膝腱反射及跟腱反射存在"/>
+					</Observation>
+				</contained>
+				<!-- Kernig征 -->
+				<contained>
+					<Observation>
+						<id value="kernigSign"/>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="kernigSign"/>
+								<display value="Kernig征"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<valueString value="阴性"/>
+					</Observation>
+				</contained>
+				<!--Babinsk征-->
+				<contained>
+					<Observation>
+						<id value="babinskSign"/>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="babinskSign"/>
+								<display value="Babinsk征"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<valueString value="阴性"/>
+					</Observation>
+				</contained>
+				<!-- 踝阵挛 -->
+				<contained>
+					<Observation>
+						<id value="arrayCramps"/>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="arrayCramps"/>
+								<display value="踝阵挛"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<valueString value="无"/>
+					</Observation>
+				</contained>
+				<!-- 其他脊柱四肢神经系统阳性体征 -->
+				<contained>
+					<Observation>
+						<id value="otherSpiLimbs"/>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="otherSpiLimbs"/>
+								<display value="其他脊柱四肢神经系统阳性体征"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<valueString value="无"/>
+					</Observation>
+				</contained>
+				<!-- 固定值（必填项）-->
+				<status value="current"/>
+				<!-- 固定值（必填项）-->
+				<mode value="snapshot"/>
+				<title value="体格检查-脊柱检查"/>
+				<note>
+					<text value="脊柱:未见异常四肢:未见异常，活动无受限关节：各关节未见异常，活动无受限
+								神经系统：	肢体瘫痪：无
+									肌张力：未测未测    肌力：未测
+									腹壁反射：未测    膝腱反射：正常引出
+									跟腱反射：正常引出    Kernig征：阴性
+									Babinski征：阴性    踝阵挛：阴性
+								其他：无特殊
+									"/>
+				</note>
+				<!-- 结构化:脊柱 -->
+				<entry>
+					<item>
+						<reference value="#spine"/>
+					</item>
+				</entry>
+				<!-- 结构化:四肢 -->
+				<entry>
+					<item>
+						<reference value="#limbs"/>
+					</item>
+				</entry>
+				<!-- 结构化:关节 -->
+				<entry>
+					<item>
+						<reference value="#joint"/>
+					</item>
+				</entry>
+				<!-- 结构化:肌张力 -->
+				<entry>
+					<item>
+						<reference value="#muscTens"/>
+					</item>
+				</entry>
+				<!-- 结构化:肢体瘫痪 -->
+				<entry>
+					<item>
+						<reference value="#limbParaly"/>
+					</item>
+				</entry>
+				<!-- 结构化:肌力 -->
+				<entry>
+					<item>
+						<reference value="#MuscStrength"/>
+					</item>
+				</entry>
+				<!-- 结构化:腹部反射 -->
+				<entry>
+					<item>
+						<reference value="#AbdReflex"/>
+					</item>
+				</entry>
+				<!-- 结构化:膝腱反射 -->
+				<entry>
+					<item>
+						<reference value="#kneeReflex"/>
+					</item>
+				</entry>
+				<!-- 结构化:Kernig征 -->
+				<entry>
+					<item>
+						<reference value="#kernigSign"/>
+					</item>
+				</entry>
+				<!-- 结构化:Babinsk征 -->
+				<entry>
+					<item>
+						<reference value="#babinskSign"/>
+					</item>
+				</entry>
+				<!-- 结构化:踝阵挛 -->
+				<entry>
+					<item>
+						<reference value="#arrayCramps"/>
+					</item>
+				</entry>
+				<!-- 结构化:其他脊柱四肢神经系统阳性体征 -->
+				<entry>
+					<item>
+						<reference value="#otherSpiLimbs"/>
+					</item>
+				</entry>
+			</List>
+		</resource>
+	</entry>
+	<!-- 体格检查章节-胸部检查子章节 -->
+	<entry>
+		<fullUrl value="[base]/List/xbjc"/>
+		<resource>
+			<List>
+				<id value="ybzkjc"/>
+				<!-- 胸部 -->
+				<contained>
+					<Observation>
+						<id value="thoracic"/>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="thoracic"/>
+								<display value="胸部"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<!-- 胸廓 -->
+						<component>
+							<code>
+								<coding>
+									<system value="/"/>
+									<code value="xiongkuo"/>
+									<display value="胸廓"/>
+								</coding>
+							</code>
+							<valueString value="胸廓：胸廓对称，无畸形，胸骨无压痛，胸壁无隆起和凹陷。"/>
+						</component>
+						<!-- 胸骨压痛 -->
+						<component>
+							<code>
+								<coding>
+									<system value="/"/>
+									<code value="xgyt"/>
+									<display value="胸骨压痛"/>
+								</coding>
+							</code>
+							<valueString value="胸廓：胸廓对称，无畸形，胸骨无压痛，胸壁无隆起和凹陷。"/>
+						</component>
+						<!-- 乳房 -->
+						<component>
+							<code>
+								<coding>
+									<system value="/"/>
+									<code value="breasts"/>
+									<display value="乳房"/>
+								</coding>
+							</code>
+							<valueString value="无肿块"/>
+						</component>
+					</Observation>
+				</contained>
+				<!-- 胸部其他阳性体征 -->
+				<contained>
+					<Observation>
+						<id value="otherPositiveChest"/>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="otherPositiveChest"/>
+								<display value="胸部其他阳性体征"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<valueString value="无胸壁静脉怒张"/>
+					</Observation>
+				</contained>
+				<!-- 肺-视诊 -->
+				<contained>
+					<Observation>
+						<id value="lung-visInsp"/>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="lung-visInsp"/>
+								<display value="肺-视诊"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<!-- 呼吸运动 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="respMovement"/>
+									<display value="呼吸运动"/>
+								</coding>
+							</code>
+							<valueString value="双侧呼吸运动对称"/>
+						</component>
+						<!-- 肋间隙 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="ribClea"/>
+									<display value="肋间隙"/>
+								</coding>
+							</code>
+							<valueString value="正常"/>
+						</component>
+					</Observation>
+				</contained>
+				<!-- 肺-触诊 -->
+				<contained>
+					<Observation>
+						<id value="lung-palpat"/>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="lung-palpat"/>
+								<display value="肺-触诊"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<!-- 语颤 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="quiver"/>
+									<display value="语颤"/>
+								</coding>
+							</code>
+							<valueString value="正常"/>
+						</component>
+						<!-- 胸膜摩擦感 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="pleuralFriction"/>
+									<display value="胸膜摩擦感"/>
+								</coding>
+							</code>
+							<valueString value="无"/>
+						</component>
+						<!-- 皮下捻发感 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="SubSensation"/>
+									<display value="皮下捻发感"/>
+								</coding>
+							</code>
+							<valueString value="无"/>
+						</component>
+					</Observation>
+				</contained>
+				<!-- 肺-叩诊 -->
+				<contained>
+					<Observation>
+						<id value="lung-percus"/>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="lung-percus"/>
+								<display value="肺-叩诊"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<!-- 正常清音 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="norUnvoiced"/>
+									<display value="正常清音"/>
+								</coding>
+							</code>
+							<valueString value="正常清音"/>
+						</component>
+					</Observation>
+				</contained>
+				<!-- 肺-听诊 -->
+				<contained>
+					<Observation>
+						<id value="lung-auscult"/>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="lung-auscult"/>
+								<display value="肺-听诊"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<!-- 呼吸 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="breathe"/>
+									<display value="呼吸"/>
+								</coding>
+							</code>
+							<valueString value="正常"/>
+						</component>
+						<!-- 呼吸音 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="breathSound"/>
+									<display value="呼吸音"/>
+								</coding>
+							</code>
+							<valueString value="双肺呼吸音清"/>
+						</component>
+						<!-- 前啰音 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="frontVoice"/>
+									<display value="前啰音"/>
+								</coding>
+							</code>
+							<valueString value="未闻"/>
+						</component>
+						<!-- 鼾音 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="voice"/>
+									<display value="鼾音"/>
+								</coding>
+							</code>
+							<valueString value="未闻"/>
+						</component>
+						<!-- 哨笛音 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="whistle"/>
+									<display value="哨笛音"/>
+								</coding>
+							</code>
+							<valueString value="未闻"/>
+						</component>
+						<!-- 湿啰音 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="wetVoice"/>
+									<display value="湿啰音"/>
+								</coding>
+							</code>
+							<valueString value="未闻"/>
+						</component>
+						<!-- 胸膜摩擦音 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="pleuFriction"/>
+									<display value="胸膜摩擦音"/>
+								</coding>
+							</code>
+							<valueString value="无"/>
+						</component>
+						<!-- 捻发音 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="pronunciation"/>
+									<display value="捻发音"/>
+								</coding>
+							</code>
+							<valueString value="无"/>
+						</component>
+					</Observation>
+				</contained>
+				<!-- 心-视诊 -->
+				<contained>
+					<Observation>
+						<id value="heart-visInsp"/>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="heart-visInsp"/>
+								<display value="心-视诊"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<!-- 心尖搏动 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="apiBeat"/>
+									<display value="心尖搏动"/>
+								</coding>
+							</code>
+							<valueString value="无异常"/>
+						</component>
+						<!-- 心前区隆起 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="antRegElevat"/>
+									<display value="心前区隆起"/>
+								</coding>
+							</code>
+							<valueString value="无异常"/>
+						</component>
+						<!-- 剑突下搏动 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="spurtPuls"/>
+									<display value="剑突下搏动"/>
+								</coding>
+							</code>
+							<valueString value="未见明显"/>
+						</component>
+						<!-- 心尖搏动位置 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="apiBeatPosit"/>
+									<display value="心尖搏动位置"/>
+								</coding>
+							</code>
+							<valueString value="第五肋间左锁中线内0.5cm"/>
+						</component>
+					</Observation>
+				</contained>
+				<!-- 心-触诊 -->
+				<contained>
+					<Observation>
+						<id value="heart-palpat"/>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="heart-palpat"/>
+								<display value="心-触诊"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<!-- 心尖搏动 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="apiBeat"/>
+									<display value="心尖搏动"/>
+								</coding>
+							</code>
+							<valueString value="无抬举样心尖搏动"/>
+						</component>
+						<!-- 震颤 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="tremor"/>
+									<display value="震颤"/>
+								</coding>
+							</code>
+							<valueString value="各瓣膜区未及震颤"/>
+						</component>
+						<!-- 心包摩擦感 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="periFriction"/>
+									<display value="心包摩擦感"/>
+								</coding>
+							</code>
+							<valueString value="无"/>
+						</component>
+						<!-- 触诊其他阳性体征 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="OtherPositSigns"/>
+									<display value="触诊其他阳性体征"/>
+								</coding>
+							</code>
+							<valueString value="无"/>
+						</component>
+					</Observation>
+				</contained>
+				<!-- 心-叩诊 -->
+				<contained>
+					<Observation>
+						<id value="heart-percus"/>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="heart-percus"/>
+								<display value="心-叩诊"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<!-- 肋间II左侧距离 -->
+						<component>
+							<!-- 肋间II左侧距离值（无单位情况下） -->
+							<extension url="[base]/StructureDefinition/extension_leftInterIIValue">
+								<valueString value="3-5cm"/>
+							</extension>
+							<code>
+								<coding>
+									<system/>
+									<code value="leftInterII"/>
+									<display value="肋间II左侧距离"/>
+								</coding>
+							</code>
+							<valueQuantity>
+								<value value="3.4"/>
+								<unit value="cm"/>
+							</valueQuantity>
+						</component>
+						<!-- 肋间II右侧距离 -->
+						<component>
+							<!-- 肋间II右侧距离值（无单位情况下） -->
+							<extension url="[base]/StructureDefinition/extension_rightInterIIValue">
+								<valueString value="3-5cm"/>
+							</extension>
+							<code>
+								<coding>
+									<system/>
+									<code value="rightInterII"/>
+									<display value="肋间II右侧距离"/>
+								</coding>
+							</code>
+							<valueQuantity>
+								<value value="3.4"/>
+								<unit value="cm"/>
+							</valueQuantity>
+						</component>
+						<!-- 肋间III左侧距离 -->
+						<component>
+							<!-- 肋间III左侧距离值（无单位情况下） -->
+							<extension url="[base]/StructureDefinition/extension_leftInterIIIValue">
+								<valueString value="3-5cm"/>
+							</extension>
+							<code>
+								<coding>
+									<system/>
+									<code value="leftInterIII"/>
+									<display value="肋间III左侧距离"/>
+								</coding>
+							</code>
+							<valueQuantity>
+								<value value="3.4"/>
+								<unit value="cm"/>
+							</valueQuantity>
+						</component>
+						<!-- 肋间III右侧距离 -->
+						<component>
+							<!-- 肋间III右侧距离值（无单位情况下） -->
+							<extension url="[base]/StructureDefinition/extension_rightInterIIIValue">
+								<valueString value="3-5cm"/>
+							</extension>
+							<code>
+								<coding>
+									<system/>
+									<code value="rightInterIII"/>
+									<display value="肋间III右侧距离"/>
+								</coding>
+							</code>
+							<valueQuantity>
+								<value value="3.4"/>
+								<unit value="cm"/>
+							</valueQuantity>
+						</component>
+						<!-- 肋间IV左侧距离 -->
+						<component>
+							<!-- 肋间IV左侧距离值（无单位情况下） -->
+							<extension url="[base]/StructureDefinition/extension_leftInterIVValue">
+								<valueString value="3-5cm"/>
+							</extension>
+							<code>
+								<coding>
+									<system/>
+									<code value="leftInterIV"/>
+									<display value="肋间IV左侧距离"/>
+								</coding>
+							</code>
+							<valueQuantity>
+								<value value="3.4"/>
+								<unit value="cm"/>
+							</valueQuantity>
+						</component>
+						<!-- 肋间IV右侧距离 -->
+						<component>
+							<!-- 肋间IV右侧距离值（无单位情况下） -->
+							<extension url="[base]/StructureDefinition/extension_rightInterIVValue">
+								<valueString value="3-5cm"/>
+							</extension>
+							<code>
+								<coding>
+									<system/>
+									<code value="rightInterIV"/>
+									<display value="肋间IV右侧距离"/>
+								</coding>
+							</code>
+							<valueQuantity>
+								<value value="3.4"/>
+								<unit value="cm"/>
+							</valueQuantity>
+						</component>
+						<!-- 肋间V左侧距离 -->
+						<component>
+							<!-- 肋间V左侧距离值（无单位情况下） -->
+							<extension url="[base]/StructureDefinition/extension_leftInterVValue">
+								<valueString value="3-5cm"/>
+							</extension>
+							<code>
+								<coding>
+									<system/>
+									<code value="leftInterV"/>
+									<display value="肋间V左侧距离"/>
+								</coding>
+							</code>
+							<valueQuantity>
+								<value value="3.4"/>
+								<unit value="cm"/>
+							</valueQuantity>
+						</component>
+						<!-- 肋间V右侧距离 -->
+						<component>
+							<!-- 肋间V右侧距离值（无单位情况下） -->
+							<extension url="[base]/StructureDefinition/extension_rightInterVValue">
+								<valueString value="3-5cm"/>
+							</extension>
+							<code>
+								<coding>
+									<system/>
+									<code value="rightInterV"/>
+									<display value="肋间V右侧距离"/>
+								</coding>
+							</code>
+							<valueQuantity>
+								<value value="3.4"/>
+								<unit value="cm"/>
+							</valueQuantity>
+						</component>
+						<!-- 左锁骨中心距离正中线的距离 -->
+						<component>
+							<!-- 左锁骨中心距离正中线的距离值（无单位情况下） -->
+							<extension url="[base]/StructureDefinition/extension_leftclaMidlValue">
+								<valueString value="9cm"/>
+							</extension>
+							<code>
+								<coding>
+									<system/>
+									<code value="leftclaMidl"/>
+									<display value="左锁骨中心距离正中线的距离"/>
+								</coding>
+							</code>
+							<valueQuantity>
+								<value value="9"/>
+								<unit value="cm"/>
+							</valueQuantity>
+						</component>
+					</Observation>
+				</contained>
+				<!-- 心-听诊 -->
+				<contained>
+					<Observation>
+						<id value="heart-auscult"/>
+						<status value="corrected"/>
+						<code>
+							<coding>
+								<system/>
+								<code value="heart-auscult"/>
+								<display value="心-听诊"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<!-- 心率 -->
+						<component>
+							<!-- 心率值（无单位情况下） -->
+							<extension url="[base]/StructureDefinition/extension_heartRateValue">
+								<valueString value="70次/分"/>
+							</extension>
+							<code>
+								<coding>
+									<system/>
+									<code value="heartRate"/>
+									<display value="心率"/>
+								</coding>
+							</code>
+							<valueQuantity>
+								<value value="70"/>
+								<unit value="次/分"/>
+							</valueQuantity>
+						</component>
+						<!-- 心律 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="heartRhythm"/>
+									<display value="心律"/>
+								</coding>
+							</code>
+							<valueString value="律齐"/>
+						</component>
+						<!-- 早搏 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="prematBeat"/>
+									<display value="早搏"/>
+								</coding>
+							</code>
+							<valueString value="无"/>
+						</component>
+						<!-- 心音 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="heartSound"/>
+									<display value="心音"/>
+								</coding>
+							</code>
+							<valueString value="有力"/>
+						</component>
+						<!-- 心音分裂 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="heartSoundSplit"/>
+									<display value="心音分裂"/>
+								</coding>
+							</code>
+							<valueString value="无"/>
+						</component>
+						<!-- 心音S1 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="heartSoundS1"/>
+									<display value="心音S1"/>
+								</coding>
+							</code>
+							<valueString value="正常"/>
+						</component>
+						<!-- 心音S2 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="heartSoundS2"/>
+									<display value="心音S2"/>
+								</coding>
+							</code>
+							<valueString value="正常"/>
+						</component>
+						<!-- 心音S3 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="heartSoundS3"/>
+									<display value="心音S3"/>
+								</coding>
+							</code>
+							<valueString value="正常"/>
+						</component>
+						<!-- 心音S4 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="heartSoundS4"/>
+									<display value="心音S4"/>
+								</coding>
+							</code>
+							<valueString value="正常"/>
+						</component>
+						<!-- A2 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="A2"/>
+									<display value="A2"/>
+								</coding>
+							</code>
+							<valueString value="主动脉瓣区听最清楚,呈高调金属音,并向心尖及肺动脉瓣区传导"/>
+						</component>
+						<!-- P2 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="P2"/>
+									<display value="P2"/>
+								</coding>
+							</code>
+							<valueString value="在肺动脉瓣区听最清楚,音调低于A2,不向心尖部传导,只向胸骨左缘第三肋间传导"/>
+						</component>
+						<!-- A2<P2 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code/>
+									<display value="A2小于P2"/>
+								</coding>
+							</code>
+							<valueString value="是"/>
+						</component>
+						<!-- 奔马率 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="runHorsRate"/>
+									<display value="奔马率"/>
+								</coding>
+							</code>
+							<valueString value="无"/>
+						</component>
+						<!-- 心包摩擦音 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="periFriction"/>
+									<display value="心包摩擦音"/>
+								</coding>
+							</code>
+							<valueString value="无"/>
+						</component>
+						<!-- 周围血管征 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="perVasculSign"/>
+									<display value="周围血管征"/>
+								</coding>
+							</code>
+							<valueString value="阴性"/>
+						</component>
+						<!-- 杂音及其他听证阳性发现 -->
+						<component>
+							<code>
+								<coding>
+									<system/>
+									<code value="otherNHPosiFind"/>
+									<display value="杂音及其他听证阳性发现"/>
+								</coding>
+							</code>
+							<valueString value="阴性"/>
+						</component>
+					</Observation>
+				</contained>
+				<!-- 固定值（必填项）-->
+				<status value="current"/>
+				<!-- 固定值（必填项）-->
+				<mode value="snapshot"/>
+				<title value="体格检查-胸部检查结果"/>
+				<note>
+					<text value="胸部：胸廓：正常  胸骨压痛：无  乳房：正常对称								
+							肺：
+								视诊：呼吸运动：对称  肋间隙：正常
+								触诊：语颤：正常  胸膜摩擦感：无  皮下捻发感：无
+								叩诊：正常清音
+								听诊：呼吸：规整 呼吸音：正常 干啰音：鼾音：无  哨笛音：无  湿啰音： 无	胸膜摩擦音：无捻发音：无
+							心：
+								视诊：心尖搏动：正常正常  心前区隆起：无  剑突下搏动：无  心尖搏动位置：正常
+								触诊：正常正常震颤：无心包摩擦感：未触及其他：无
+								叩诊：相对浊音界：正常 正常
+								听诊：心率：72次/分心律:齐杂音：未闻及
+								听诊其他：无特殊"/>
+				</note>
+				<!-- 结构化：胸廓 -->
+				<entry>
+					<item>
+						<reference value="#thoracic"/>
+					</item>
+				</entry>
+				<!-- 结构化：乳房 -->
+				<entry>
+					<item>
+						<reference value="#breasts"/>
+					</item>
+				</entry>
+				<!-- 结构化：胸部其他阳性体征 -->
+				<entry>
+					<item>
+						<reference value="#otherPositiveChest"/>
+					</item>
+				</entry>
+				<!-- 结构化：肺-视诊 -->
+				<entry>
+					<item>
+						<reference value="#lung-visInsp"/>
+					</item>
+				</entry>
+				<!-- 结构化：肺-触诊 -->
+				<entry>
+					<item>
+						<reference value="#lung-palpat"/>
+					</item>
+				</entry>
+				<!-- 结构化：肺-叩诊 -->
+				<entry>
+					<item>
+						<reference value="#lung-percus"/>
+					</item>
+				</entry>
+				<!-- 结构化：肺-听诊 -->
+				<entry>
+					<item>
+						<reference value="#lung-auscult"/>
+					</item>
+				</entry>
+				<!-- 结构化：心-视诊 -->
+				<entry>
+					<item>
+						<reference value="#heart-visInsp"/>
+					</item>
+				</entry>
+				<!-- 结构化：心-触诊 -->
+				<entry>
+					<item>
+						<reference value="#heart-palpat"/>
+					</item>
+				</entry>
+				<!-- 结构化：心-叩诊 -->
+				<entry>
+					<!-- 相对浊音界异常标志.只有异常的时候才有当前entry中的item项 -->
+					<flag>
+						<coding>
+							<system/>
+							<code value="01"/>
+							<display value="异常"/>
+						</coding>
+					</flag>
+					<item>
+						<reference value="#heart-percus"/>
+					</item>
+				</entry>
+				<!-- 结构化：心-听诊 -->
+				<entry>
+					<item>
+						<reference value="#heart-auscult"/>
+					</item>
+				</entry>
+			</List>
+		</resource>
+	</entry>
+	<!-- 专科情况章节 -->
+	<entry>
+		<fullUrl value="[base]/List/zkqkjc"/>
+		<resource>
+			<List>
+				<id value="zkqkjc"/>
+				<!-- 固定值（必填项）-->
+				<status value="current"/>
+				<!-- 固定值（必填项）-->
+				<mode value="snapshot"/>
+				<title value="专科情况 "/>
+				<note>
+					<text value="第二性征：女性。已婚已产式。外阴：发育正常。阴道：通畅，无畸形，粘膜色泽正常，分泌物多，白色稀糊样，无异味。宫颈：中度糜烂，小息肉，触血，宫颈管内无出血。宫体：后位，稍增大，质中，表面光滑，无压痛。左附件：增厚，无压痛。右附件：增厚，无压痛"/>
+				</note>
+				<!-- 结构化 -->
+				<entry>
+					<item/>
+				</entry>
+			</List>
+		</resource>
+	</entry>
+	<!-- 辅助检查章节 -->
+	<entry>
+		<fullUrl value="[base]/List/fzjc"/>
+		<resource>
+			<List>
+				<id value="fzjc"/>
+				<!-- 固定值（必填项）-->
+				<status value="current"/>
+				<!-- 固定值（必填项）-->
+				<mode value="snapshot"/>
+				<title value="辅助检查结果"/>
+				<note>
+					<text value="2019-5-17我院彩超： 子宫前位，宫体大小5.0x6.0x5.9cm，内膜居中，厚0.4cm（单层），节育环居中，后壁肌壁增厚，回声稍增强，肌壁间探及星点状血流信号。左附件区查见6.5x5.3x5.8cm分隔状囊性占位，囊液不清亮，囊壁探及血流信号。右附件区查见5.0x4.6x5.7cm分隔状囊性占位，壁厚，形态不规则，囊液不清亮，囊壁探及血流信号。诊断：子宫偏大（子宫腺肌症待排）右附件区囊性占位（疑输卵管积水）左附件区囊性占位环位正常。2019-5-17胸部CT：1.右肺上叶小结节，多系炎性，建议随访；双肺少许慢性炎症改变；2.扫及肝内小钙化灶。2019-5-17肿瘤标志物：正常。2019-5-17白带常规：正常"/>
+				</note>
+				<!-- 结构化 -->
+				<entry>
+					<item/>
+				</entry>
+			</List>
+		</resource>
+	</entry>
+	<!-- 病历摘要章节 -->
+	<entry>
+		<fullUrl value="[base]/List/recordSummary"/>
+		<resource>
+			<List>
+				<id value="blzy"/>
+				<!-- 固定值（必填项）-->
+				<status value="current"/>
+				<!-- 固定值（必填项）-->
+				<mode value="snapshot"/>
+				<title value="病历摘要"/>
+				<note>
+					<text value="患者系围绝经期女性。患者因“发现附件囊性占位2+年。”入院。患者平素月经规律，周期30天，经期4天，无痛经。2+年前因右下腹疼痛，故就诊于当地医院B超提示附件囊肿（具体不详），建议手术，患者拒绝手术治疗，予口服中药治疗3月，自诉未规律服用，未见明显好转。1+月前患者再次就诊于当地医院复查B超提示附件囊肿（具体不详），建议手术，患者拒绝手术。为进一步治疗，就诊于我院，复查B超提示：子宫后位，宫体大小4.9x5.3x5.5cm，节育环居中，左附件区查见分隔状囊性占位，大小6.3x4.3x5.7cm，部分略呈腊肠形，右附件区查见分隔状囊性占位，大小5.5x4.1x4.5cm，部分略呈腊肠形。HPV检查：52型（+）。LCT提示：低度鳞状上皮内病变，建议活检。宫颈活检提示:慢性炎，CINI-II及灶性CINII，查见“挖空细胞”，符合HPV感染。阴道镜提示：转化区可见，醋酸试验后见白色上皮。今为手术治疗入我科。患者患病来精神食欲可，睡眠佳，大小便正常，体重无明显变化。既往身体情况良好，否认高血压、冠心病、糖尿病，否认肝炎、结核或其他传染病史，自诉青霉素过敏，否认食物及其他过敏史，否认手术史。初潮13岁、经期4天、周期30天，G3P1，末次月经2019-5-19。T：36.6℃，P：72次/分，R：20次/分，Bp：104/71mmHg。内科查体无特殊。专科查体：第二性征：女性。已婚已产式。外阴：发育正常。阴道：通畅，无畸形，粘膜色泽正常，分泌物多，白色稀糊样，无异味。宫颈：中度糜烂，小息肉，触血，宫颈管内无出血。宫体：后位，稍增大，质中，表面光滑，无压痛。左附件：增厚，无压痛。右附件：增厚，无压痛。检查结果：2019-5-17我院彩超： 子宫前位，宫体大小5.0x6.0x5.9cm，内膜居中，厚0.4cm（单层），节育环居中，后壁肌壁增厚，回声稍增强，肌壁间探及星点状血流信号。左附件区查见6.5x5.3x5.8cm分隔状囊性占位，囊液不清亮，囊壁探及血流信号。右附件区查见5.0x4.6x5.7cm分隔状囊性占位，壁厚，形态不规则，囊液不清亮，囊壁探及血流信号。诊断：子宫偏大（子宫腺肌症待排）右附件区囊性占位（疑输卵管积水）左附件区囊性占位 环位正常。2019-5-17胸部CT：1.右肺上叶小结节，多系炎性，建议随访；双肺少许慢性炎症改变；2.扫及肝内小钙化灶。2019-5-17肿瘤标志物：正常。2019-5-17白带常规：正常。"/>
+				</note>
+				<!-- 结构化 -->
+				<entry>
+					<item/>
+				</entry>
+			</List>
+		</resource>
+	</entry>
+	<!-- 初步诊断章节 -->
+	<entry>
+		<fullUrl value="[base]/List/initialDiag"/>
+		<resource>
+			<List>
+				<id value="initialDiag"/>
+				<!-- 初步诊断-主要诊断 -->
+				<contained>
+					<Condition>
+						<id value="MainDiag"/>
+						<!-- 条目编码，需要唯一区分 -->
+						<category>
+							<coding>
+								<system/>
+								<code value="initial-MainDiag"/>
+								<display value="初步诊断-主要诊断"/>
+							</coding>
+						</category>
+						<!-- 诊断编码 -->
+						<code>
+							<coding>
+								<system/>
+								<code value="S06.902"/>
+								<display value="创伤性脑损伤"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<!-- 诊断日期时间 -->
+						<onsetDateTime value="2019-02-01T10:10:10Z"/>
+						<!-- 诊断描述 -->
+						<note>
+							<text value="诊断描述"/>
+						</note>
+					</Condition>
+				</contained>
+				<!-- 初步诊断-次要诊断 -->
+				<contained>
+					<Condition>
+						<id value="SeconDiag"/>
+						<!-- 条目编码，需要唯一区分 -->
+						<category>
+							<coding>
+								<system value="http://loinc.org"/>
+								<code value="initial-SeconDiag"/>
+								<display value="初步诊断-主要诊断"/>
+							</coding>
+						</category>
+						<!-- 诊断编码 -->
+						<code>
+							<coding>
+								<system/>
+								<code value="S06.903"/>
+								<display value="脑出血"/>
+							</coding>
+						</code>
+						<subject>
+							<reference value="[base]/Patient/pat001"/>
+						</subject>
+						<!-- 诊断日期时间 -->
+						<onsetDateTime value="2019-02-01T10:10:10Z"/>
+						<!-- 诊断描述 -->
+						<note>
+							<text value="诊断描述"/>
+						</note>
+					</Condition>
+				</contained>
+				<!-- 固定值（必填项）-->
+				<status value="current"/>
+				<!-- 固定值（必填项）-->
+				<mode value="snapshot"/>
+				<title value="初步诊断章节"/>
+				<note>
+					<text value="主诊断：创伤性脑损伤；次要诊断：脑出血"/>
+				</note>
+				<!-- 结构化：主要诊断 -->
+				<entry>
+					<item>
+						<reference value="#MainDiag"/>
+					</item>
+				</entry>
+				<!-- 结构化：次要诊断 -->
+				<entry>
+					<item>
+						<reference value="#SeconDiag"/>
+					</item>
+				</entry>
+			</List>
+		</resource>
+	</entry>
+</Bundle>

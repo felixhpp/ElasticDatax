@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.mapper.cache.DictionaryMapMapper" >
+    <!-- 性别映射 -->
+    <resultMap id="SexMap" type="com.example.demo.entity.DictionaryMap">
+        <!--column数据库中表的名  property是对应类的属性  -->
+        <result column="CTS_Code" property="dicCode" jdbcType="VARCHAR" />
+        <result column="CTS_Desc" property="dicName" jdbcType="VARCHAR" />
+    </resultMap>
+    <!--婚姻状态-->
+    <resultMap id="MaritalMap" type="com.example.demo.entity.DictionaryMap">
+        <!--column数据库中表的名  property是对应类的属性  -->
+        <result column="CTM_Code" property="dicCode" jdbcType="VARCHAR" />
+        <result column="CTM_Desc" property="dicName" jdbcType="VARCHAR" />
+    </resultMap>
+    <!--民族-->
+    <resultMap id="NationMap" type="com.example.demo.entity.DictionaryMap">
+        <!--column数据库中表的名  property是对应类的属性  -->
+        <result column="CTN_Code" property="dicCode" jdbcType="VARCHAR" />
+        <result column="CTN_Desc" property="dicName" jdbcType="VARCHAR" />
+    </resultMap>
+    <!--科室-->
+    <resultMap id="DeptMap" type="com.example.demo.entity.DictionaryMap">
+        <!--column数据库中表的名  property是对应类的属性  -->
+        <result column="CTD_Code" property="dicCode" jdbcType="VARCHAR" />
+        <result column="CTD_Desc" property="dicName" jdbcType="VARCHAR" />
+    </resultMap>
+    <!--医院-->
+    <resultMap id="HospitalMap" type="com.example.demo.entity.DictionaryMap">
+        <!--column数据库中表的名  property是对应类的属性  -->
+        <result column="CTH_Code" property="dicCode" jdbcType="VARCHAR" />
+        <result column="CTH_Desc" property="dicName" jdbcType="VARCHAR" />
+    </resultMap>
+    <!--诊断-->
+    <resultMap id="DiagnoseMap" type="com.example.demo.entity.DictionaryMap">
+        <!--column数据库中表的名  property是对应类的属性  -->
+        <result column="CTD_Code" property="dicCode" jdbcType="VARCHAR" />
+        <result column="CTD_Desc" property="dicName" jdbcType="VARCHAR" />
+        <result column="CTD_ICDCode" property="dicICDCode" jdbcType="VARCHAR" />
+    </resultMap>
+    <!--诊断类型-->
+    <resultMap id="DiagnoseTypeMap" type="com.example.demo.entity.DictionaryMap">
+        <!--column数据库中表的名  property是对应类的属性  -->
+        <result column="CTDT_Code" property="dicCode" jdbcType="VARCHAR" />
+        <result column="CTDT_Desc" property="dicName" jdbcType="VARCHAR" />
+    </resultMap>
+
+
+    <!-- 查询所有性别 -->
+    <select id="getAllSex" resultMap="SexMap">
+        SELECT * FROM  mdm_USER.CT_Sex
+    </select>
+    <!-- 根据编码查询性别 -->
+    <select id="getSexByCode" resultMap="SexMap" parameterType="java.util.Map">
+        SELECT * FROM mdm_USER.CT_Sex u WHERE 1 = 1 AND CTS_Code = #{code}
+    </select>
+
+    <!-- 查询所有婚姻状态 -->
+    <select id="getAllMarital" resultMap="MaritalMap">
+        SELECT * FROM  mdm_USER.CT_Marital
+    </select>
+    <!-- 根据编码查询婚姻状态-->
+    <select id="getMaritalByCode" resultMap="MaritalMap" parameterType="java.util.Map">
+        SELECT * FROM mdm_USER.CT_Marital u WHERE 1 = 1 AND CTM_Code = #{code}
+    </select>
+
+    <!-- 查询所有民族 -->
+    <select id="getAllNation" resultMap="NationMap">
+        SELECT * FROM  mdm_USER.CT_Nation
+    </select>
+    <!-- 根据编码查询民族-->
+    <select id="getNationByCode" resultMap="NationMap" parameterType="java.util.Map">
+        SELECT * FROM mdm_USER.CT_Nation u WHERE 1 = 1 AND CTN_Code = #{code}
+    </select>
+
+    <!-- 查询所有科室 -->
+    <select id="getAllDept" resultMap="DeptMap">
+        SELECT * FROM  mdm_USER.CT_Dept
+    </select>
+    <!-- 根据编码查询科室-->
+    <select id="getDeptByCode" resultMap="DeptMap" parameterType="java.util.Map">
+        SELECT * FROM mdm_USER.CT_Dept u WHERE 1 = 1 AND CTS_Code = #{code}
+    </select>
+
+    <!-- 查询所有医院 -->
+    <select id="getAllHospital" resultMap="HospitalMap">
+        SELECT * FROM  mdm_USER.CT_Hospital
+    </select>
+    <!-- 根据编码查询医院-->
+    <select id="getHospitalByCode" resultMap="HospitalMap" parameterType="java.util.Map">
+        SELECT * FROM mdm_USER.CT_Hospital u WHERE 1 = 1 AND CTH_Code = #{code}
+    </select>
+
+
+    <!--就诊状态-->
+    <resultMap id="AdmStatusMap" type="com.example.demo.entity.DictionaryMap">
+        <!--column数据库中表的名  property是对应类的属性  -->
+        <result column="CTES_Code" property="dicCode" jdbcType="VARCHAR" />
+        <result column="CTES_Desc" property="dicName" jdbcType="VARCHAR" />
+    </resultMap>
+    <!-- 就诊状态 -->
+    <select id="getAllAdmStatus" resultMap="AdmStatusMap">
+        SELECT * FROM  mdm_USER.CT_EncounterStatus
+    </select>
+    <!-- 就诊状态-->
+    <select id="getAdmStatusByCode" resultMap="AdmStatusMap" parameterType="java.util.Map">
+        SELECT * FROM mdm_USER.CT_EncounterStatus u WHERE 1 = 1 AND CTES_Code = #{code}
+    </select>
+
+    <!-- 查询所有诊断字典 -->
+    <select id="getAllDiagnose" resultMap="DiagnoseMap">
+        SELECT * FROM  mdm_USER.CT_Diagnose
+    </select>
+    <!-- 根据编码查询诊断字典-->
+    <select id="getDiagnoseByCode" resultMap="DiagnoseMap" parameterType="java.util.Map">
+        SELECT * FROM mdm_USER.CT_Diagnose u WHERE 1 = 1 AND CTD_Code = #{code}
+    </select>
+
+    <!-- 查询所有诊断类型字典 -->
+    <select id="getAllDiagnoseType" resultMap="DiagnoseTypeMap">
+        SELECT * FROM  mdm_USER.CT_DiagnoseType
+    </select>
+    <!-- 根据编码查询诊断类型字典-->
+    <select id="getDiagnoseTypeByCode" resultMap="DiagnoseTypeMap" parameterType="java.util.Map">
+        SELECT * FROM mdm_USER.CT_DiagnoseType u WHERE 1 = 1 AND CTDT_Code = #{code}
+    </select>
+
+    <!--就诊类型-->
+    <resultMap id="AdmTypeMap" type="com.example.demo.entity.DictionaryMap">
+        <!--column数据库中表的名  property是对应类的属性  -->
+        <result column="CTET_Code" property="dicCode" jdbcType="VARCHAR" />
+        <result column="CTET_Desc" property="dicName" jdbcType="VARCHAR" />
+    </resultMap>
+    <!-- 查询所有就诊类型字典 -->
+    <select id="getAllAdmType" resultMap="AdmTypeMap">
+        SELECT * FROM  mdm_USER.CT_EncounterType
+    </select>
+    <!-- 根据编码查询就诊类型字典-->
+    <select id="getAdmTypeByCode" resultMap="AdmTypeMap" parameterType="java.util.Map">
+        SELECT * FROM mdm_USER.CT_EncounterType u WHERE 1 = 1 AND CTET_Code = #{code}
+    </select>
+
+    <!--检验项目字典表-->
+    <resultMap id="LisItemMap" type="com.example.demo.entity.DictionaryMap">
+        <!--column数据库中表的名  property是对应类的属性  -->
+        <result column="CTLI_Code" property="dicCode" jdbcType="VARCHAR" />
+        <result column="CTLI_Desc" property="dicName" jdbcType="VARCHAR" />
+    </resultMap>
+    <!-- 查询所有检验项目字典 -->
+    <select id="getAllLisItem" resultMap="LisItemMap">
+        SELECT * FROM  mdm_USER.CT_LisItem
+    </select>
+    <!-- 根据编码查询检验项目字典-->
+    <select id="getLisItemByCode" resultMap="LisItemMap" parameterType="java.util.Map">
+        SELECT * FROM mdm_USER.CT_LisItem u WHERE 1 = 1 AND CTLI_Code = #{code}
+    </select>
+
+</mapper>

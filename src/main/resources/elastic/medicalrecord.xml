@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<elasticMapper name="medicalrecord">
+    <!--property配置字段映射信息
+       sourceName：源字段名称
+       targetName: 目标字段名称
+       convert： 是否进行转换， 如果true, 则将通过调用方法或者动态执行sql获取转换后的值
+       valueType: 字段数据类型，
+       dicType: 字典类型  包括：dept，sex， national，admType，diagnoseType，diagnoseName，marital
+       -->
+    <!--就诊ID， -->
+    <property sourceName="mr_admid"  targetName="MR_AdmID" convert="false" valueType="java.lang.String" idField="true" desc="就诊号">
+    </property>
+    <property sourceName="mr_regno" targetName="MR_RegNo"  convert="false" valueType="java.lang.String" routingField="true" parentField="true" desc="登记号">
+
+    </property>
+    <!--就诊时年龄， 需要通过生日字段mr_birthday计算-->
+    <property sourceName="mr_admage" targetName="MR_AdmAge"  convert="false" valueType="java.lang.String"  desc="就诊时年龄">
+
+    </property>
+    <property sourceName="mr_admhospital_code" targetName="MR_AdmHospital" convert="true" valueType="java.lang.String">
+        <dicType>com.example.demo.core.dics.Hospital</dicType>
+        <method>getByCode</method>
+        <parameter type="java.lang.String">mr_admhospital_code</parameter>
+    </property>
+    <property sourceName="mr_admtype_code" targetName="MR_AdmType"  convert="true" valueType="java.lang.String">
+        <dicType>com.example.demo.core.dics.AdmType</dicType>
+        <method>getByCode</method>
+        <parameter type="java.lang.String">mr_admtype_code</parameter>
+    </property>
+    <!--就诊日期时间-->
+    <property sourceName="mr_admdate" targetName="MR_AdmTime"  convert="true" valueType="java.lang.String">
+        <!--concatDatatime转换方法 支持两个参数， 默认第一个参数为sourceName， 第二个参数为parameter中字段的值-->
+        <method>concatDatatime</method>
+        <parameter>mr_admtime</parameter>
+    </property>
+    <property sourceName="mr_admdept_code" targetName="MR_AdmDept"  convert="true" valueType="java.lang.String">
+        <dicType>com.example.demo.core.dics.Deptartment</dicType>
+        <method>getByCode</method>
+        <parameter type="java.lang.String">mr_admdept_code</parameter>
+    </property>
+    <property sourceName="mr_admdept_code" targetName="MR_GenericDeptCode"  convert="false" valueType="java.lang.String">
+
+    </property>
+    <property sourceName="mr_dischdate" targetName="MR_DischTime"  convert="true" valueType="java.lang.String">
+        <!--concatDatatime转换方法 支持两个参数， 默认第一个参数为sourceName， 第二个参数为parameter中字段的值-->
+        <method>concatDatatime</method>
+        <parameter>mr_dischtime</parameter>
+    </property>
+    <property sourceName="mr_dischdept_code" targetName="MR_DischDept"  convert="true" valueType="java.lang.String">
+        <dicType>com.example.demo.core.dics.Deptartment</dicType>
+        <method>getByCode</method>
+        <parameter type="java.lang.String">mr_dischdept_code</parameter>
+    </property>
+    <!--住院天数-->
+    <property sourceName="mr_inpatientdays" targetName="MR_InpatientDays"  convert="false" valueType="java.lang.String">
+    </property>
+    <!--就诊状态-->
+    <property sourceName="mr_visitstatus_code" targetName="MR_Visitstatus"  convert="true" valueType="java.lang.String">
+        <dicType>com.example.demo.core.dics.AdmStatus</dicType>
+        <method>getByCode</method>
+        <parameter type="java.lang.String">mr_visitstatus_code</parameter>
+    </property>
+</elasticMapper>

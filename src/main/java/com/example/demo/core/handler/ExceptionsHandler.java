@@ -3,6 +3,7 @@ package com.example.demo.core.handler;
 import com.example.demo.core.entity.ErrorMessage;
 import com.example.demo.core.entity.RestResult;
 import com.example.demo.core.exception.LogicException;
+import org.apache.avalon.framework.service.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -41,7 +42,7 @@ public class ExceptionsHandler {
     @ExceptionHandler(Exception.class)
     public RestResult exception(Exception e) {
         logger.error(e.getMessage(), e);
-        return new RestResult().fail(500, "Error", null);
+        return new RestResult().fail(500, "服务器遇到错误，无法完成请求", null);
     }
 
     /**
@@ -49,7 +50,7 @@ public class ExceptionsHandler {
      */
     @ExceptionHandler(NoHandlerFoundException.class)
     public RestResult notFoundException() {
-        return new RestResult().fail(404, "Not found", null);
+        return new RestResult().fail(404, "请求不存在。", null);
     }
 
     /**
@@ -57,7 +58,7 @@ public class ExceptionsHandler {
      */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public RestResult httpRequestMethodNotSupportedException() {
-        return new RestResult().fail(405, "Method not allowed", null);
+        return new RestResult().fail(405, "请求不被允许。", null);
     }
 
     /**
@@ -67,6 +68,7 @@ public class ExceptionsHandler {
             MissingServletRequestPartException.class, BindException.class, MethodArgumentNotValidException.class})
     public RestResult parameterException(Exception e) {
         String error = null;
+        String message = "";
         logger.error(e.getMessage(), e);
         if(e instanceof MethodArgumentNotValidException){
             MethodArgumentNotValidException methodArgumentNotValidException = (MethodArgumentNotValidException) e;
@@ -80,11 +82,17 @@ public class ExceptionsHandler {
                 });
                 logger.error(ErrorMessage.STATUS_BADREQUEST + ", " + msg.toString());
 
-                error = msg.toString();
+                return new RestResult().fail(-1, ErrorMessage.STATUS_BADREQUEST , msg.toString());
             }
 
+        } else if(e instanceof HttpMessageNotReadableException){
+            e.printStackTrace();
+            return new RestResult().fail(501, "请求错误。", e.getMessage());
+        } else if (e instanceof ServiceException) {//业务失败的异常，如“账号或密码错误”
+            return new RestResult().fail(502, "业务层错误。", null);
         }
-        return new RestResult().fail(403,"Parameter error", error);
+
+        return new RestResult().fail(500, "服务器遇到错误，无法完成请求", null);
     }
 
     /**
@@ -92,7 +100,7 @@ public class ExceptionsHandler {
      */
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public RestResult maxUploadSizeExceededException() {
-        return new RestResult().fail(403,"File is too large", null);
+        return new RestResult().fail(-1,"File is too large", null);
     }
 
     /**

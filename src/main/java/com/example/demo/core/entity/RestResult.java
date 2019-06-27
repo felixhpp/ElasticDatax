@@ -48,35 +48,35 @@ public class RestResult<T> {
      */
     //private Timestamp currentTime;
 
-    public Integer getCode() {
+    final public Integer getCode() {
         return code;
     }
 
-    public void setCode(Integer code) {
+    final public void setCode(Integer code) {
         this.code = code;
     }
 
-    public String getMsg() {
+    final public String getMsg() {
         return msg;
     }
 
-    public void setMsg(String msg) {
+    final public void setMsg(String msg) {
         this.msg = msg;
     }
 
-    public String getError() {
+    final public String getError() {
         return error;
     }
 
-    public void setError(String error) {
+    final public void setError(String error) {
         this.error = error;
     }
 
-    public T getData() {
+    final public T getData() {
         return data;
     }
 
-    public void setData(T data) {
+    final public void setData(T data) {
         this.data = data;
     }
 
@@ -84,26 +84,26 @@ public class RestResult<T> {
 
     }
 
-    public RestResult success() {
+    final public RestResult success() {
         return setResult(StateCode.SUCCESS, "Success", null);
     }
 
-    public RestResult success(T data) {
+    final public RestResult success(T data) {
         return setResult(StateCode.SUCCESS, "Success", data);
     }
 
-    public RestResult fail(int code, String message, String error) {
+    final public RestResult fail(int code, String message, String error) {
         this.code = code;
         this.msg = message;
         this.error = error;
         return this;
     }
 
-    public RestResult fail(T data, String message, int code) {
+    final public RestResult fail(T data, String message, int code) {
         return setResult(code, message, data);
     }
 
-    public RestResult fail(String message, int code) {
+    final public RestResult fail(String message, int code) {
         this.code = code;
         this.msg = message;
 

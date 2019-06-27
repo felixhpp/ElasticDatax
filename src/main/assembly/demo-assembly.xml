@@ -1,0 +1,71 @@
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.0.0 http://maven.apache.org/xsd/assembly-2.0.0.xsd">
+    <id>2.3.4</id>
+    <formats>
+        <!--支持 zip，tar，tar.gz，tar.bz2，jar，dir，war 等 -->
+        <format>tar.gz</format>
+        <format>zip</format>
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <fileSets>
+        <fileSet>
+            <!--脚本所在的文件夹，以及打包后将脚本输出到哪个文件夹中 -->
+            <directory>${basedir}/src/main/assembly/bin</directory>
+            <outputDirectory>${file.separator}bin</outputDirectory>
+            <directoryMode>0775</directoryMode>
+            <!-- 哪些文件会被提取 -->
+            <includes>
+                <include>*.sh</include>
+                <include>*.bat</include>
+            </includes>
+            <fileMode>0775</fileMode>
+        </fileSet>
+        <fileSet>
+            <directory>${basedir}/src/main/resources</directory>
+            <includes>
+                <include>*.yml</include>
+                <!--<include>*.xml</include>-->
+                <include>*.properties</include>
+            </includes>
+            <filtered>true</filtered>
+            <outputDirectory>${file.separator}config</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>${basedir}/src/main/resources/elastic</directory>
+            <includes>
+                <include>*.xml</include>
+                <include>*/*.xml</include>
+            </includes>
+            <filtered>true</filtered>
+            <outputDirectory>${file.separator}elastic</outputDirectory>
+        </fileSet>
+
+        <fileSet>
+            <directory>${project.build.directory}/lib</directory>
+            <outputDirectory>${file.separator}lib</outputDirectory>
+            <!-- 打包需要包含的文件 -->
+            <includes>
+                <include>*.jar</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>${project.build.directory}</directory>
+            <outputDirectory>${file.separator}</outputDirectory>
+            <!-- 打包需要包含的文件 -->
+            <includes>
+                <include>demo*.jar</include>
+            </includes>
+        </fileSet>
+        <!-- 把项目相关的说明文件，打包进zip文件的根目录 -->
+        <fileSet>
+            <directory>${project.basedir}</directory>
+            <outputDirectory></outputDirectory>
+            <includes>
+                <include>README*</include>
+                <include>LICENSE*</include>
+                <include>NOTICE*</include>
+            </includes>
+        </fileSet>
+    </fileSets>
+</assembly>

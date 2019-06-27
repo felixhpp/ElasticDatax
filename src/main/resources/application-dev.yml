@@ -3,3 +3,5 @@ spring:
   profiles: dev
 server:
   port: 8160
+elastic-mapper:
+  onMapper: true

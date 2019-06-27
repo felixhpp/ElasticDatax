@@ -8,7 +8,7 @@ import com.example.demo.core.entity.RestResult;
 public class ResultUtil {
     public static RestResult success(Object object){
         RestResult restResult = new RestResult();
-        restResult.setCode(0);
+        restResult.setCode(1);
         restResult.setMsg("请求成功");
         restResult.setData(object);
 

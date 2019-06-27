@@ -1,5 +1,16 @@
 server:
   port: 8080
+    # 下面是配置undertow作为服务器的参数
+#    undertow:
+#      # 设置IO线程数, 它主要执行非阻塞的任务,它们会负责多个连接, 默认设置每个CPU核心一个线程
+#      io-threads: 2
+#      # 阻塞任务线程池, 当执行类似servlet请求阻塞操作, undertow会从这个线程池中取得线程,它的值设置取决于系统的负载
+#      worker-threads: 20
+#      # 以下的配置会影响buffer,这些buffer会用于服务器连接的IO操作,有点类似netty的池化内存管理
+#      # 每块buffer的空间大小,越小的空间被利用越充分
+#      buffer-size: 1024
+#      # 是否分配的直接内存
+#      direct-buffers: true
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.example.demo.mapper
@@ -34,6 +45,10 @@ spring:
       prefix: classpath:/templates/
       suffix: .html
     static-path-pattern: /public
+    throw-exception-if-no-handler-found: true   #出现错误时, 直接抛出异常(便于异常统一处理，否则捕获不到404)
+    #不要为我们工程中的资源文件建立映射
+    resources:
+      add-mappings: false
   datasource:
     ## 主数据库信息
     primary:
@@ -41,7 +56,7 @@ spring:
       type: com.alibaba.druid.pool.DruidDataSource
       username: root
       password: 123456
-      url: jdbc:mysql://localhost:3306/elastic?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC
+      url: jdbc:mysql://localhost:3316/elastic?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC
       driver-class-name: com.mysql.cj.jdbc.Driver
       # 连接池配置
       initialSize: 5    # 初始化大小，最小，最大
@@ -63,11 +78,11 @@ spring:
       aop-patterns: com.springboot.servie.*
     ## Cache 数据库信息
     cache:
-      # 数据库访问配置, 使用druid数据源
+      # 数据库访问配置, 使用druid数据源发布后报错， 暂时先使用hikari
       type: com.alibaba.druid.pool.DruidDataSource
       username: _system
-      password: SYS
-      url: jdbc:Cache://127.0.0.1:1972/MYCACHE
+      password: sysmdm
+      url: jdbc:Cache://192.178.61.120:1972/mdm
       driver-class-name: com.intersys.jdbc.CacheDriver
       # 连接池配置
       initialSize: 5    # 初始化大小，最小，最大
@@ -80,13 +95,20 @@ spring:
   ## 缓存
   cache:
     ehcache:
-      config: ehcache.xml
+      config: classpath:/ehcache.xml
+#    type: jcache
+#    jcache:
+#      config: classpath:/ehcache.xml
   ## Elasticsearch配置信息
   elasticsearch:
     bulk: 2000
     username: ""
     password: ""
-    ips: 127.0.0.1:9200
+    cluster:
+      name: "elasticsearch"
+    ip: 127.0.0.1
+    port: 9300
+    pool: 100
     connection-timeout: 20000 #连接超时
     max-connect-total: 50
     max-connect-per-route: 10
@@ -109,3 +131,10 @@ spring:
     config: classpath:log4j2-spring.xml
   system:
     version: 1
+elastic-mapper:
+  onMapper: true
+  onCache: true  # 系统启动时预先缓存字典类型
+management:
+    health:
+      elasticsearch:
+        enabled: false
