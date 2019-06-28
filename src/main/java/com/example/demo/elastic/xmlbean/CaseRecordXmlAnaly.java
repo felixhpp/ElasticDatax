@@ -1,28 +1,25 @@
 package com.example.demo.elastic.xmlbean;
 
-import com.example.demo.core.enums.CaseXmlEnum;
 import org.dom4j.*;
-import org.dom4j.io.SAXReader;
-import org.springframework.util.ResourceUtils;
 
-import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
 
 /***
  * 电子病历文档xml
+ * @author felix
  */
 public class CaseRecordXmlAnaly {
     // 文件名称
     private static final String fielName = "";
     // 病历文档模型
-    private static CaseRecodrXmlModel caseRecodrXmlModel;
+    private static CaseRecodrXmlBean caseRecodrXmlBean;
 
     private static Base64.Decoder decoder = Base64.getDecoder();
     private static Base64.Encoder encoder = Base64.getEncoder();
 
     /**
-     *
+     * 获取xml document对象
      * @param xmlStr
      * @param isBase64 是否base64编码
      * @return
@@ -47,7 +44,7 @@ public class CaseRecordXmlAnaly {
             return null;
         }
         Map<String, Object> resultMaps = new HashMap<>();
-        caseRecodrXmlModel = new CaseRecodrXmlModel();
+        caseRecodrXmlBean = new CaseRecodrXmlBean();
         try {
             // 获取根节点
             Element caseElements = document.getRootElement();   // Bundle节点
@@ -55,25 +52,17 @@ public class CaseRecordXmlAnaly {
             if(idElement != null){      //获取doc id
                 String curValue = idElement.attributeValue("value");
                 if(curValue.equals(CaseRecordType.residentAdmitNote)){
-                    caseRecodrXmlModel.setCaseDocType(CaseRecordType.residentAdmitNote);
+                    caseRecodrXmlBean.setCaseDocType(CaseRecordType.residentAdmitNote);
+                }else if(curValue.equals(CaseRecordType.medicalRecordHomePage)){
+                    caseRecodrXmlBean.setCaseDocType(CaseRecordType.medicalRecordHomePage);
                 }
             }
             List<Element> entryElements = caseElements.elements("entry");
             if(entryElements != null && entryElements.size() > 0){  // 获取全部entry
-                caseRecodrXmlModel.setEntrys(entryElements);
+                caseRecodrXmlBean.setEntrys(entryElements);
             }
-
-            long startTime=System.currentTimeMillis();
             // 执行caseRecodrXmlModel 的解析程序
-            caseRecodrXmlModel.analysis();
-
-            long endTime=System.currentTimeMillis();
-            System.out.println("analysis时间：" + (endTime-startTime)+"ms");
-
-            resultMaps = caseRecodrXmlModel.getanalyResult();
-
-            long endTime1=System.currentTimeMillis();
-            System.out.println("getanalyResult时间：" + (endTime1-endTime)+"ms");
+            resultMaps = caseRecodrXmlBean.analysis();
         } catch (Exception e){
             e.printStackTrace();
         }

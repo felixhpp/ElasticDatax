@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,6 +34,8 @@ public class DefaultDicMapServiceImpl implements DefaultDicMapService {
     private static CacheManager cacheManager = cacheCacheManager.getCacheManager();
     private static final String DicBusinessFieldcode = "00001";
     private static final Logger log = LoggerFactory.getLogger(DefaultDicMapServiceImpl.class);
+
+    private static Map<String, Cache> cacheMap = new HashMap<>();
     @Autowired
     private ElasticMapperBean mapperBean;
     /**
@@ -44,15 +47,24 @@ public class DefaultDicMapServiceImpl implements DefaultDicMapService {
     public String getDicNnameByCode(String code, DictionaryTypeEnum typeEnum) throws Exception {
         DictionaryMap dictionaryMap = null;
         String name = "";
-        Cache cache = cacheManager.getCache(typeEnum.getCacheName());
+        String cacheName = typeEnum.getCacheName();
+        Cache cache = cacheMap.get(cacheName);
         if(cache == null){
-            throw new Exception("******没有发现" + typeEnum.getCacheName() + "名称的缓存");
+            cache = cacheManager.getCache(cacheName);
+            if(cache == null){
+                log.error("******没有发现" + cacheName + "名称的缓存");
+                return "";
+            }
+            cacheMap.put(cacheName, cache);
         }
+
         String key = typeEnum.getCachePrefix() + DicBusinessFieldcode + "_" + code;
         Element value = cache != null ? cache.get(key): null;
 
-        if(value == null){
-            //System.err.println("*******" + typeEnum.getCacheName() + "缓存里没有"+key+", 从数据库拿数据");
+        if(value != null){
+            Object o = value.getObjectValue();
+            name = o != null ? o.toString() : "";
+        }else {
             log.error("*******" + typeEnum.getCacheName() + "缓存里没有"+key+", 从数据库拿数据");
             switch (typeEnum){
                 case DIAGNOSE_NAME:
@@ -113,8 +125,6 @@ public class DefaultDicMapServiceImpl implements DefaultDicMapService {
                 name = dictionaryMap.getDicName();
             }
             cache.flush();
-        }else {
-            name = value.getObjectValue().toString();
         }
 
         return name;

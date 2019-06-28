@@ -3,9 +3,9 @@ package com.example.demo;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.example.demo.core.enums.ElasticTypeEnum;
 import com.example.demo.core.utils.ESBulkModel;
 import com.example.demo.elastic.mapper.BaseMapper;
-import com.example.demo.elastic.mapper.PatientMapper;
 import com.example.demo.service.TaskService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +38,7 @@ public class ApplicationTests {
     @Test
     public void convert() throws Exception {
         Integer i = 100;
-        BaseMapper mapper = new PatientMapper();
+        BaseMapper mapper = new BaseMapper(ElasticTypeEnum.PATIENT);
         mapper.setOnMapper(true);
         for(Integer j = 0; j<i; j++){
             JSONObject object = new JSONObject();

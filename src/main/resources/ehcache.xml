@@ -28,7 +28,7 @@
     <cache
             name="mapperCache"
             eternal="true"
-            maxElementsInMemory="1"
+            maxElementsInMemory="100"
             maxElementsOnDisk = "0"
             overflowToDisk="true"
             diskPersistent="true"
@@ -37,7 +37,7 @@
     <cache
             name="dic_dicCache"
             eternal="true"
-            maxElementsInMemory="1"
+            maxElementsInMemory="50000"
             maxElementsOnDisk = "0"
             overflowToDisk="true"
             diskPersistent="true"
@@ -45,7 +45,7 @@
     <!--诊断缓存-->
     <cache
             name="dic_diagnoseCache"
-            maxElementsInMemory="1"
+            maxElementsInMemory="50000"
             maxElementsOnDisk = "0"
             overflowToDisk="true"
             eternal="true"
@@ -53,7 +53,7 @@
             memoryStoreEvictionPolicy="LFU" />
     <cache
             name="dic_itemCache"
-            maxElementsInMemory="1"
+            maxElementsInMemory="50000"
             maxElementsOnDisk = "0"
             overflowToDisk="true"
             eternal="true"

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE elasticMapper SYSTEM "elasticmapping.dtd">
 <elasticMapper name="patient">
     <!--property配置字段映射信息
         sourceName：源字段名称
@@ -11,31 +12,33 @@
         parameter: 为源数据字段名称
     -->
     <!--检验ID-->
-    <property sourceName="lis_id" targetName="Lis_Id"  convert="false" valueType="java.lang.String" idField="true" ></property>
-    <property sourceName="lis_admno" targetName="Lis_AdmNo"  convert="false" valueType="java.lang.String" parentField="true"></property>
-    <property sourceName="lis_regno" targetName="Lis_RegNo"  convert="false" valueType="java.lang.String" routingField="true"></property>
+    <property sourceName="lis_id" targetName="Lis_Id" valueType="String" idField="true" ></property>
+    <property sourceName="lis_admno" targetName="Lis_AdmNo" valueType="String" parentField="true"></property>
+    <property sourceName="lis_regno" targetName="Lis_RegNo" valueType="String" routingField="true"></property>
     <!--检验名称-->
-    <property sourceName="lis_name_code" targetName="Lis_Name"  convert="true" valueType="java.lang.String">
-        <dicType>com.example.demo.core.dics.LisItem</dicType>
-        <method>getByCode</method>
-        <parameter type="java.lang.String">lis_name_code</parameter>
+    <property sourceName="lis_name_code" targetName="Lis_Name" valueType="String">
+        <dicConvertor methodName="getByCode" dicType="LisItem">
+            <parameter></parameter>
+        </dicConvertor>
     </property>
     <!--检验值-->
-    <property sourceName="lis_value" targetName="Lis_Value"  convert="false" valueType="java.lang.String">
+    <property sourceName="lis_value" targetName="Lis_Value" valueType="String">
     </property>
-    <property sourceName="lis_result" targetName="Lis_Result"  convert="false" valueType="java.lang.String"></property>
-    <property sourceName="lis_name_code" targetName="Lis_GenericCode"  convert="false" valueType="java.lang.String"></property>
+    <property sourceName="lis_result" targetName="Lis_Result" valueType="String"></property>
+    <property sourceName="lis_name_code" targetName="Lis_GenericCode"  valueType="String"></property>
     <!--格式化后的检验值,为了方便比较-->
-    <property sourceName="lis_value" targetName="Lis_FormatVaue"  convert="true" valueType="java.lang.String">
-        <method>formatValue</method>
-        <parameter type="java.lang.String">lis_value</parameter>
+    <property sourceName="lis_value" targetName="Lis_FormatVaue" valueType="String">
+        <valueFormatConvertor methodName="formatValue">
+            <parameter></parameter>
+        </valueFormatConvertor>
     </property>
     <!--检验时间-->
-    <property sourceName="lis_date" targetName="Lis_DateTime"  convert="true" valueType="java.lang.String">
-        <method>formatDate</method>
-        <parameter type="java.lang.String">lis_time</parameter>
+    <property sourceName="lis_date" targetName="Lis_DateTime" valueType="String">
+        <dateFormatConvertor methodName="formatDate" formatType="longDate">
+            <parameter></parameter>
+        </dateFormatConvertor>
     </property>
     <!--距离手术天数-->
-    <property sourceName="lis_operationdays" targetName="Lis_OperationDays" convert="false" valueType="java.lang.String">
+    <property sourceName="lis_operationdays" targetName="Lis_OperationDays" valueType="String">
     </property>
 </elasticMapper>

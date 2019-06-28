@@ -19,6 +19,10 @@ import org.springframework.context.annotation.Configuration;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+/**
+ * elasticsearch配置信息
+ * @author felix
+ */
 @Configuration
 public class ElasticsearchConfig {
     private static final Logger logger = LoggerFactory.getLogger(ElasticsearchConfig.class);
@@ -84,9 +88,6 @@ public class ElasticsearchConfig {
             @Override
             public void afterBulk(long l, BulkRequest bulkRequest, BulkResponse bulkResponse) {
                 logger.info("[ {} ] data bulk finish.",bulkRequest.numberOfActions() );
-//                if(bulkResponse.hasFailures()){
-//                    logger.error("bulk has failures,reason :{}", bulkResponse.buildFailureMessage());
-//                }
             }
 
             @Override

@@ -11,10 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * ES 批量导入时数据转换管道
@@ -23,7 +20,6 @@ import java.util.Map;
 public class ConvertPipeline {
     private static Logger logger = LoggerFactory.getLogger(ConvertPipeline.class);
     private static Map<String, BaseMapper> baseMap = new HashMap<>();
-
     private static BaseMapper getInstance(ElasticTypeEnum typeEnum) throws Exception {
         String curTypeName = typeEnum.getEsType();
         BaseMapper baseMapper = baseMap.get(curTypeName);
@@ -31,29 +27,6 @@ public class ConvertPipeline {
             return baseMapper;
         }
         baseMapper = new BaseMapper(typeEnum);
-//        switch (typeEnum){
-//            case PATIENT: // 病人基本信息
-//                baseMapper = new PatientMapper();
-//                break;
-//            case MEDICAL_RECORD:    // 就诊信息
-//                baseMapper = new MedicalRecordMapper();
-//                break;
-//            case DIAGNOSE:      // 诊断信息
-//                baseMapper = new DiagnoseMapper();
-//                break;
-//            case DIAGNOSE_Statistics:       // 诊断信息（用于统计）
-//                baseMapper = new DiagnoseStatisticMapper();
-//                break;
-//            case ORDITEM:       // 医嘱信息
-//                baseMapper = new OrderItemMapper();
-//                break;
-//            case Residentadmitnote: // 入院记录
-//                baseMapper = new ResidentadmitnoteMapper();
-//                break;
-//            case Lisitem:       //检验项
-//                baseMapper = new LisitemMapper();
-//                break;
-//        }
         baseMap.put(curTypeName, baseMapper);
         return baseMapper;
     }
@@ -121,12 +94,10 @@ public class ConvertPipeline {
             return null;
         }
         try {
-//            BaseMapper mapper = getNew(typeEnum);
             BaseMapper mapper = getInstance(typeEnum);
             mapper.setOnMapper(onMapper);
             List<ESBulkModel> bulkModels = new ArrayList<>();
             int size = maps.size();
-
             for(int i=0;i<size;i++){
                 Map<String, Object> map = maps.get(i);
                 ESBulkModel bulkModel = mapper.mapper(map);
@@ -134,7 +105,6 @@ public class ConvertPipeline {
                     bulkModels.add(bulkModel);
                 }
             }
-
             return bulkModels;
         }catch (Exception e){
             logger.error("model convert failed,error: [{}] ", e);
@@ -158,8 +128,7 @@ public class ConvertPipeline {
             return null;
         }
         try {
-            BaseMapper mapper = new BaseMapper(typeEnum);
-            mapper.setOnMapper(onMapper);
+            BaseMapper mapper = getInstance(typeEnum);
             mapper.setOnMapper(onMapper);
 
             ESBulkModel bulkModel = mapper.mapper(map);

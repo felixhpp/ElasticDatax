@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class XmlReader {
-    private static final Logger logger = LoggerFactory.getLogger(XmlMapperUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(XmlReader.class);
 
     /**
      * 读取xml文件,获取xml字符串

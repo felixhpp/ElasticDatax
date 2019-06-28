@@ -27,7 +27,7 @@ public enum CaseXmlEnum {
     // 元素节点或者属性名称
     private String name;
 
-    private CaseXmlEnum(int type, String name) {
+    CaseXmlEnum(int type, String name) {
         this.type = type;
         this.name = name;
     }

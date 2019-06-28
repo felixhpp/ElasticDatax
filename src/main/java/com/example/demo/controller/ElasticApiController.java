@@ -3,13 +3,11 @@ package com.example.demo.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONReader;
 import com.example.demo.core.entity.*;
-import com.example.demo.service.ElasticsearchService;
+import com.example.demo.service.ElasticBulkService;
 import com.example.demo.core.utils.ResultUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.lang.NullArgumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,19 +31,7 @@ public class ElasticApiController {
     private Logger logger = LoggerFactory.getLogger(ElasticApiController.class);
 
     @Autowired
-    ElasticsearchService elasticsearchService;
-
-    @PostMapping(path = "bulktest")
-    public RestResult bulkTest(@Valid @RequestBody RequetsExportEntity requetsBody){
-        ArrayList<Map<String, Object>> dataList = requetsBody.getData();
-        int size = dataList.size();
-        // 获取indexname
-        String index = requetsBody.getIndex();
-        // 获取typename
-        String type = requetsBody.getType();
-        BulkResponseBody result = elasticsearchService.bulk(index, type, dataList);
-        return ResultUtil.success(result);
-    }
+    ElasticBulkService elasticBulkService;
 
     /**
      * 集成平台API调用接口，批量导入ES数据
@@ -72,7 +58,7 @@ public class ElasticApiController {
 
             }
             List<Map<String, Object>> bulkData = strToMap(dataStr);
-            elasticsearchService.bulk(theme, bulkData);
+            elasticBulkService.bulk(theme, bulkData);
             result.setResultCode("0");
             result.setResultContent("成功" + bulkData.size() + "条");
             long endTime=System.currentTimeMillis();
@@ -96,7 +82,7 @@ public class ElasticApiController {
         String dataStr = requetsBody.getData();
         String theme = requetsBody.getTheme();
         List<Map<String, Object>> bulkData = strToMap(dataStr);
-        BulkResponseBody result = elasticsearchService.bulk(theme, bulkData);
+        BulkResponseBody result = elasticBulkService.bulk(theme, bulkData);
         return ResultUtil.success(result);
     }
 
@@ -109,7 +95,7 @@ public class ElasticApiController {
     public RestResult bulk(@RequestBody List<BulkCaseRequestBody> body){
         long startTime = System.currentTimeMillis();
 
-        BulkResponseBody responseBody = elasticsearchService.bulkCase(body);
+        BulkResponseBody responseBody = elasticBulkService.bulkCase(body);
         long endTime = System.currentTimeMillis();
         logger.info("=====bulk [ casenote ],tool：" + (endTime- startTime) + "ms，message:" + responseBody.getResultContent());
         return ResultUtil.success(responseBody);
@@ -119,7 +105,7 @@ public class ElasticApiController {
     @ApiImplicitParam(name = "regNo", value = "登记号", paramType = "path", required = true, dataType = "String")
     @GetMapping(path = "getPatient/{regNo}")
     public RestResult getPatientByRegNo(@PathVariable(name = "regNo")String regNo) throws IOException {
-        return ResultUtil.success(elasticsearchService.getPatientByRegNo(regNo));
+        return ResultUtil.success(elasticBulkService.getPatientByRegNo(regNo));
     }
 
     /**

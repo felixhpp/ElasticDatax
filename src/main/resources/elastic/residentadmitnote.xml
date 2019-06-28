@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE elasticMapper SYSTEM "elasticmapping.dtd">
 <elasticMapper name="residentadmitnote">
     <!--property配置字段映射信息
         sourceName：源字段名称
@@ -7,35 +8,35 @@
         valueType: 字段数据类型，
         dicType: 字典类型   com.example.demo.core.dics 包下的类路径
         -->
-    <property sourceName="documentid"  targetName="RAN_Id" convert="false" valueType="java.lang.String" idField="true"></property>
+    <property sourceName="documentid"  targetName="RAN_Id" valueType="String" idField="true"></property>
     <!--就诊号ID-->
-    <property sourceName="visitnumber" targetName="RAN_AdmNo"  convert="false" valueType="java.lang.String" parentField="true"></property>
+    <property sourceName="visitnumber" targetName="RAN_AdmNo" valueType="String" parentField="true"></property>
     <!--登记号-->
-    <property sourceName="patientid" targetName="RAN_RegNo"  convert="false" valueType="java.lang.String" routingField="true"></property>
+    <property sourceName="patientid" targetName="RAN_RegNo"  valueType="String" routingField="true"></property>
     <!--主诉-->
-    <property sourceName="zhusu" targetName="RAN_Complain"  convert="false" valueType="java.lang.String"></property>
+    <property sourceName="zhusu" targetName="RAN_Complain" valueType="String"></property>
     <!--现病史-->
-    <property sourceName="xianbingshi" targetName="RAN_PresentIllness" convert="false" valueType="java.lang.String">
+    <property sourceName="xianbingshi" targetName="RAN_PresentIllness" valueType="String">
     </property>
     <!--既往史-->
-    <property sourceName="jiwangshi" targetName="RAN_PastHistory" convert="false" valueType="java.lang.String">
+    <property sourceName="jiwangshi" targetName="RAN_PastHistory" valueType="String">
     </property>
     <!--个人史-->
-    <property sourceName="gerenshi" targetName="RAN_Sociology" convert="false" valueType="java.lang.String">
+    <property sourceName="gerenshi" targetName="RAN_Sociology" valueType="String">
     </property>
     <!--婚育史-->
-    <property sourceName="yjhyshi" targetName="RAN_Marriage" convert="false" valueType="java.lang.String">
+    <property sourceName="yjhyshi" targetName="RAN_Marriage" valueType="String">
     </property>
     <!--家族史-->
-    <property sourceName="jiazushi" targetName="RAN_Family" convert="false" valueType="java.lang.String">
+    <property sourceName="jiazushi" targetName="RAN_Family" valueType="String">
     </property>
     <!--体格检查-->
-    <property sourceName="tigejiancha" targetName="RAN_PhysicalExamination" convert="false" valueType="java.lang.String">
+    <property sourceName="tigejiancha" targetName="RAN_PhysicalExamination" valueType="String">
     </property>
     <!--专科检查-->
-    <property sourceName="zkqkjc" targetName="RAN_SpecialityExamination" convert="false" valueType="java.lang.String">
+    <property sourceName="zkqkjc" targetName="RAN_SpecialityExamination" valueType="String">
     </property>
     <!--辅助检查-->
-    <property sourceName="fzjc" targetName="RAN_SupplementaryExamination" convert="false" valueType="java.lang.String">
+    <property sourceName="fzjc" targetName="RAN_SupplementaryExamination" valueType="String">
     </property>
 </elasticMapper>

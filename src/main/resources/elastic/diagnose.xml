@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE elasticMapper SYSTEM "elasticmapping.dtd">
 <elasticMapper name="diagnose">
     <!--property配置字段映射信息
         sourceName：源字段名称
@@ -7,29 +8,28 @@
         valueType: 字段数据类型，
         dicType: 字典类型   com.example.demo.core.dics 包下的类路径
         -->
-    <property sourceName="diag_id"  targetName="Diag_Id" convert="false" valueType="java.lang.String" idField="true"></property>
-    <property sourceName="diag_admid" targetName="Diag_AdmId"  convert="false" valueType="java.lang.String" parentField="true"></property>
-    <property sourceName="diag_regno" targetName="Diag_RegNo"  convert="false" valueType="java.lang.String" routingField="true"></property>
-    <property sourceName="diag_date" targetName="Diag_Time"  convert="true" valueType="java.lang.String">
-        <!--concatDatatime转换方法 支持两个参数， 默认第一个参数为sourceName， 第二个参数为parameter中字段的值-->
-        <method>concatDatatime</method>
-        <parameter>diag_time</parameter>
+    <property sourceName="diag_id"  targetName="Diag_Id" valueType="String" idField="true"></property>
+    <property sourceName="diag_admid" targetName="Diag_AdmId" valueType="String" parentField="true"></property>
+    <property sourceName="diag_regno" targetName="Diag_RegNo"  valueType="String" routingField="true"></property>
+    <property sourceName="diag_date" targetName="Diag_Time" valueType="String">
+       <dateConcatConvertor methodName="concatDatetime">
+           <dateParameter value="diag_date"></dateParameter>
+           <timeParameter value="diag_time"></timeParameter>
+       </dateConcatConvertor>
     </property>
-    <property sourceName="diag_type_code" targetName="Diag_Type" convert="true" valueType="java.lang.String">
-        <dicType>com.example.demo.core.dics.DiagnoseType</dicType>
-        <method>getByCode</method>
-        <parameter type="java.lang.String">diag_type_code</parameter>
+    <property sourceName="diag_type_code" targetName="Diag_Type" valueType="String">
+        <dicConvertor methodName="getByCode" dicType="DiagnoseType">
+            <parameter></parameter>
+        </dicConvertor>
     </property>
     <!--诊断名称  通过编码获取-->
-    <property sourceName="diag_name" targetName="Diag_Name"  convert="true" valueType="java.lang.String">
-        <!--dicType： 字典类型，如果设置会覆盖属性中的dicType-->
-        <dicType>com.example.demo.core.dics.DiagnoseName</dicType>
-        <method>getByCode</method>
-        <!--如果参数名称和原字段不同, 则默认先使用原字段名称, 如果不存在,在根据参数字段做转换-->
-        <parameter type="java.lang.String">diag_code</parameter>
+    <property sourceName="diag_name" targetName="Diag_Name" valueType="String">
+        <dicConvertor methodName="getByCode" dicType="DiagnoseName">
+            <parameter>diag_code</parameter>
+        </dicConvertor>
     </property>
     <!--诊断编码-->
-    <property sourceName="diag_code" targetName="Diag_Code "  convert="false" valueType="java.lang.String"></property>
+    <property sourceName="diag_code" targetName="Diag_Code " valueType="String"></property>
     <!--诊断顺位-->
-    <property sourceName="diag_no" targetName="Diag_No" convert="false" valueType="java.lang.String"></property>
+    <property sourceName="diag_no" targetName="Diag_No" valueType="String"></property>
 </elasticMapper>

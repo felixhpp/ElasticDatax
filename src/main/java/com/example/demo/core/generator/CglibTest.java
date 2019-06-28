@@ -14,17 +14,17 @@ public class CglibTest {
 
         propertyMap.put("name", Class.forName("java.lang.String"));
 
-        propertyMap.put("address", Class.forName("java.lang.String"));
+        propertyMap.put("Address", Class.forName("java.lang.String"));
 
         // 生成动态 Bean
-        CglibBean bean = new CglibBean(propertyMap);
+        BeanGen bean = new BeanGen(propertyMap);
 
         // 给 Bean 设置值
         bean.setValue("id", new Integer(123));
 
         bean.setValue("name", "454");
 
-        bean.setValue("address", "789");
+        bean.setValue("Address", "789");
 
         // 从 Bean 中获取值，当然了获得值的类型是 Object
 

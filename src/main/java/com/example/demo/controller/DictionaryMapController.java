@@ -2,7 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.core.enums.DictionaryTypeEnum;
 import com.example.demo.service.DefaultDicMapService;
-import com.example.demo.service.ElasticsearchService;
+import com.example.demo.service.ElasticBulkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +17,7 @@ public class DictionaryMapController {
     private DefaultDicMapService defaultDicMapService;
 
     @Autowired
-    private ElasticsearchService elasticsearchService;
+    private ElasticBulkService elasticBulkService;
 
 
     @GetMapping("getSex/{code}")

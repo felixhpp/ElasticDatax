@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--定义根目录节点为elasticMapper, 子节点为property， 可以有多个-->
+<!ELEMENT elasticMapper (property+,addProperty*)>
+<!--+ ：表示一次或者多次 ? ：表示零次或者一次  * ：表示零次或者多次 无 ：子元素只能出现一次-->
+<!ELEMENT property (methodConvertor* | dicConvertor? | dateFormatConvertor? | dateConcatConvertor? | valueFormatConvertor? | sqlConvertor)>
+<!ELEMENT methodConvertor (parameter+)>
+<!ELEMENT dateFormatConvertor (parameter)>
+<!ELEMENT dicConvertor (parameter)>
+<!ELEMENT sqlConvertor (#PCDATA)>
+<!ELEMENT dateConcatConvertor (dateParameter, timeParameter)>
+<!ELEMENT valueFormatConvertor (parameter)>
+<!ELEMENT dateParameter (#PCDATA)>
+<!ELEMENT timeParameter (#PCDATA)>
+<!ELEMENT addProperty (const*,sql*)>
+<!ELEMENT parameter (#PCDATA)>
+<!ELEMENT const (#PCDATA)>
+<!ELEMENT sql (#PCDATA)>
+<!-- elasticMapper name属性是必须的，且唯一 -->
+<!ATTLIST elasticMapper name ID #REQUIRED>
+<!-- property sourceName属性是必须的 -->
+<!ATTLIST property sourceName CDATA #REQUIRED>
+<!-- property targetName属性是必须的 -->
+<!ATTLIST property targetName ID #REQUIRED>
+<!-- property idField属性是可选的，只能选择true|false -->
+<!ATTLIST property idField (true|false) #IMPLED>
+<!-- property parentField属性是可选的，只能选择true|false -->
+<!ATTLIST property parentField (true|false) #IMPLED>
+<!-- property routingField属性是可选的，只能选择true|false -->
+<!ATTLIST property routingField (true|false) #IMPLED>
+<!--文字描述，可选-->
+<!ATTLIST property desc CDATA #IMPLED>
+<!-- property valueType属性是可选的，只能选择true|false -->
+<!ATTLIST property valueType (
+        String | string |
+        Integer | int |
+        Double | double |
+        Float | float |
+        Boolean | bool |
+        Date | date ) #IMPLED "java.lang.String">
+<!ATTLIST property format (
+        yyyy-MM-dd |
+        yyyy-MM-dd hh:mm:ss |
+        hh:mm:ss |
+        ) #IMPLED "yyyy-MM-dd">
+<!-- methodConvertor 参数方法 -->
+<!ATTLIST methodConvertor methodName (
+        test |
+        )  #REQUIRED>
+<!ATTLIST parameter type (
+        String | string |
+        Integer | int |
+        Double | double |
+        Float | float |
+        Boolean | bool |
+        Date | date
+        ) #IMPLED "java.lang.String">
+<!ATTLIST dicConvertor methodName (
+        getByCode
+        )  #REQUIRED>
+<!ATTLIST dicConvertor dicType (
+        DiagnoseType | Deptartment | Sex | National | AdmType | Marital | Hospital |
+        DiagnoseName | OrderItem | OrdType | OrdCateage | OrderStatus | Duration |
+        Freq | AdmStatus | LisItem | PHDrgMaterial |
+        )  #REQUIRED>
+<!ATTLIST dateFormatConvertor methodName (
+        formatDate |
+        ) #REQUIRED "formatDate">
+<!--format 日期的类型 shortDate : yyy-mm-dd; longDate: yyyy-mm-dd hh:mm:ss; time: hh:mm:ss-->
+<!ATTLIST dateFormatConvertor formatType (
+        shortDate | longDate | time |
+        ) #REQUIRED "shortDate">
+<!ATTLIST dateConcatConvertor methodName (
+        concatDatetime |
+        ) #REQUIRED "concatDatetime">
+<!ATTLIST valueFormatConvertor methodName (
+        formatValue |
+        ) #REQUIRED "formatValue">
+<!ATTLIST dateParameter value CDATA #REQUIRED>
+<!ATTLIST timeParameter value CDATA #REQUIRED>
+<!ATTLIST const targetName CDATA #REQUIRED>

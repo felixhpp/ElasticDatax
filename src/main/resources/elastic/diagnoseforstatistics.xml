@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE elasticMapper SYSTEM "elasticmapping.dtd">
 <elasticMapper name="diagnoseStatistic">
     <!--property配置字段映射信息
        sourceName：源字段名称
@@ -8,12 +9,12 @@
        dicType: 字典类型  包括：dept，sex， national，admType，diagnoseType，diagnoseName，marital
        -->
     <!--诊断信息（统计使用）  通过diagnose 映射-->
-    <property sourceName="Diag_Id"  targetName="DFS_Id" convert="false" valueType="java.lang.String" idField="true"></property>
-    <property sourceName="Diag_AdmId" targetName="DFS_AdmId"  convert="false" valueType="java.lang.String" parentField="true"></property>
-    <property sourceName="Diag_RegNo" targetName="DFS_RegNo"  convert="false" valueType="java.lang.String" routingField="true"></property>
-    <property sourceName="Diag_Type" targetName="DFS_Type" convert="false" valueType="java.lang.String">
+    <property sourceName="Diag_Id"  targetName="DFS_Id"  valueType="String" idField="true"></property>
+    <property sourceName="Diag_AdmId" targetName="DFS_AdmId" valueType="String" parentField="true"></property>
+    <property sourceName="Diag_RegNo" targetName="DFS_RegNo" valueType="String" routingField="true"></property>
+    <property sourceName="Diag_Type" targetName="DFS_Type" valueType="String">
     </property>
-    <property sourceName="Diag_Name" targetName="DFS_Name"  convert="false" valueType="java.lang.String">
+    <property sourceName="Diag_Name" targetName="DFS_Name" valueType="String">
     </property>
-    <property sourceName="Diag_Code" targetName="DFS_Code"  convert="false" valueType="java.lang.String"></property>
+    <property sourceName="Diag_Code" targetName="DFS_Code" valueType="String"></property>
 </elasticMapper>

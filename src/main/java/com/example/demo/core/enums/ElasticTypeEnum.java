@@ -1,6 +1,8 @@
 package com.example.demo.core.enums;
 
 import com.example.demo.core.exception.LogicException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Elastic type 和theme对应的枚举
@@ -20,16 +22,16 @@ public enum  ElasticTypeEnum {
     Residentadmitnote(6, "ryjl", "residentadmitnote", "residentadmitnote.xml"),
     // 检验项
     Lisitem(7, "pa_lisitem", "lisitem", "lisitem.xml"),
-    // 新增类型后需要在这里添加
-
+    // 病案首页
+    MedicalRecordHomePage(8, "basy", "medicalrecordhomepage", "medicalrecordhomepage.xml")
     ;
-
+    private static Logger logger = LoggerFactory.getLogger(ElasticTypeEnum.class);
     private int type;
     private String theme;
     private String esType;
     private String fileName;
 
-    private ElasticTypeEnum(int type, String theme, String esType, String fileName) {
+    ElasticTypeEnum(int type, String theme, String esType, String fileName) {
         this.type = type;
         this.theme = theme;
         this.esType = esType;
@@ -59,7 +61,9 @@ public enum  ElasticTypeEnum {
                 return aparameter;
             }
         }
-        throw  new LogicException("type 的名称不再指定范围内,type:" + type);
+        logger.error("type 的名称不再指定范围内,type:" + type);
+
+        return null;
     }
 
     /**
@@ -74,6 +78,8 @@ public enum  ElasticTypeEnum {
                 return aparameter;
             }
         }
-        throw  new LogicException("theme 属性的名称不再指定范围内, name: " + theme);
+        logger.error("theme 属性的名称不再指定范围内, name: " + theme);
+
+        return null;
     }
 }

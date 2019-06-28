@@ -2,8 +2,8 @@ package com.example.demo.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.example.demo.core.utils.SpringUtils;
-import com.example.demo.core.utils.XmlMapperUtil;
-import com.example.demo.elastic.xmlbean.XmlMapper;
+import com.example.demo.elastic.converter.ElasticMapperBean;
+import com.example.demo.elastic.converter.ElasticXmlToBean;
 import com.example.demo.service.EhCacheService;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
@@ -11,13 +11,8 @@ import net.sf.ehcache.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -82,13 +77,13 @@ public class EhCacheServiceImpl implements EhCacheService {
     private void doCache(Cache cache, String fileName) throws Exception {
         String key ="elaticMapper_" + fileName;
 
-        List<XmlMapper> maps = XmlMapperUtil.toBean(fileName);
-        if(maps == null || maps.size() == 0){
+        ElasticMapperBean bean = ElasticXmlToBean.toBean(fileName);
+        if(bean == null || bean.getPropertyArray().size() == 0){
             return;
         }
         logger.info("******开始缓存elastic mapper 文件名为：" + fileName + " 的数据");
 
-        cache.put(new Element(key, JSON.toJSONString(maps)));
+        cache.put(new Element(key, JSON.toJSONString(bean)));
 
         logger.info("******文件："+ fileName + "缓存完成");
     }
