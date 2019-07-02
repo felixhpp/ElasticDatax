@@ -95,8 +95,8 @@ public class ElasticsearchConfig {
                 logger.error("{} data bulk failed,reason :{}", bulkRequest.numberOfActions(), throwable);
             }
 
-        }).setBulkActions(10000)
-                .setBulkSize(new ByteSizeValue(1, ByteSizeUnit.GB))
+        }).setBulkActions(20000)
+                .setBulkSize(new ByteSizeValue(200, ByteSizeUnit.MB))
                 .setFlushInterval(TimeValue.timeValueSeconds(5))
                 .setConcurrentRequests(1)
                 .setBackoffPolicy(BackoffPolicy.exponentialBackoff(TimeValue.timeValueMillis(100), 3))

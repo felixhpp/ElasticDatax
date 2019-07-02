@@ -11,14 +11,6 @@ public interface DicOrderItemMappper {
     List<DictionaryMap> getAllOrdItemName();
     DictionaryMap getOrdItemNameByCode(String code) throws  Exception;
 
-    // 医嘱大类
-    List<DictionaryMap> getAllOrdCategory();
-    DictionaryMap getOrdCategoryByCode(String code) throws  Exception;
-
-    // 药品通用名
-    List<DictionaryMap> getAllPHCGeneric();
-    DictionaryMap getPHCGenericByCode(String code) throws  Exception;
-
     // 医嘱类型
     List<DictionaryMap> getAllPriority();
     DictionaryMap getPriorityByCode(String code) throws  Exception;
@@ -38,4 +30,24 @@ public interface DicOrderItemMappper {
     // 药学项字典
     List<DictionaryMap> getAllPHDrgMaterialItm();
     DictionaryMap getPHDrgMaterialItmByCode(String code) throws  Exception;
+
+    //用药途径
+    List<DictionaryMap> getAllInstr();
+    DictionaryMap getInstrByCode(String code) throws Exception;
+
+    // 医嘱大类
+    List<DictionaryMap> getAllOrdCategory();
+    DictionaryMap getOrdCategoryByCode(String code) throws  Exception;
+
+    // 医嘱子分类
+    List<DictionaryMap> getAllChildCategory();
+    DictionaryMap getChildCategoryByCode(String code) throws Exception;
+
+    // 药品通用名
+    List<DictionaryMap> getAllPHCGeneric();
+    DictionaryMap getPHCGenericByCode(String code) throws  Exception;
+
+    // 药品商品名
+    List<DictionaryMap> getAllPHCGoods();
+    DictionaryMap getPHCGoodsByCode(String code) throws  Exception;
 }

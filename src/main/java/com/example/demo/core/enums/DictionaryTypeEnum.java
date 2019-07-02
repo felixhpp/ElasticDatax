@@ -1,6 +1,5 @@
 package com.example.demo.core.enums;
 
-import com.example.demo.core.dics.AdmStatus;
 import com.example.demo.core.exception.LogicException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +44,14 @@ public enum  DictionaryTypeEnum {
             CacheName.itemCaseName, "lisitem_"),
     PHDrgMaterial(17, "PHDrgMaterial", "药学项",
             CacheName.itemCaseName, "phdrg_"),
+    InstrUsage(18, "InstrUsage", "用药途径",
+            CacheName.itemCaseName, "usage_"),
+    OrdChildCategory(19, "OrdChildCategory", "医嘱子分类",
+            CacheName.itemCaseName, "childcate_"),
+    PHCGeneric(20, "PHCGeneric", "药品通用名",
+                     CacheName.itemCaseName, "phcgeneric_"),
+    PHCGoods(21, "PHCGoods", "药品商品名称",
+            CacheName.itemCaseName, "phcgoods_"),
     ;
     private static final Logger logger = LoggerFactory.getLogger(DictionaryTypeEnum.class);
     interface CacheName{

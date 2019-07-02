@@ -9,7 +9,7 @@ import com.example.demo.core.utils.ESBulkModel;
 import com.example.demo.core.enums.ElasticTypeEnum;
 import com.example.demo.core.utils.ResultUtil;
 import com.example.demo.elastic.ConvertPipeline;
-import com.example.demo.elastic.xmlbean.CaseRecordXmlAnaly;
+import com.example.demo.elastic.analysis.CaseRecordXmlAnaly;
 import com.example.demo.service.DefaultDicMapService;
 import com.example.demo.service.ElasticBulkService;
 import org.dom4j.Document;
@@ -93,13 +93,15 @@ public class DemoTestController {
     public RestResult convertOrdItem() throws Exception {
         List<Map<String, Object>> maps = buildOrdItemData();
         List<Object> reList = exeConvert(maps, ElasticTypeEnum.ORDITEM);
+
+
         return ResultUtil.success(reList);
     }
 
     @GetMapping("bulk/orditem")
     public RestResult bulkOrdItem() throws Exception {
         List<Map<String, Object>> maps = buildOrdItemData();
-        //List<Object> reList = exeConvert(maps, ElasticTypeEnum.ORDITEM);
+        List<Object> reList = exeConvert(maps, ElasticTypeEnum.ORDITEM);
 
         BulkResponseBody responseBody = exeBulk(maps, ElasticTypeEnum.ORDITEM);
         return ResultUtil.success(responseBody);
@@ -116,7 +118,7 @@ public class DemoTestController {
         }
 
         Document document = reader.read(file);
-        Map<String, Object> maps = CaseRecordXmlAnaly.analyCaseRecordXml(document);
+        Map<String, Object> maps = CaseRecordXmlAnaly.analyCaseRecordXml(document, ElasticTypeEnum.Residentadmitnote);
         maps.put("documentid", "11111");
         ESBulkModel bulkMode = ConvertPipeline
                 .convertToBulkModel(ElasticTypeEnum.Residentadmitnote, maps, true);
@@ -125,13 +127,11 @@ public class DemoTestController {
     }
 
     private List<Map<String, Object>> buildDiagnoseData(){
-        //List<DictionaryMap> mapList = defaultDicMapService.getAllDicMap(DictionaryTypeEnum.DIAGNOSE_NAME);
-
         List<Map<String, Object>> maps = new ArrayList<>();
         int total = TOTAL;
         String[] diagtype = {"M", "PRE"};
-        String[] diagnose = {"1", "2","3","4","", ""};
-        String[] diagnoseName = {"上感", "支气管炎","哮喘 AR","外阴瘙痒","",""};
+        String[] diagnose = {"1", "2","3","","", ""};
+        String[] diagnoseName = {"上感", "支气管炎","哮喘 AR","外阴瘙痒","","",""};
         for (int i = 0;i<total;i++){
             Map<String, Object> object = new HashMap<>();
             object.put("id","123" + i);
@@ -185,7 +185,8 @@ public class DemoTestController {
         int total = TOTAL;
         List<Map<String, Object>> maps = new ArrayList<>();
         String[] hospitalCode = {"HXEY", "1001", "1002"};
-        String[] admType = {"O","E", "I", "H"};
+        String[] admType = {"O","E", "I", "H", ""};
+        String[] admState = {"A","C", "D", "P", ""};
         String[] deptCode = {"03071074-IP07400-HX07401B", "03071074-IP07400-HX07403G",
                 "03071075-IP07500-HX07501B", "03071075-IP07500-JJ07503G"};
         String[] maritalCode = {"1", "2", "5", "3","4"};
@@ -203,6 +204,7 @@ public class DemoTestController {
                 object.put("mr_admtype_code", getRandom(admType));
                 object.put("mr_admdept_code", getRandom(deptCode));
                 object.put("mr_dischdept_code", getRandom(deptCode));
+                object.put("mr_visitstatus_code", getRandom(admState));
             }
 
             maps.add(object);
@@ -223,8 +225,8 @@ public class DemoTestController {
         String[] ord_duration_code = {"1","2","3","4"};
 
         String[] deptCode = {"03071074-IP07400-HX07401B", "03071074-IP07400-HX07403G",
-                "03071075-IP07500-HX07501B", "03071075-IP07500-JJ07503G"};
-
+                     "03071075-IP07500-HX07501B", "03071075-IP07500-JJ07503G"};
+        String[] ord_usage = {"口服","含服","静脉注射",""};
         for (int i = 0;i<total;i++){
             Map<String, Object> object = new HashMap<>();
             object.put("ord_id","123" + i);
@@ -234,6 +236,7 @@ public class DemoTestController {
             object.put("ord_starttime", "10:20:60");
             object.put("ord_enddate", "2010-11-01 00:00:00");
             object.put("ord_endtime", "10:21:60");
+            object.put("ord_doseqty", "1");
             if(!isDev){
                 object.put("ord_code", getRandom(ord_name));
                 object.put("ord_type_code", getRandom(ord_type));
@@ -243,6 +246,7 @@ public class DemoTestController {
                 object.put("ord_duration_code", getRandom(ord_duration_code));
                 object.put("ord_dept_code", getRandom(deptCode));
                 object.put("ord_execdept_code", getRandom(deptCode));
+                object.put("ord_usage_code", getRandom(ord_usage));
             }
 
             maps.add(object);
@@ -291,7 +295,28 @@ public class DemoTestController {
         List<Object> reList = new ArrayList<>();
         long startTime=System.currentTimeMillis();   //获取开始时间
         List<ESBulkModel> bulkModels = defaultDicMapService.test(maps, typeEnum);
-        reList.addAll(bulkModels.subList(0, 10));
+
+        if(bulkModels.size() > 10){
+            reList.addAll(bulkModels.subList(0, 10));
+        }else {
+            reList.addAll(bulkModels.subList(0, bulkModels.size()));
+        }
+
+
+        if(typeEnum.equals(ElasticTypeEnum.ORDITEM)){
+            int i = 0;
+            // 转换药物
+            // 转换用药
+            for(ESBulkModel bulkModel : bulkModels){
+                ESBulkModel otherModel = ConvertPipeline.convertToBulkModel(ElasticTypeEnum.Medicine,
+                        bulkModel.getMapData(), true);
+                if(i < 10){
+                    reList.add(otherModel);
+                }
+                i++;
+            }
+        }
+
         long endTime=System.currentTimeMillis(); //获取结束时间
         Map<String, String> m = new HashMap<>();
         m.put("totla", "共有" + bulkModels.size()+ "条");
@@ -308,7 +333,7 @@ public class DemoTestController {
         BulkResponseBody responseBody = elasticBulkService.bulk(theme, dataStr);
         long endTime=System.currentTimeMillis(); //获取结束时间
         System.out.println("bulk es耗时：" + (endTime-startTime)+"ms");
-        return null;
+        return responseBody;
     }
 
     private String getRandom(String[] arr){

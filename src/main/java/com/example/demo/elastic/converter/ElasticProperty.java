@@ -19,7 +19,8 @@ public class ElasticProperty {
     private boolean hasConvertor;
 
     // 转换器列表
-    private List<Convertor> convertorList = new ArrayList<>();
+    //private List<Convertor> convertorList = new ArrayList<>();
+    private Convertor[] convertorArrty;
 
     final public String getSourceName() {
         return sourceName;
@@ -77,18 +78,11 @@ public class ElasticProperty {
         this.hasConvertor = hasConvertor;
     }
 
-    final public List<Convertor> getConvertorList() {
-        return convertorList;
+    final public Convertor[] getConvertorArrty() {
+        return convertorArrty;
     }
 
-    final public void setConvertorList(List<Convertor> convertorList) {
-        this.convertorList = convertorList;
-    }
-
-    final public void addConvert(Convertor convertor){
-        if(convertor != null && convertor.getConvertMethodName() != null){
-            this.convertorList.add(convertor);
-        }
-
+    final public void setConvertorArrty(Convertor[] convertorArrty) {
+        this.convertorArrty = convertorArrty;
     }
 }

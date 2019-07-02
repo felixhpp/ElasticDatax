@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE elasticMapper SYSTEM "elasticmapping.dtd">
+<elasticMapper name="medicalrecordhomepage">
+    <property sourceName="patientNationality" targetName="MRHP_Nationality" valueType="String" desc="国籍"></property>
+    <property sourceName="patientNation" targetName="MRHP_Nation" valueType="String" desc="民族"></property>
+    <property sourceName="patientAge" targetName="MRHP_AdmAge" desc="就诊时年龄"></property>
+    <property sourceName="patientOccupation" targetName="MRHP_Occupation" desc="职业状况"></property>
+    <property sourceName="patMediNO" targetName="MRHP_RecordNo" desc="病案号"></property>
+    <property sourceName="idCard" targetName="MRHP_IdCard" desc="身份证号"></property>
+    <property sourceName="patientName" targetName="MRHP_Name" desc="姓名"></property>
+    <property sourceName="maritalStatus" targetName="MRHP_Marital" desc="婚姻状况"></property>
+    <property sourceName="patWorkplaceName" targetName="MRHP_CompanyAddress" desc="工作单位名称"></property>
+    <property sourceName="patWorkplaceTel" targetName="MRHP_CompanyPhone" desc="工作单位电话"></property>
+    <property sourceName="phone" targetName="MRHP_AddressPhone" desc="居住地电话"></property>
+    <property sourceName="gender" targetName="MRHP_Gender" desc="性别"></property>
+    <property sourceName="birthDate" targetName="MRHP_Birthday" desc="出生日期"></property>
+    <property sourceName="birthplace" targetName="MRHP_BirthPlace" desc="出生地"></property>
+    <property sourceName="household" targetName="MRHP_Province" desc="籍贯"></property>
+    <property sourceName="currentAddress" targetName="MRHP_CurrentAddress" desc="现住址"></property>
+    <property sourceName="accountAddress" targetName="MRHP_AccountAddress" desc="现住址"></property>
+    <property sourceName="addressPostCode" targetName="MRHP_AddressPostCode" desc="现住址邮编"></property>
+    <property sourceName="accountPostCode" targetName="MRHP_AccountPostCode" desc="户口所在地邮编"></property>
+    <property sourceName="hospitalNumber" targetName="MRHP_InCount" desc="住院次数"></property>
+    <property sourceName="referralDepartment" targetName="MRHP_TransDeptClass" desc="转院科别"></property>
+    <property sourceName="encounterStatus" targetName="MRHP_AdmStatus" desc="就诊状态"></property>
+    <property sourceName="encounterType" targetName="MRHP_AdmType" desc="就诊类型"></property>
+    <property sourceName="admStartTime" targetName="MRHP_AdmDate" desc="入院时间"></property>
+    <property sourceName="admEndTime" targetName="MRHP_DischDate" desc="出院时间"></property>
+    <property sourceName="admInDays" targetName="MRHP_InDays" desc="住院天数"></property>
+    <property sourceName="admRoute" targetName="MRHP_AdmRoute" desc="入院途径"></property>
+    <property sourceName="dischSickRoom" targetName="MRHP_DischSickRoom" desc="出院病房"></property>
+    <property sourceName="deaPatAutopsy" targetName="MRHP_Autopsy" desc="死亡患者尸检"></property>
+    <property sourceName="leavingMode" targetName="MRHP_LeavingMode" desc="离院方式"></property>
+    <property sourceName="admDept" targetName="MRHP_AdmDept" desc="入院科别"></property>
+    <property sourceName="admSickRoom" targetName="MRHP_AdmSickRoom" desc="入院病区"></property>
+    <property sourceName="dischDept" targetName="MRHP_DischDept" desc="出院科别"></property>
+    <property sourceName="NBAdmissionWeight" targetName="MRHP_BabyWeight" desc="新生儿入院体重"></property>
+    <property sourceName="NBBirthWeight" targetName="MRHP_BornWeight" desc="新生儿出生体重"></property>
+    <property sourceName="outerReason" targetName="MRHP_OuterReason" desc="患者中毒外部原因"></property>
+    <property sourceName="outerReasonCode" targetName="MRHP_OuterReasonCode" desc="患者中毒外部编码"></property>
+    <property sourceName="PL1DamageBComa1Day" targetName="MRHP_AdmDay" desc="颅脑损伤患者入院前昏迷时间：天数"></property>
+    <property sourceName="PL1DamageBComa1Hour" targetName="MRHP_AdmHour" desc="颅脑损伤患者入院前昏迷时间：小时数"></property>
+    <property sourceName="PL1DamageBComa1DMinute" targetName="MRHP_AdmMin" desc="颅脑损伤患者入院前昏迷时间：分钟数"></property>
+    <property sourceName="PL1DamageAComa1Day" targetName="MRHP_DischDay" desc="颅脑损伤患者入院后昏迷时间：天数"></property>
+    <property sourceName="PL1DamageAComa1Hour" targetName="MRHP_DischHour" desc="颅脑损伤患者入院后昏迷时间：小时数"></property>
+    <property sourceName="PL1DamageAComa1Minute" targetName="MRHP_DischMin" desc="颅脑损伤患者入院后昏迷时间：分钟数"></property>
+    <property sourceName="isAllergy" targetName="MRHP_IsAllergy" desc="有无药物过敏"></property>
+    <property sourceName="theAllergy" targetName="MRHP_TheAllergy" desc="过敏药物"></property>
+    <property sourceName="LIABOBlood1" targetName="MRHP_ABOBloodType" desc="ABO血型"></property>
+    <property sourceName="LIRHBlood1" targetName="MRHP_RHBloodType" desc="Rh血型"></property>
+    <property sourceName="XPiece" targetName="MRHP_XPiece" desc="X片"></property>
+    <property sourceName="echocardiogram" targetName="MRHP_EchocarDiogram" desc="超声心动图"></property>
+
+    <property sourceName="OperName1" targetName="MRHP_OperName1" desc="手术名称1"></property>
+    <property sourceName="OperName2" targetName="MRHP_OperName2" desc="手术名称2"></property>
+    <property sourceName="OperName3" targetName="MRHP_OperName3" desc="手术名称3"></property>
+    <property sourceName="OperName4" targetName="MRHP_OperName4" desc="手术名称4"></property>
+    <property sourceName="OperName5" targetName="MRHP_OperName5" desc="手术名称5"></property>
+    <property sourceName="OperName6" targetName="MRHP_OperName6" desc="手术名称6"></property>
+
+    <property sourceName="OperLevel1" targetName="MRHP_OperLevel1" desc="手术级别1"></property>
+    <property sourceName="OperLevel2" targetName="MRHP_OperLevel2" desc="手术级别2"></property>
+    <property sourceName="OperLevel3" targetName="MRHP_OperLevel3" desc="手术级别3"></property>
+    <property sourceName="OperLevel4" targetName="MRHP_OperLevel4" desc="手术级别4"></property>
+    <property sourceName="OperLevel5" targetName="MRHP_OperLevel5" desc="手术级别5"></property>
+    <property sourceName="OperLevel6" targetName="MRHP_OperLevel6" desc="手术级别6"></property>
+
+    <property sourceName="OperCode1" targetName="MRHP_OperCode1" desc="手术编码1"></property>
+    <property sourceName="OperCode2" targetName="MRHP_OperCode2" desc="手术编码2"></property>
+    <property sourceName="OperCode3" targetName="MRHP_OperCode3" desc="手术编码3"></property>
+    <property sourceName="OperCode4" targetName="MRHP_OperCode4" desc="手术编码4"></property>
+    <property sourceName="OperCode5" targetName="MRHP_OperCode5" desc="手术编码5"></property>
+    <property sourceName="OperCode6" targetName="MRHP_OperCode6" desc="手术编码6"></property>
+
+    <property sourceName="OperDate1" targetName="MRHP_OperDate1" desc="手术时间1"></property>
+    <property sourceName="OperDate2" targetName="MRHP_OperDate2" desc="手术时间2"></property>
+    <property sourceName="OperDate3" targetName="MRHP_OperDate3" desc="手术时间3"></property>
+    <property sourceName="OperDate4" targetName="MRHP_OperDate4" desc="手术时间4"></property>
+    <property sourceName="OperDate5" targetName="MRHP_OperDate5" desc="手术时间5"></property>
+    <property sourceName="OperDate6" targetName="MRHP_OperDate6" desc="手术时间6"></property>
+
+    <property sourceName="AnaesWay1" targetName="MRHP_AnaesWay1" desc="麻醉方式1"></property>
+    <property sourceName="AnaesWay2" targetName="MRHP_AnaesWay2" desc="麻醉方式2"></property>
+    <property sourceName="AnaesWay3" targetName="MRHP_AnaesWay3" desc="麻醉方式3"></property>
+    <property sourceName="AnaesWay4" targetName="MRHP_AnaesWay4" desc="麻醉方式4"></property>
+    <property sourceName="AnaesWay5" targetName="MRHP_AnaesWay5" desc="麻醉方式5"></property>
+    <property sourceName="AnaesWay6" targetName="MRHP_AnaesWay6" desc="麻醉方式6"></property>
+
+    <property sourceName="NcisionHealingLevel1" targetName="MRHP_NcisionHealingLevel1" desc="切口愈合等级1"></property>
+    <property sourceName="NcisionHealingLevel2" targetName="MRHP_NcisionHealingLevel2" desc="切口愈合等级2"></property>
+    <property sourceName="NcisionHealingLevel3" targetName="MRHP_NcisionHealingLevel3" desc="切口愈合等级3"></property>
+    <property sourceName="NcisionHealingLevel4" targetName="MRHP_NcisionHealingLevel4" desc="切口愈合等级4"></property>
+    <property sourceName="NcisionHealingLevel5" targetName="MRHP_NcisionHealingLevel5" desc="切口愈合等级5"></property>
+    <property sourceName="NcisionHealingLevel6" targetName="MRHP_NcisionHealingLevel6" desc="切口愈合等级6"></property>
+
+    <property sourceName="Operator1" targetName="MRHP_Operator1" desc="术者1"></property>
+    <property sourceName="Operator2" targetName="MRHP_Operator2" desc="术者2"></property>
+    <property sourceName="Operator3" targetName="MRHP_Operator3" desc="术者3"></property>
+    <property sourceName="Operator4" targetName="MRHP_Operator4" desc="术者4"></property>
+    <property sourceName="Operator5" targetName="MRHP_Operator5" desc="术者5"></property>
+
+    <property sourceName="OperaAssistantFir1" targetName="MRHP_OperaAssistantFir1" desc="第一助手1"></property>
+    <property sourceName="OperaAssistantFir2" targetName="MRHP_OperaAssistantFir2" desc="第一助手2"></property>
+    <property sourceName="OperaAssistantFir3" targetName="MRHP_OperaAssistantFir3" desc="第一助手3"></property>
+    <property sourceName="OperaAssistantFir4" targetName="MRHP_OperaAssistantFir4" desc="第一助手4"></property>
+    <property sourceName="OperaAssistantFir5" targetName="MRHP_OperaAssistantFir5" desc="第一助手5"></property>
+
+    <property sourceName="OperaAssistantSec1" targetName="MRHP_OperaAssistantSec1" desc="第二助手1"></property>
+    <property sourceName="OperaAssistantSec2" targetName="MRHP_OperaAssistantSec2" desc="第二助手2"></property>
+    <property sourceName="OperaAssistantSec3" targetName="MRHP_OperaAssistantSec3" desc="第二助手3"></property>
+    <property sourceName="OperaAssistantSec4" targetName="MRHP_OperaAssistantSec4" desc="第二助手4"></property>
+    <property sourceName="OperaAssistantSec5" targetName="MRHP_OperaAssistantSec5" desc="第二助手5"></property>
+
+    <property sourceName="AnaesDoc1" targetName="MRHP_AnaesDoc1" desc="麻醉医师1"></property>
+    <property sourceName="AnaesDoc2" targetName="MRHP_AnaesDoc2" desc="麻醉医师2"></property>
+    <property sourceName="AnaesDoc3" targetName="MRHP_AnaesDoc3" desc="麻醉医师3"></property>
+    <property sourceName="AnaesDoc4" targetName="MRHP_AnaesDoc4" desc="麻醉医师4"></property>
+    <property sourceName="AnaesDoc5" targetName="MRHP_AnaesDoc5" desc="麻醉医师5"></property>
+
+    <property sourceName="Goal" targetName="MRHP_Goal" desc="出院31天在住院目的"></property>
+    <property sourceName="Plan" targetName="MRHP_Plan" desc="是否有出院31天在住院计划"></property>
+    <!--诊断相关-->
+    <property sourceName="OutpatientDiag" targetName="MRHP_OutpatientDiag" desc="门（急）诊诊断"></property>
+    <property sourceName="DiagCode" targetName="MRHP_DiagCode" desc="门（急）诊诊断编码"></property>
+    <property sourceName="AdmDiag" targetName="MRHP_AdmDiag" desc="入院诊断"></property>
+    <property sourceName="AdmDiagCode" targetName="MRHP_AdmDiagCode" desc="入院诊断编码"></property>
+
+    <property sourceName="PathDiag" targetName="MRHP_PathDiag" desc="病理诊断"></property>
+    <property sourceName="PathCode" targetName="MRHP_PathCode" desc="病理诊断编码"></property>
+    <property sourceName="PathNo" targetName="MRHP_PathNo" desc="病理诊断编号"></property>
+
+    <property sourceName="MainDisease" targetName="MRHP_MainDisease" desc="出院主要诊断"></property>
+    <property sourceName="MainDiseaseCod" targetName="MRHP_MainDiseaseCode" desc="出院主要诊断编码"></property>
+    <property sourceName="DischDiagOther1" targetName="MRHP_DischDiagOther1" desc="出院其他诊断1"></property>
+    <property sourceName="DiseaseCode1" targetName="MRHP_DiseaseCode1" desc="出院其他诊断编码1"></property>
+    <property sourceName="DischDiagOther2" targetName="MRHP_DischDiagOther2" desc="出院其他诊断2"></property>
+    <property sourceName="DiseaseCode2" targetName="MRHP_DiseaseCode2" desc="出院其他诊断编码2"></property>
+    <property sourceName="DischDiagOther3" targetName="MRHP_DischDiagOther3" desc="出院其他诊断3"></property>
+    <property sourceName="DiseaseCode3" targetName="MRHP_DiseaseCode3" desc="出院其他诊断编码3"></property>
+    <property sourceName="DischDiagOther4" targetName="MRHP_DischDiagOther4" desc="出院其他诊断4"></property>
+    <property sourceName="DiseaseCode4" targetName="MRHP_DiseaseCode4" desc="出院其他诊断编码4"></property>
+    <property sourceName="DischDiagOther5" targetName="MRHP_DischDiagOther5" desc="出院其他诊断5"></property>
+    <property sourceName="DiseaseCode5" targetName="MRHP_DiseaseCode5" desc="出院其他诊断编码5"></property>
+    <property sourceName="DischDiagOther6" targetName="MRHP_DischDiagOther6" desc="出院其他诊断6"></property>
+    <property sourceName="DiseaseCode6" targetName="MRHP_DiseaseCode6" desc="出院其他诊断编码6"></property>
+    <property sourceName="DischDiagOther7" targetName="MRHP_DischDiagOther7" desc="出院其他诊断7"></property>
+    <property sourceName="DiseaseCode7" targetName="MRHP_DiseaseCode7" desc="出院其他诊断编码7"></property>
+</elasticMapper>

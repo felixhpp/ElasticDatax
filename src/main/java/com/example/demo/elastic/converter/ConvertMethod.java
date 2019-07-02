@@ -2,9 +2,11 @@ package com.example.demo.elastic.converter;
 
 import com.example.demo.core.enums.DictionaryTypeEnum;
 import com.example.demo.core.utils.Common;
+import com.example.demo.core.utils.DateFormatUtil;
 import com.example.demo.core.utils.SpringUtils;
 import com.example.demo.core.utils.ValueFormat;
 import com.example.demo.service.DefaultDicMapService;
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -12,7 +14,7 @@ import org.springframework.util.StringUtils;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class ConvertMethod {
+final public class ConvertMethod {
     private static DefaultDicMapService defaultDicMapService = (DefaultDicMapService) SpringUtils.getBean(DefaultDicMapService.class);
     private static final Logger log = LoggerFactory.getLogger(ConvertMethod.class);
     private static ValueFormat valueFormat = new ValueFormat(4,3);
@@ -40,13 +42,13 @@ public class ConvertMethod {
         try {
             String dataStr = null;
             String timeStr = null;
-            Date date = Common.parseDateString(dateString, "yyyy-MM-dd");
-            Date time = Common.parseDateString(timeString, "HH:mm:ss");
+            Date date = DateFormatUtil.parseDateString(dateString, "yyyy-MM-dd");
+            Date time = DateFormatUtil.parseDateString(timeString, "HH:mm:ss");
             if(date != null){
-                dataStr = Common.getDateString(date);
+                dataStr = DateFormatUtil.getDateString(date);
             }
             if(time != null){
-                timeStr = Common.getTimeString(time);
+                timeStr = DateFormatUtil.getTimeString(time);
             }
             if(!StringUtils.isEmpty(dataStr) && !StringUtils.isEmpty(timeStr)){
                 datatime = dataStr + " " + timeStr;
@@ -77,11 +79,11 @@ public class ConvertMethod {
             if(StringUtils.isEmpty(pattern)){
                 pattern = "yyyy-MM-dd";
             }
-            Date date = Common.parseDateString(dateString, pattern);
+            Date date = DateFormatUtil.parseDateString(dateString, pattern);
             if(date == null){
                 return null;
             }
-            return Common.getDateString(date);
+            return DateFormatUtil.getDateString(date);
         }catch (Exception e){
             log.error(e.getMessage());
         }
@@ -96,11 +98,11 @@ public class ConvertMethod {
      */
     public static String formatDateTime(String dateString){
         try {
-            Date date = Common.parseDateString(dateString, "yyyy-MM-dd HH:mm:ss");
+            Date date = DateFormatUtil.parseDateString(dateString, "yyyy-MM-dd HH:mm:ss");
             if(date == null){
                 return null;
             }
-            return Common.getDatetimeString(date);
+            return DateFormatUtil.getDatetimeString(date);
         }catch (Exception e){
             log.error(e.getMessage());
         }
@@ -115,12 +117,10 @@ public class ConvertMethod {
      * @return
      */
     public static int differentDays(String startDate, String endDate){
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
         try {
-            Date date2 = format.parse(endDate);
-            Date date = format.parse(startDate);
-            return Common.differentDaysByMillisecond(date,date2);
+            Date date2 = FastDateFormat.getInstance("yyyy-MM-dd").parse(endDate);
+            Date date = FastDateFormat.getInstance("yyyy-MM-dd").parse(startDate);
+            return DateFormatUtil.differentDaysByMillisecond(date,date2);
         }catch (Exception e){
             return -1;
         }

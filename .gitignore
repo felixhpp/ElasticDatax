@@ -37,3 +37,5 @@ blog/bin/
 hs_err_pid*
 /target
 /logs
+/ehcache
+/ehcache

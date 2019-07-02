@@ -3,7 +3,7 @@ package com.example.demo.core.utils;
 import com.alibaba.fastjson.JSON;
 import com.example.demo.core.exception.LogicException;
 import com.example.demo.elastic.converter.ElasticMapperBean;
-import com.example.demo.elastic.converter.ElasticXmlToBean;
+import com.example.demo.elastic.analysis.ElasticXmlToBean;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
@@ -64,7 +64,7 @@ public class ElasticMapperCacheUtil implements CommandLineRunner {
         String key ="elaticMapper_" + fileName;
 
         ElasticMapperBean bean = ElasticXmlToBean.toBean(fileName);
-        if(bean == null || bean.getPropertyArray().size() == 0){
+        if(bean == null || bean.getPropertyArray().length == 0){
             return;
         }
         logger.info("******开始缓存elastic mapper 文件名为：" + fileName + " 的数据");

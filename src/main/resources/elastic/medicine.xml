@@ -1,97 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE elasticMapper SYSTEM "elasticmapping.dtd">
 <elasticMapper name="medicine">
-    <!--property配置字段映射信息
-        sourceName：源字段名称
-        targetName: 目标字段名称
-        convert： 是否进行转换， 如果true, 则将通过调用方法或者动态执行sql获取转换后的值
-        valueType: 字段数据类型，
-        dicType: 字典类型   com.example.demo.core.dics 包下的类路径
-        -->
     <!--id字段-->
-    <property sourceName="med_id"  targetName="Med_Id" valueType="String" idField="true"></property>
+    <property sourceName="Ord_Id"  targetName="Med_Id" valueType="String" idField="true"></property>
     <!--关联就诊ID-->
-    <property sourceName="med_admno" targetName="Med_AdmNo" valueType="String" parentField="true"></property>
+    <property sourceName="Ord_AdmNo" targetName="Med_AdmNo" valueType="String" parentField="true"></property>
     <!--关联登记号-->
-    <property sourceName="med_regno" targetName="Med_RegNo" valueType="String" routingField="true"></property>
+    <property sourceName="Ord_RegNo" targetName="Med_RegNo" valueType="String" routingField="true"></property>
     <!--用药时段-->
-    <property sourceName="med_timeInterval" targetName="Med_TimeInterval" valueType="String"></property>
+    <property sourceName="Ord_ExecDate" targetName="Med_TimeInterval" valueType="String"></property>
     <!--用药 - 医嘱名称-->
-    <property sourceName="med_ordcode" targetName="Med_OrdName" valueType="String">
-        <dicConvertor methodName="getByCode" dicType="OrderItem">
-            <parameter></parameter>
-        </dicConvertor>
-    </property>
+    <property sourceName="Ord_MedDicName" targetName="Med_OrdName" valueType="String"></property>
     <!--用药商品名称-->
-    <property sourceName="med_bisname" targetName="Med_BisName" valueType="String">
-        <dicConvertor methodName="getByCode" dicType="OrderItem">
+    <property sourceName="Ord_MedDicCode" targetName="Med_BisName" valueType="String">
+        <dicConvertor methodName="getByCode" dicType="PHCGoods">
             <parameter></parameter>
         </dicConvertor>
     </property>
     <!--用药通用名称-->
-    <property sourceName="ord_cate_code" targetName="Med_GenName" valueType="String">
-        <dicConvertor methodName="getByCode" dicType="OrdCateage">
+    <property sourceName="Ord_MedDicCode" targetName="Med_GenName" valueType="String">
+        <dicConvertor methodName="getByCode" dicType="PHCGeneric">
             <parameter></parameter>
         </dicConvertor>
     </property>
     <!--药物名称（用于统计， 不分词）-->
-    <property sourceName="ord_type_code" targetName="Med_GenDesc" valueType="String">
-        <dicConvertor methodName="getByCode" dicType="OrdType">
+    <property sourceName="Ord_MedDicCode" targetName="Med_GenDesc" valueType="String">
+        <dicConvertor methodName="getByCode" dicType="PHCGeneric">
             <parameter></parameter>
         </dicConvertor>
     </property>
     <!--药品类别-->
-    <property sourceName="ord_period" targetName="Med_Category" valueType="String">
+    <property sourceName="Ord_Category" targetName="Med_Category" valueType="String">
     </property>
     <!--单次剂量-->
-    <property sourceName="ord_duration_code" targetName="Med_SingleDose" valueType="String">
-        <dicConvertor methodName="getByCode" dicType="Duration">
-            <parameter></parameter>
-        </dicConvertor>
-    </property>
+    <property sourceName="Ord_DoseQty" targetName="Med_SingleDose" valueType="String"></property>
     <!--总剂量-->
-    <property sourceName="ord_usage" targetName="Med_TotalDose" valueType="String">
-    </property>
-    <!--频次-->
-    <property sourceName="ord_freq_code" targetName="Ord_Freq" valueType="String">
-        <dicConvertor methodName="getByCode" dicType="Freq">
-            <parameter></parameter>
-        </dicConvertor>
-    </property>
-    <!--医嘱开始时间-->
-    <property sourceName="ord_starttime" targetName="Ord_StartTime" valueType="String">
-    </property>
-    <!--医嘱状态-->
-    <property sourceName="ord_status_code" targetName="Ord_Status" valueType="String">
-        <dicConvertor methodName="getByCode" dicType="OrderStatus">
-            <parameter></parameter>
-        </dicConvertor>
-    </property>
+    <!--<property sourceName="" targetName="Med_TotalDose" valueType="String"></property>-->
     <!--医嘱数量-->
-    <property sourceName="ord_orderqty" targetName="Ord_OrderQty" valueType="String">
-    </property>
-    <!--医嘱结束时间-->
-    <property sourceName="ord_endtime" targetName="Ord_EndTime" valueType="String">
-    </property>
-    <!--开医嘱科室-->
-    <property sourceName="ord_dept_code" targetName="Ord_Dept" valueType="String">
-        <dicConvertor methodName="getByCode" dicType="Deptartment">
-            <parameter></parameter>
-        </dicConvertor>
-    </property>
-    <!--执行医嘱科室-->
-    <property sourceName="ord_execdept_code" targetName="Ord_ExecDept" valueType="String">
-        <dicConvertor methodName="getByCode" dicType="Deptartment">
-            <parameter></parameter>
-        </dicConvertor>
-    </property>
-    <!--归一后医嘱编码-->
-    <property sourceName="ord_code" targetName="Ord_MedDicCode" valueType="String">
-    </property>
-    <!--归一后医嘱名称-->
-    <property sourceName="ord_code" targetName="Ord_MedDicName" valueType="String">
-        <dicConvertor methodName="getByCode" dicType="OrderItem">
-            <parameter></parameter>
-        </dicConvertor>
-    </property>
+    <property sourceName="Ord_OrderQty" targetName="Med_OrderQty" valueType="String"></property>
+    <!--用药频率-->
+    <property sourceName="Ord_Freq" targetName="Med_Frequency" valueType="String"></property>
+    <!--给药开始时间-->
+    <property sourceName="Ord_StartTime" targetName="Ord_StartTime" valueType="String"></property>
+    <!--给药结束时间-->
+    <property sourceName="Ord_EndTime" targetName="Med_StopTime" valueType="String"></property>
+    <!--用药时长,需要计算-->
+    <!--<property sourceName="Ord_StartTime" targetName="Med_Days" valueType="String"></property>-->
+    <!--药理学子分类-->
+    <!--<property sourceName="ord_code" targetName="Med_PhcSubCat" valueType="String">-->
+        <!--<dicConvertor methodName="getByCode" dicType="">-->
+            <!--<parameter></parameter>-->
+        <!--</dicConvertor>-->
+    <!--</property>-->
+    <!--药理学大分类-->
+    <!--<property sourceName="ord_code" targetName="Med_PhcCat" valueType="String">-->
+        <!--<dicConvertor methodName="getByCode" dicType="">-->
+            <!--<parameter></parameter>-->
+        <!--</dicConvertor>-->
+    <!--</property>-->
+    <!--医嘱大分类-->
+    <property sourceName="Ord_Category" targetName="Med_OrdCat" valueType="String"></property>
 </elasticMapper>

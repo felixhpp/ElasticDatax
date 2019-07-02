@@ -10,7 +10,7 @@ public class AddFields {
 
     private List<String> fields = new ArrayList<>();
 
-    private List<MethodParameter> parameters = new ArrayList<>();
+    private List<String> parameters = new ArrayList<>();
 
     final public String getSql() {
         return sql;
@@ -36,11 +36,11 @@ public class AddFields {
         this.fields.add(field);
     }
 
-    final public List<MethodParameter> getParameters() {
+    final public List<String> getParameters() {
         return parameters;
     }
 
-    final public void addParameters(MethodParameter parameter) {
+    final public void addParameters(String parameter) {
         this.parameters.add(parameter);
     }
 }

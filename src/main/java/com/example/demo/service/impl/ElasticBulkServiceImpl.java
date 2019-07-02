@@ -1,5 +1,7 @@
 package com.example.demo.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONReader;
 import com.example.demo.core.bean.ElasticMapperBean;
 import com.example.demo.core.entity.BulkCaseRequestBody;
@@ -7,7 +9,7 @@ import com.example.demo.core.entity.BulkResponseBody;
 import com.example.demo.core.utils.ESBulkModel;
 import com.example.demo.core.enums.ElasticTypeEnum;
 import com.example.demo.elastic.ConvertPipeline;
-import com.example.demo.elastic.xmlbean.CaseRecordXmlAnaly;
+import com.example.demo.elastic.analysis.CaseRecordXmlAnaly;
 import com.example.demo.service.ElasticBulkService;
 
 import io.searchbox.client.JestClient;
@@ -26,15 +28,17 @@ import org.springframework.util.StringUtils;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * elasticsearch 批量操作服务
+ * @author felix
  */
 @Service
 public class ElasticBulkServiceImpl implements ElasticBulkService {
     private static Logger logger = LoggerFactory.getLogger("elasticsearch-server");
-    private static Map<String, ElasticTypeEnum> enumMapForTm = new HashMap<>();
-    private static Map<String, ElasticTypeEnum> enumMapForEs = new HashMap<>();
+    private static ConcurrentHashMap<String, ElasticTypeEnum> enumMapForTm = new ConcurrentHashMap<>();
+    private static ConcurrentHashMap<String, ElasticTypeEnum> enumMapForEs = new ConcurrentHashMap<>();
 
     @Autowired
     JestClient jestClient;
@@ -62,25 +66,7 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
                 return result;
             }
             String typeName = typeEnum.getEsType();
-
-            JSONReader reader = new JSONReader(new StringReader(dataJsonStr));//已流的方式处理，这里很快
-            reader.startArray();
-            List<Map<String, Object>> rsList = new ArrayList<Map<String, Object>>();
-            Map<String, Object> map = null;
-            int i = 0;
-            while (reader.hasNext()) {
-                i++;
-                reader.startObject();//这边反序列化也是极速
-                map = new HashMap<String, Object>();
-                while (reader.hasNext()) {
-                    String arrayListItemKey = reader.readString();
-                    String arrayListItemValue = reader.readObject().toString();
-                    map.put(arrayListItemKey, arrayListItemValue);
-                }
-                rsList.add(map);
-                reader.endObject();
-            }
-            reader.endArray();
+            List<Map<String, Object>> rsList = JSONArray.parseObject(dataJsonStr, ArrayList.class);
 
             result = this.bulk(indexName,typeName, rsList);
 
@@ -92,7 +78,14 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
         return result;
     }
 
-    // 原生es client 测试
+    /**
+     * 批量导入ES
+     * 使用原生es java api bulk
+     * @param indexName 索引名称
+     * @param typeName  类型名称
+     * @param dataArray 数据列表
+     * @return
+     */
     public BulkResponseBody bulk(String indexName, String typeName, List<Map<String, Object>> dataArray){
         BulkResponseBody result = new BulkResponseBody();
 
@@ -102,20 +95,28 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
             result.setResultContent("请求异常，错误信息: 未找到" + typeName + "对应的ES类型");
             return result;
         }
-        long startTime=System.currentTimeMillis();
+        int size = dataArray.size();
+        if(size > 0){
+            // 记录一个批次的第一条数据
+            logger.info("bulk [" + typeName + "] get 1 is :[" + JSON.toJSONString(dataArray.get(0)) + "]");
+        }
+
         //生成一个集合
         List<ESBulkModel> models =  ConvertPipeline.convertToBulkModels(typeEnum,
                 dataArray, mapperBean.getOnMapper());
-        long endTime=System.currentTimeMillis();
-        System.out.println("====convert finish" + (endTime-startTime)+"ms");
+
         if(models != null && models.size() > 0){
             Iterator<ESBulkModel> iter = models.iterator();
             while(iter.hasNext()){
                 ESBulkModel model = iter.next();
-                addBulkProcessor(model, indexName, typeName);
+                boolean add = addBulkProcessor(model, indexName, typeName);
+                if(!add){
+                    size--;
+                }
             }
         };
-
+        result.setResultCode("0");
+        result.setResultContent("成功" + size + "条");
         return result;
     }
 
@@ -132,7 +133,7 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
             String typeName = typeEnum.getEsType();
             result = this.bulk(indexName,typeName, dataList);
         } catch (Exception e){
-            logger.error("bulk error: ", e);
+            logger.error("bulk ["+ theme + "]error: ", e);
             result.setResultCode("-1");
             result.setResultContent("请求异常，错误信息:" + e.getMessage());
         }
@@ -162,7 +163,7 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
                 String typeName = typeEnum.getEsType();
                 // 解析document
                 Map<String, Object> map  = CaseRecordXmlAnaly
-                        .analyCaseRecordXml(body.getDocumentContent(), true);
+                        .analyCaseRecordXml(body.getDocumentContent(), true, typeEnum);
                 if(map == null){
                     continue;
                 }
@@ -171,8 +172,14 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
                 map.put("visitnumber", body.getVisitNumber());
                 ESBulkModel bulkMode = ConvertPipeline
                         .convertToBulkModel(typeEnum, map, mapperBean.getOnMapper());
-
-                addBulkProcessor(bulkMode, mapperBean.getDefaultIndex(), typeName);
+                if(!bulkMode.isEmpty()){
+                    boolean add = addBulkProcessor(bulkMode, mapperBean.getDefaultIndex(), typeName);
+                    if(!add){
+                        size--;
+                    }
+                }else {
+                    size--;
+                }
             }
             result.setResultCode("0");
             result.setResultContent("成功" + size + "条");
@@ -201,14 +208,47 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
         return jestResult.getJsonString();
     }
 
-    private void addBulkProcessor(ESBulkModel bulkMode, String index, String type){
+    private boolean addBulkProcessor(ESBulkModel bulkMode, String index, String type){
+        Map<String,Object> map = bulkMode.getMapData();
+        if(map == null || map.size() <= 0){
+            return false;
+        }
+
         IndexRequest request = new IndexRequest(index, type, bulkMode.getId())
-                .source(bulkMode.getMapData())// objectMapper.writeValueAsString(user)
+                .source(bulkMode.getMapData())
                 .routing(bulkMode.getRouting());
         if(!StringUtils.isEmpty(bulkMode.getParent())){
             request.parent(bulkMode.getParent());
         }
         bulkProcessor.add(request);
+
+        if(type.equals(ElasticTypeEnum.DIAGNOSE.getEsType())){  //如果是诊断， 同时导入诊断统计信息
+            ESBulkModel cBulkMode = ConvertPipeline.convertToBulkModel(ElasticTypeEnum.DIAGNOSE_Statistics,
+                    bulkMode.getMapData(), mapperBean.getOnMapper());
+
+            IndexRequest cRequest = new IndexRequest(index, ElasticTypeEnum.DIAGNOSE_Statistics.getEsType(),
+                    cBulkMode.getId())
+                    .source(cBulkMode.getMapData())
+                    .routing(cBulkMode.getRouting());
+            if(!StringUtils.isEmpty(cBulkMode.getParent())){
+                request.parent(cBulkMode.getParent());
+            }
+            bulkProcessor.add(cRequest);
+        }else if(type.equals(ElasticTypeEnum.ORDITEM.getEsType())){ //如果是医嘱，同时导入药物信息
+            ESBulkModel cBulkMode = ConvertPipeline.convertToBulkModel(ElasticTypeEnum.Medicine,
+                    bulkMode.getMapData(), mapperBean.getOnMapper());
+
+            IndexRequest cRequest = new IndexRequest(index, ElasticTypeEnum.Medicine.getEsType(),
+                    cBulkMode.getId())
+                    .source(cBulkMode.getMapData())
+                    .routing(cBulkMode.getRouting());
+            if(!StringUtils.isEmpty(cBulkMode.getParent())){
+                request.parent(cBulkMode.getParent());
+            }
+            bulkProcessor.add(cRequest);
+        }
+
+        return true;
     }
 
     /**

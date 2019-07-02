@@ -38,7 +38,7 @@ public class ApplicationTests {
     @Test
     public void convert() throws Exception {
         Integer i = 100;
-        BaseMapper mapper = new BaseMapper(ElasticTypeEnum.PATIENT);
+        BaseMapper mapper = BaseMapper.getInstance(ElasticTypeEnum.PATIENT);
         mapper.setOnMapper(true);
         for(Integer j = 0; j<i; j++){
             JSONObject object = new JSONObject();

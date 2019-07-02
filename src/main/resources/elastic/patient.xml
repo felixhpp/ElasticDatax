@@ -1,16 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE elasticMapper SYSTEM "elasticmapping.dtd">
 <elasticMapper name="patient">
-    <!--property配置字段映射信息
-        sourceName：源字段名称
-        targetName: 目标字段名称
-        convert： 是否进行转换， 如果true, 则将通过调用方法或者动态执行sql获取转换后的值
-        valueType: 字段数据类型，
-        dicType: 字典类型  包括：dept，sex， national，admType，diagnoseType，diagnoseName，marital
-        -->
-    <!--
-        parameter: 为源数据字段名称
-    -->
     <property sourceName="pat_regno" targetName="Pat_RegNo" valueType="String" idField="true" routingField="true"></property>
     <property sourceName="pat_recordno" targetName="Pat_RecordNo" valueType="String"></property>
     <property sourceName="pat_name" targetName="Pat_Name" valueType="String"></property>
@@ -35,23 +25,4 @@
             <parameter></parameter>
         </dateFormatConvertor>
     </property>
-    <!--<property sourceName="code1" targetName="code2" convert="true" dicType="dept">-->
-        <!--&lt;!&ndash;转换调用的方法&ndash;&gt;-->
-        <!--<method>getByCode</method>-->
-        <!--&lt;!&ndash;转换动态执行的sql, 输出结果中必须包含sourceName或者targetName字段&ndash;&gt;-->
-        <!--&lt;!&ndash;<sql>select name1 as ${sourceName} from dept1 where code='${code1}'</sql>&ndash;&gt;-->
-        <!--&lt;!&ndash;参数 字符 sourceName中获取&ndash;&gt;-->
-        <!--<parameter type="java.lang.String">code1</parameter>-->
-    <!--</property>-->
-    <!--&lt;!&ndash;通过sql添加关联表的信息，一般用于新增其它表多个字段的信息&ndash;&gt;-->
-    <!--<addField sourceName="code1">-->
-        <!--<sql>-->
-            <!--select name1 as name, name2 as code from dept1 where code='${code1}'-->
-        <!--</sql>-->
-        <!--<fields>-->
-            <!--<field>code</field>-->
-            <!--<field>name</field>-->
-        <!--</fields>-->
-        <!--<parameter type="java.lang.String">code1</parameter>-->
-    <!--</addField>-->
 </elasticMapper>

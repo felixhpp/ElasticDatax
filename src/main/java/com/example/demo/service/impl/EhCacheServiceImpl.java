@@ -3,7 +3,7 @@ package com.example.demo.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.example.demo.core.utils.SpringUtils;
 import com.example.demo.elastic.converter.ElasticMapperBean;
-import com.example.demo.elastic.converter.ElasticXmlToBean;
+import com.example.demo.elastic.analysis.ElasticXmlToBean;
 import com.example.demo.service.EhCacheService;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
@@ -17,10 +17,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Ehcache 缓存管理服务
+ * @author felix
+ */
 @Service
 public class EhCacheServiceImpl implements EhCacheService {
     EhCacheCacheManager cacheCacheManager= SpringUtils.getBean(EhCacheCacheManager.class);
     private static final Logger logger = LoggerFactory.getLogger(EhCacheServiceImpl.class);
+
+    /**
+     * 获取全部缓存，返回一个Map类型
+     * @return
+     */
     public Map<String, Object> getCacheNmaes(){
         Map<String, Object> map = new HashMap<>();
         //获取CacheManager类
@@ -78,7 +87,7 @@ public class EhCacheServiceImpl implements EhCacheService {
         String key ="elaticMapper_" + fileName;
 
         ElasticMapperBean bean = ElasticXmlToBean.toBean(fileName);
-        if(bean == null || bean.getPropertyArray().size() == 0){
+        if(bean == null || bean.getPropertyArray().length == 0){
             return;
         }
         logger.info("******开始缓存elastic mapper 文件名为：" + fileName + " 的数据");

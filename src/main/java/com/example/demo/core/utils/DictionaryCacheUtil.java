@@ -27,7 +27,7 @@ import java.util.List;
 public class DictionaryCacheUtil implements CommandLineRunner {
 
     private static final Logger logger = LoggerFactory.getLogger(ElasticMapperCacheUtil.class);
-
+    private static final String DicBusinessFieldcode = "00001_";
     @Autowired
     private ApplicationContext applicationContext;
     /**
@@ -64,9 +64,19 @@ public class DictionaryCacheUtil implements CommandLineRunner {
 
         logger.info("******开始缓存" + typeEnum.getDesc() + "字典数据");
         for (DictionaryMap dictionaryMap : dictionaryMapList){
-            String key = typeEnum.getCachePrefix() + dictionaryMap.getDicCode();
-            //cache.put(new Element(key, JSON.toJSONString(dictionaryMap)));
-            cache.put(new Element(key,dictionaryMap.getDicName()));
+            // 去除前缀 00001_
+            String curDicCode = dictionaryMap.getDicCode();
+            if(curDicCode.startsWith(DicBusinessFieldcode)){
+                curDicCode = curDicCode.replace(DicBusinessFieldcode, "");
+            }
+            String key = typeEnum.getCachePrefix() + curDicCode;
+
+            // 值也去掉前缀
+            String curDicName = dictionaryMap.getDicName();
+            if(curDicName != null && curDicName.startsWith(DicBusinessFieldcode)){
+                curDicName = curDicName.replace(DicBusinessFieldcode, "");
+            }
+            cache.put(new Element(key, curDicName));
         }
         logger.info("******" + typeEnum.getDesc() + "字典缓存完成，共："+ dictionaryMapList.size() + "个key" );
 

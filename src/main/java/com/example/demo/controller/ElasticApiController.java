@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONReader;
 import com.example.demo.core.entity.*;
@@ -55,14 +57,12 @@ public class ElasticApiController {
             if(StringUtils.isEmpty(theme)){
                 result.setResultCode("-1");
                 result.setResultContent("content参数中theme信息为null" );
-
             }
-            List<Map<String, Object>> bulkData = strToMap(dataStr);
-            elasticBulkService.bulk(theme, bulkData);
-            result.setResultCode("0");
-            result.setResultContent("成功" + bulkData.size() + "条");
+
+            List<Map<String, Object>> bulkData = JSONArray.parseObject(dataStr, ArrayList.class);
+            result = elasticBulkService.bulk(theme, bulkData);
             long endTime=System.currentTimeMillis();
-            logger.info("====bulk finish：" + bulkData.size()+ "  tool:" + (endTime-startTime)+"ms");
+            logger.info("====bulk [" + theme+ "] finish：" + result.getResultContent()+ "  tool:" + (endTime-startTime)+"ms");
         } catch (Exception e){
             result.setResultCode("-1");
             result.setResultContent("请求异常，错误信息:" + e.getMessage());
@@ -94,10 +94,15 @@ public class ElasticApiController {
     @PostMapping(path = "bulk/casenote")
     public RestResult bulk(@RequestBody List<BulkCaseRequestBody> body){
         long startTime = System.currentTimeMillis();
-
+        String documentType = null;
+        // debug
+        if(body.size() > 0){
+            documentType = body.get(0).getDocumentTypeDesc();
+            System.out.println(JSON.toJSONString(body.get(0)));
+        }
         BulkResponseBody responseBody = elasticBulkService.bulkCase(body);
         long endTime = System.currentTimeMillis();
-        logger.info("=====bulk [ casenote ],tool：" + (endTime- startTime) + "ms，message:" + responseBody.getResultContent());
+        logger.info("=====bulk [ "+documentType+" ],tool：" + (endTime- startTime) + "ms，message:" + responseBody.getResultContent());
         return ResultUtil.success(responseBody);
     }
 

@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE elasticMapper SYSTEM "elasticmapping.dtd">
 <elasticMapper name="diagnoseStatistic">
-    <!--property配置字段映射信息
-       sourceName：源字段名称
-       targetName: 目标字段名称
-       convert： 是否进行转换， 如果true, 则将通过调用方法或者动态执行sql获取转换后的值
-       valueType: 字段数据类型，
-       dicType: 字典类型  包括：dept，sex， national，admType，diagnoseType，diagnoseName，marital
-       -->
     <!--诊断信息（统计使用）  通过diagnose 映射-->
     <property sourceName="Diag_Id"  targetName="DFS_Id"  valueType="String" idField="true"></property>
     <property sourceName="Diag_AdmId" targetName="DFS_AdmId" valueType="String" parentField="true"></property>

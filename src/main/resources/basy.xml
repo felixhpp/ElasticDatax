@@ -1,0 +1,2510 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bundle xmlns="http://hl7.org/fhir" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://hl7.org/fhir file:///E:/%e5%b7%a5%e4%bd%9c%e5%86%85%e5%ae%b9/%e5%b7%a5%e4%bd%9c/FHIR/schema/fhir-all-xsd-4.0.1/bundle.xsd">
+	<id value="MedRecHomepage1"/>
+	<meta>
+		<!-- 文档版本id：0..1 -->
+		<versionId value="2"/>
+		<!--文档的机器生成时间-->
+		<lastUpdated value="2019-02-28T15:14:00+08:00"/>
+		<!-- 文档模板:利用StructureDefinition定义（约束Bundle的结构） -->
+		<profile value="http://fhir.org/structureDefinition/123"/>
+	</meta>
+	<!--语言：固定为zh-CN表示中文-->
+	<language value="zh-CN"/>
+	<!--文档流水号-->
+	<identifier>
+		<system value="2.16.156.10011.1.1"/>
+		<value value="RN001"/>
+	</identifier>
+	<!--Bundel类型:对于共享文档，固定值为document。表示文档-->
+	<type value="document"/>
+	<!--文档目录-->
+	<entry>
+		<fullUrl value="[base]/Composition/MedRecHomeComposition1"/>
+		<resource>
+			<Composition>
+				<id value="MedRecHomeComposition1"/>
+				<!-- HTML格式的文档内容 -->
+				<text>
+					<status xmlns:xhtml="http://www.w3.org/1999/xhtml" value="generated"/>
+					<div xmlns="http://www.w3.org/1999/xhtml">
+						<p> 病案首页文档的HTML内容 </p>
+					</div>
+				</text>
+				<!--病案质量:1.甲 2.乙 3.丙 -->
+				<extension url="[base]/StructureDefinition/extension_QCLevel1">
+					<valueCodeableConcept>
+						<coding>
+							<system/>
+							<code value="1"/>
+							<display value="甲"/>
+						</coding>
+					</valueCodeableConcept>
+				</extension>
+				<!-- 病案归档顺序(病案名称必须与文档类型保持一致) -->
+				<extension url="[base]/StructureDefinition/extension_QCArchOrder">
+					<valueCodeableConcept>
+						<coding>
+							<system/>
+							<code value="1"/>
+							<display value="住院病案首页"/>
+						</coding>
+					</valueCodeableConcept>
+				</extension>
+				<!--文档状态（必填项）-->
+				<status value="final"/>
+				<!--文档类型（必填项）-->
+				<type>
+					<coding>
+						<system value="2.16.156.10011.2.4"/>
+						<code value="C0032"/>
+						<display value="住院病案首页"/>
+					</coding>
+				</type>
+				<!--文档记录对象（患者）-->
+				<subject>
+					<reference value="[base]/Patient/Pat1"/>
+					<display value="张红"/>
+				</subject>
+				<!--文档中医疗卫生事件的就诊场景 -->
+				<encounter>
+					<reference value="[base]/Encounter/23429563"/>
+					<display value="就诊场景"/>
+				</encounter>
+				<!--文档目录（Composition）编辑时间（必填项）-->
+				<date/>
+				<!--文档创作者-->
+				<author>
+					<type value="Practitioner"/>
+					<identifier>
+						<system/>
+						<value value="12345689"/>
+					</identifier>
+					<display value="赵亮"/>
+				</author>
+				<!-- 文档标题（必填项）-->
+				<title value="住院病案首页"/>
+				<!-- 文档密级编码 -->
+				<confidentiality value="M">
+					<extension url="[base]/StructureDefinition/extension_confidentiality">
+						<valueCodeableConcept>
+							<coding>
+								<system value="2.16.840.1.113883.5.25"/>
+								<code value="N"/>
+								<display value="正常访问级别"/>
+							</coding>
+						</valueCodeableConcept>
+					</extension>
+				</confidentiality>
+				<!-- 科主任签名 -->
+				<attester>
+					<!-- 审核人角色（必填项）-->
+					<mode value="legal">
+						<extension url="[base]/StructureDefinition/extension_attesterCode">
+							<valueCodeableConcept>
+								<coding>
+									<system/>
+									<code value="001"/>
+									<display value="科主任"/>
+								</coding>
+							</valueCodeableConcept>
+						</extension>
+					</mode>
+					<!-- 科主任信息 -->
+					<party>
+						<type value="Practitioner"/>
+						<identifier>
+							<system/>
+							<value value="12345689"/>
+						</identifier>
+						<display value="黄薇"/>
+					</party>
+				</attester>
+				<!-- 主任(副主任)医师签名 -->
+				<attester>
+					<!-- 审核人角色（必填项） -->
+					<mode value="professional">
+						<extension url="[base]/StructureDefinition/extension_attesterCode">
+							<valueCodeableConcept>
+								<coding>
+									<system/>
+									<code value="002"/>
+									<display value="主任(副主任)医师"/>
+								</coding>
+							</valueCodeableConcept>
+						</extension>
+					</mode>
+					<!-- 主任(副主任)医师信息 -->
+					<party>
+						<type value="Practitioner"/>
+						<identifier>
+							<system/>
+							<value value="12345689"/>
+						</identifier>
+						<display value="李小红"/>
+					</party>
+				</attester>
+				<!-- 主诊医师签名 -->
+				<attester>
+					<!-- 审核人角色（必填项） -->
+					<mode value="professional">
+						<extension url="[base]/StructureDefinition/extension_attesterCode">
+							<valueCodeableConcept>
+								<coding>
+									<system/>
+									<code value="003"/>
+									<display value="主诊医师"/>
+								</coding>
+							</valueCodeableConcept>
+						</extension>
+					</mode>
+					<!-- 主诊医师信息 -->
+					<party>
+						<type value="Practitioner"/>
+						<identifier>
+							<system/>
+							<value value="12345689"/>
+						</identifier>
+						<display value="李小红"/>
+					</party>
+				</attester>
+				<!-- 住院医师签名 -->
+				<attester>
+					<!-- 审核人角色（必填项） -->
+					<mode value="professional">
+						<extension url="[base]/StructureDefinition/extension_attesterCode">
+							<valueCodeableConcept>
+								<coding>
+									<system/>
+									<code value="004"/>
+									<display value="住院医师"/>
+								</coding>
+							</valueCodeableConcept>
+						</extension>
+					</mode>
+					<!-- 住院医师信息 -->
+					<party>
+						<type value="Practitioner"/>
+						<identifier>
+							<system/>
+							<value value="12345689"/>
+						</identifier>
+						<display value="程冉"/>
+					</party>
+				</attester>
+				<!-- 医疗组长签名 -->
+				<attester>
+					<!-- 审核人角色（必填项） -->
+					<mode value="professional">
+						<extension url="[base]/StructureDefinition/extension_attesterCode">
+							<valueCodeableConcept>
+								<coding>
+									<system/>
+									<code value="005"/>
+									<display value="医疗组长"/>
+								</coding>
+							</valueCodeableConcept>
+						</extension>
+					</mode>
+					<!-- 医疗组长信息 -->
+					<party>
+						<type value="Practitioner"/>
+						<identifier>
+							<system/>
+							<value value="12345689"/>
+						</identifier>
+						<display value="李小红"/>
+					</party>
+				</attester>
+				<!-- 主治医师签名 -->
+				<attester>
+					<!-- 审核人角色（必填项） -->
+					<mode value="professional">
+						<extension url="[base]/StructureDefinition/extension_attesterCode">
+							<valueCodeableConcept>
+								<coding>
+									<system/>
+									<code value="006"/>
+									<display value="主治医师"/>
+								</coding>
+							</valueCodeableConcept>
+						</extension>
+					</mode>
+					<!-- 主治医师信息 -->
+					<party>
+						<type value="Practitioner"/>
+						<identifier>
+							<system/>
+							<value value="12345689"/>
+						</identifier>
+						<display value="郭俊良"/>
+					</party>
+				</attester>
+				<!-- 质控医师 -->
+				<attester>
+					<!-- 审核人角色（必填项） -->
+					<mode value="professional">
+						<extension url="[base]/StructureDefinition/extension_attesterCode">
+							<valueCodeableConcept>
+								<coding>
+									<system/>
+									<code value="007"/>
+									<display value="质控医师"/>
+								</coding>
+							</valueCodeableConcept>
+						</extension>
+					</mode>
+					<!-- 质控医师质检日期 -->
+					<time value="2019-03-14T10:00:00+08:00"/>
+					<!-- 质控医师信息 -->
+					<party>
+						<type value="Practitioner"/>
+						<identifier>
+							<system/>
+							<value value="12345689"/>
+						</identifier>
+						<display value="刘丽丽"/>
+					</party>
+				</attester>
+				<!-- 编码员签名 -->
+				<attester>
+					<!-- 审核人角色（必填项） -->
+					<mode value="professional">
+						<extension url="[base]/StructureDefinition/extension_attesterCode">
+							<valueCodeableConcept>
+								<coding>
+									<system/>
+									<code value="008"/>
+									<display value="编码员"/>
+								</coding>
+							</valueCodeableConcept>
+						</extension>
+					</mode>
+					<party>
+						<type value="Practitioner"/>
+						<identifier>
+							<system/>
+							<value value="12345689"/>
+						</identifier>
+						<display value="刘丽丽"/>
+					</party>
+				</attester>
+				<!-- 责任护士签名 -->
+				<attester>
+					<!-- 审核人角色（必填项） -->
+					<mode value="professional">
+						<extension url="[base]/StructureDefinition/extension_attesterCode">
+							<valueCodeableConcept>
+								<coding>
+									<system/>
+									<code value="009"/>
+									<display value="责任护士"/>
+								</coding>
+							</valueCodeableConcept>
+						</extension>
+					</mode>
+					<!-- 责任护士信息 -->
+					<party>
+						<type value="Practitioner"/>
+						<identifier>
+							<system/>
+							<value value="12345689"/>
+						</identifier>
+						<display value="朱丽丽"/>
+					</party>
+				</attester>
+				<!-- 质控护士 -->
+				<attester>
+					<!-- 审核人角色（必填项） -->
+					<mode value="professional">
+						<extension url="[base]/StructureDefinition/extension_attesterCode">
+							<valueCodeableConcept>
+								<coding>
+									<system/>
+									<code value="010"/>
+									<display value="质控护士"/>
+								</coding>
+							</valueCodeableConcept>
+						</extension>
+					</mode>
+					<!-- 质控护师质检日期 -->
+					<time value="2019-03-14T10:00:00+08:00"/>
+					<!-- 质控护士信息 -->
+					<party>
+						<type value="Practitioner"/>
+						<identifier>
+							<system/>
+							<value value="12345689"/>
+						</identifier>
+						<display value="周丹"/>
+					</party>
+				</attester>
+				<!-- 组织机构 -->
+				<custodian>
+					<type value="Organization"/>
+					<identifier>
+						<system/>
+						<value value="12345689"/>
+					</identifier>
+					<display value="XX医院"/>
+				</custodian>
+				<!--文档的章节内容-->
+				<!-- 生命体征章节 -->
+				<section>
+					<!-- 章节标题 -->
+					<title value="生命体征章节"/>
+					<!-- 章节代码 -->
+					<code>
+						<coding>
+							<system/>
+							<code value="vitalSigns"/>
+							<display value="生命体征章节"/>
+						</coding>
+					</code>
+					<!-- HTML格式的章节内容 -->
+					<text>
+						<status xmlns:xhtml="http://www.w3.org/1999/xhtml" value="extensions"/>
+						<div xmlns="http://www.w3.org/1999/xhtml">
+							<p> HTML格式的章节内容 </p>
+						</div>
+					</text>
+					<!-- 章节条目 -->
+					<entry>
+						<reference value="[base]/List/vitalSigns"/>
+						<display value="新生儿入院体重和出生体重"/>
+					</entry>
+				</section>
+				<!-- 诊断章节 -->
+				<section>
+					<!-- 章节标题 -->
+					<title value="诊断章节"/>
+					<!-- 章节代码 -->
+					<code>
+						<coding>
+							<system/>
+							<code value="diagnosis"/>
+							<display value="诊断章节"/>
+						</coding>
+					</code>
+					<!-- HTML格式的章节内容 -->
+					<text>
+						<status xmlns:xhtml="http://www.w3.org/1999/xhtml" value="extensions"/>
+						<div xmlns="http://www.w3.org/1999/xhtml">
+							<p> HTML格式的章节内容 </p>
+						</div>
+					</text>
+					<!-- 子章节：门（急）诊诊断 -->
+					<section>
+						<!-- 章节标题 -->
+						<title value="门（急）诊诊断子章节"/>
+						<!-- 章节代码 -->
+						<code>
+							<coding>
+								<system/>
+								<code value="EmergencyDiagnosis"/>
+								<display value="门（急）诊诊断章节"/>
+							</coding>
+						</code>
+						<entry>
+							<reference value="[base]/List/Diag1Emer1"/>
+							<display/>
+						</entry>
+					</section>
+					<!-- 子章节：入院诊断 -->
+					<section>
+						<!-- 章节标题 -->
+						<title value="入院诊断子章节"/>
+						<!-- 章节代码 -->
+						<code>
+							<coding>
+								<system/>
+								<code value="AdmissionDiagnosis"/>
+								<display value="入院诊断章节"/>
+							</coding>
+						</code>
+						<entry>
+							<reference value="[base]/List/Diag1Adm1"/>
+							<display/>
+						</entry>
+					</section>
+					<!-- 子章节：出院主诊断 -->
+					<section>
+						<!-- 章节标题 -->
+						<title value="出院主诊断子章节"/>
+						<!-- 章节代码 -->
+						<code>
+							<coding>
+								<system/>
+								<code value="MainDischargeDiag"/>
+								<display value="出院主诊断章节"/>
+							</coding>
+						</code>
+						<entry>
+							<reference value="[base]/List/MainDischargeDiag"/>
+							<display/>
+						</entry>
+					</section>
+					<!-- 子章节：出院诊断_其他诊断 -->
+					<section>
+						<!-- 章节标题 -->
+						<title value="出院其他诊断子章节"/>
+						<!-- 章节代码 -->
+						<code>
+							<coding>
+								<system/>
+								<code value="Diag1DOtherDiag1"/>
+								<display value="出院其他诊断章节"/>
+							</coding>
+						</code>
+						<entry>
+							<reference value="[base]/List/Diag1DOtherDiag1"/>
+							<display/>
+						</entry>
+					</section>
+					<!-- 子章节：病理诊断 -->
+					<section>
+						<!-- 章节标题 -->
+						<title value="病理诊断子章节"/>
+						<!-- 章节代码 -->
+						<code>
+							<coding>
+								<system/>
+								<code value="Diag1Path1"/>
+								<display value="病理诊断章节"/>
+							</coding>
+						</code>
+						<entry>
+							<reference value="[base]/List/Diag1Path1"/>
+							<display/>
+						</entry>
+					</section>
+				</section>
+				<!-- 主要健康问题章节 -->
+				<section>
+					<!-- 章节标题 -->
+					<title value="主要健康问题章节"/>
+					<!-- 章节代码 -->
+					<code>
+						<coding>
+							<system value="2.16.840.1.113883.6.1"/>
+							<code value="problemList"/>
+							<display value="主要健康问题章节"/>
+						</coding>
+					</code>
+					<!-- HTML格式的章节内容 -->
+					<text>
+						<status xmlns:xhtml="http://www.w3.org/1999/xhtml" value="extensions"/>
+						<div xmlns="http://www.w3.org/1999/xhtml">
+							<p> HTML格式的章节内容 </p>
+						</div>
+					</text>
+					<!-- 章节条目 -->
+					<entry>
+						<reference value="[base]/List/ProList1"/>
+						<display value="损伤、中毒的外部原因；颅脑损伤患者入院前昏迷时间；颅脑损伤患者入院后昏迷时间"/>
+					</entry>
+				</section>
+				<!-- 过敏史章节 -->
+				<section>
+					<!-- 过敏标志。当取值“有”，才有entry的内容。取值“无”，没有entry.-->
+					<extension url="[base]/StructureDefinition/extension_allergySign">
+						<valueCodeableConcept>
+							<coding>
+								<system/>
+								<code value="2"/>
+								<display value="有"/>
+							</coding>
+						</valueCodeableConcept>
+					</extension>
+					<!-- 章节标题 -->
+					<title value="过敏史章节"/>
+					<!-- 章节代码 -->
+					<code>
+						<coding>
+							<system/>
+							<code value="allergies"/>
+							<display value="过敏史章节"/>
+						</coding>
+					</code>
+					<!-- HTML格式的章节内容 -->
+					<text>
+						<status xmlns:xhtml="http://www.w3.org/1999/xhtml" value="extensions"/>
+						<div xmlns="http://www.w3.org/1999/xhtml">
+							<p> HTML格式的章节内容 </p>
+						</div>
+					</text>
+					<!-- 章节条目 -->
+					<entry>
+						<reference value="[base]/List/Allergy1"/>
+						<display value="多个过敏源"/>
+					</entry>
+				</section>
+				<!-- 实验室检查章节 -->
+				<section>
+					<!-- 章节标题 -->
+					<title value="实验室检查章节"/>
+					<!-- 章节代码 -->
+					<code>
+						<coding>
+							<system value="2.16.840.1.113883.6.1"/>
+							<code value="studiesSummary"/>
+							<display value="实验室检查章节"/>
+						</coding>
+					</code>
+					<!-- HTML格式的章节内容 -->
+					<text>
+						<status xmlns:xhtml="http://www.w3.org/1999/xhtml" value="extensions"/>
+						<div xmlns="http://www.w3.org/1999/xhtml">
+							<p> HTML格式的章节内容 </p>
+						</div>
+					</text>
+					<!-- 章节条目 -->
+					<entry>
+						<reference value="[base]/List/LabInspection1"/>
+						<display value="ABO血型、RH血型"/>
+					</entry>
+				</section>
+				<!-- 手术操作章节：多个手术详情 -->
+				<section>
+					<!-- 是否有手术。当取值“有”，才有子章节的内容的内容。取值“无”，没有子章节.-->
+					<extension url="[base]/StructureDefinition/extension_proSign">
+						<valueCodeableConcept>
+							<coding>
+								<system/>
+								<code value="2"/>
+								<display value="有"/>
+							</coding>
+						</valueCodeableConcept>
+					</extension>
+					<!-- 章节标题 -->
+					<title value="手术操作章节"/>
+					<!-- 章节代码 -->
+					<code>
+						<coding>
+							<system value="2.16.840.1.113883.6.1"/>
+							<code value="procedure"/>
+							<display value="手术操作章节"/>
+						</coding>
+					</code>
+					<!-- HTML格式的章节内容 -->
+					<text>
+						<status xmlns:xhtml="http://www.w3.org/1999/xhtml" value="extensions"/>
+						<div xmlns="http://www.w3.org/1999/xhtml">
+							<p> HTML格式的章节内容 </p>
+						</div>
+					</text>
+					<!-- 章节条目 -->
+					<entry>
+						<reference value="[base]/List/thisProce1"/>
+						<display value="多个手术的详情"/>
+					</entry>
+				</section>
+				<!-- 治疗计划章节：出院31天再住院和有无重返手术室手术计划 -->
+				<section>
+					<!-- 章节标题 -->
+					<title value="治疗计划章节"/>
+					<!-- 章节代码 -->
+					<code>
+						<coding>
+							<system value="2.16.840.1.113883.6.1"/>
+							<code value="18776-5"/>
+							<display value="TREATMENT PLAN"/>
+						</coding>
+					</code>
+					<!-- HTML格式的章节内容 -->
+					<text>
+						<status xmlns:xhtml="http://www.w3.org/1999/xhtml" value="extensions"/>
+						<div xmlns="http://www.w3.org/1999/xhtml">
+							<p> HTML格式的章节内容 </p>
+						</div>
+					</text>
+					<!-- 子章节：有无重返手术室手术计划 -->
+					<section>
+						<!-- 有无重返手术室手术计划.当取值“有”，才有entry的内容。取值“无”，没有entry.-->
+						<extension url="[base]/StructureDefinition/extension_reSurgPlanFlag">
+							<valueCodeableConcept>
+								<coding>
+									<system/>
+									<code value="2"/>
+									<display value="有"/>
+								</coding>
+							</valueCodeableConcept>
+						</extension>
+						<!-- 子章节代码 -->
+						<code>
+							<coding>
+								<system/>
+								<code value="returnSurgPlan"/>
+								<display value="重返手术室手术计划"/>
+							</coding>
+						</code>
+						<!-- 子章节条目 -->
+						<entry>
+							<reference value="[base]/CarePlan/returnSurgPlan"/>
+							<display value="重返手术室手术计划(该计划目的)"/>
+						</entry>
+					</section>
+					<!-- 子章节：31天再住院计划 -->
+					<section>
+						<!-- 有否出院31天内再住院计划.当取值“有”，才有entry的内容。取值“无”，没有entry.-->
+						<extension url="[base]/StructureDefinition/extension_31DayReIPlanFlag">
+							<valueCodeableConcept>
+								<coding>
+									<system/>
+									<code value="2"/>
+									<display value="有"/>
+								</coding>
+							</valueCodeableConcept>
+						</extension>
+						<!-- 子章节代码 -->
+						<code>
+							<coding>
+								<system/>
+								<code value="31DayReHospPlan"/>
+								<display value="31天再住院计划"/>
+							</coding>
+						</code>
+						<!-- 子章节条目 -->
+						<entry>
+							<reference value="[base]/CarePlan/31DayReHospCarePlan1"/>
+							<display value="出院31天再住院计划(该计划目的)"/>
+						</entry>
+					</section>
+				</section>
+				<!-- 扩展章节 -->
+				<section>
+					<!-- 章节标题 -->
+					<title value="扩展章节"/>
+					<!-- 章节代码 -->
+					<code>
+						<coding>
+							<system/>
+							<code value="extensionSection"/>
+							<display value="扩展章节"/>
+						</coding>
+					</code>
+					<!-- HTML格式的章节内容 -->
+					<text>
+						<status xmlns:xhtml="http://www.w3.org/1999/xhtml" value="extensions"/>
+						<div xmlns="http://www.w3.org/1999/xhtml">
+							<p> HTML格式的章节内容 </p>
+						</div>
+					</text>
+					<entry>
+						<reference value="[base]/List/extensonSec"/>
+					</entry>
+				</section>
+			</Composition>
+		</resource>
+	</entry>
+	<!--有后续多个entry组成文档的详细信息-->
+	<!--文档记录对象（患者）:张红[base]/Patient/Pat1-->
+	<entry>
+		<fullUrl value="[base]/Patient/Pat1"/>
+		<resource>
+			<Patient>
+				<id value="Pat1"/>
+				<!-- 患者类型（医疗付费方式）_扩展 -->
+				<extension url="[base]/StructureDefinition/extension_patientType">
+					<valueCodeableConcept>
+						<coding>
+							<system value="2.16.156.10011.2.3.1.197"/>
+							<code value="01"/>
+							<display value="城镇职工基本医疗保险"/>
+						</coding>
+					</valueCodeableConcept>
+				</extension>
+				<!-- 国籍 -->
+				<extension url="[base]/StructureDefinition/extension_patient-nationality">
+					<valueCodeableConcept>
+						<coding>
+							<system/>
+							<code value="CN"/>
+							<display value="中国"/>
+						</coding>
+					</valueCodeableConcept>
+				</extension>
+				<!-- 民族代码 -->
+				<extension url="[base]/StructureDefinition/extension_patientNation">
+					<valueCodeableConcept>
+						<coding>
+							<system/>
+							<code value="01"/>
+							<display value="汉族"/>
+						</coding>
+					</valueCodeableConcept>
+				</extension>
+				<!-- 年龄 -->
+				<extension url="[base]/StructureDefinition/extension_patientAge">
+					<valueString value="25岁5月"/>
+				</extension>
+				<!-- 职业状况 -->
+				<extension url="[base]/StructureDefinition/extension_patientOccupation">
+					<valueCodeableConcept>
+						<coding>
+							<system value="2.16.156.10011.2.3.3.13"/>
+							<code value="11"/>
+							<display value="国家公务员"/>
+						</coding>
+					</valueCodeableConcept>
+				</extension>
+				<!-- 病案号 -->
+				<extension url="[base]/StructureDefinition/extension_patMediNO">
+					<valueString value="BA4547657"/>
+				</extension>
+				<!-- 工作单位名称 -->
+				<extension url="[base]/StructureDefinition/extension_patWorkplaceName">
+					<valueString value="东华医为"/>
+				</extension>
+				<!-- 工作单位电话 -->
+				<extension url="[base]/StructureDefinition/extension_patWorkplaceTel">
+					<valueContactPoint>
+						<system value="phone"/>
+						<value value="15928590760"/>
+					</valueContactPoint>
+				</extension>
+				<!-- 登记号 -->
+				<identifier>
+					<!-- 卡类型 -->
+					<type>
+						<coding>
+							<system/>
+							<code value="00"/>
+							<display value="登记卡"/>
+						</coding>
+					</type>
+					<system/>
+					<value value="9576933"/>
+				</identifier>
+				<!-- 健康卡号 -->
+				<identifier>
+					<!-- 卡类型 -->
+					<type>
+						<coding>
+							<system/>
+							<code value="02"/>
+							<display value="注册医疗卡"/>
+						</coding>
+					</type>
+					<system/>
+					<value value="9576933"/>
+				</identifier>
+				<!-- 条码号 -->
+				<identifier>
+					<!-- 卡类型 -->
+					<type>
+						<coding>
+							<system/>
+							<code value="01"/>
+							<display value="条码"/>
+						</coding>
+					</type>
+					<system/>
+					<value value="95769355553"/>
+				</identifier>
+				<!-- 身份证号 -->
+				<identifier>
+					<!-- 卡类型 -->
+					<type>
+						<coding>
+							<system/>
+							<code value="04"/>
+							<display value="居民身份证"/>
+						</coding>
+					</type>
+					<system/>
+					<value value="1212121212"/>
+				</identifier>
+				<!-- 姓名 -->
+				<name>
+					<text value="赖林莲"/>
+				</name>
+				<!-- 电话 -->
+				<telecom>
+					<system value="phone"/>
+					<value value="17716126619"/>
+				</telecom>
+				<!-- 性别 -->
+				<gender value="other">
+					<extension url="[base]/StructureDefinition/extension_gender">
+						<valueCodeableConcept>
+							<coding>
+								<system value="2.16.156.10011.2.3.3.4"/>
+								<code value="2"/>
+								<display value="女"/>
+							</coding>
+						</valueCodeableConcept>
+					</extension>
+				</gender>
+				<!--出生日期-->
+				<birthDate value="1993-12-03"/>
+				<!-- 出生地 -->
+				<address>
+					<!-- 地址类型 -->
+					<use value="home">
+						<extension url="[base]/StructureDefinition/extension_addressUse">
+							<valueCodeableConcept>
+								<coding>
+									<system/>
+									<code value="birthplace"/>
+									<display value="出生地"/>
+								</coding>
+							</valueCodeableConcept>
+						</extension>
+					</use>
+					<!-- 地址全部内容描述 -->
+					<text value="公兴镇青云寺一组"/>
+				</address>
+				<!-- 籍贯 -->
+				<address>
+					<!-- 地址类型 -->
+					<use value="home">
+						<extension url="[base]/StructureDefinition/extension_addressUse">
+							<valueCodeableConcept>
+								<coding>
+									<system/>
+									<code value="household"/>
+									<display value="籍贯"/>
+								</coding>
+							</valueCodeableConcept>
+						</extension>
+					</use>
+					<!-- 地址全部内容描述 -->
+					<text value="公兴镇青云寺一组"/>
+				</address>
+				<!-- 现住址 -->
+				<address>
+					<use value="home">
+						<extension url="[base]/StructureDefinition/extension_addressUse">
+							<valueCodeableConcept>
+								<coding>
+									<system value="[base]/ValueSet/addressuse"/>
+									<code value="currentAddress"/>
+									<display value="现住址"/>
+								</coding>
+							</valueCodeableConcept>
+						</extension>
+					</use>
+					<!-- 地址全部内容描述 -->
+					<text value="公兴街道荷韵佳苑三期"/>
+					<postalCode value="252215"/>
+				</address>
+				<!-- 户口地址 -->
+				<address>
+					<use value="home">
+						<extension url="[base]/StructureDefinition/extension_addressUse">
+							<valueCodeableConcept>
+								<coding>
+									<system value="[base]/ValueSet/addressuse"/>
+									<code value="accountAddress"/>
+									<display value="户口地址"/>
+								</coding>
+							</valueCodeableConcept>
+						</extension>
+					</use>
+					<!-- 地址全部内容描述 -->
+					<text value="公兴镇青云寺一组"/>
+					<postalCode value="252215"/>
+				</address>
+				<!-- 工作单位地址 -->
+				<address>
+					<use value="work"/>
+					<!-- 地址全部内容描述 -->
+					<text value="公兴镇青云寺一组"/>
+					<postalCode value="252215"/>
+				</address>
+				<!-- 婚姻状况代码 -->
+				<maritalStatus>
+					<coding>
+						<system value="2.16.156.10011.2.3.3.5"/>
+						<code value="10"/>
+						<display value="已婚"/>
+					</coding>
+				</maritalStatus>
+				<!-- 患者联系人信息 -->
+				<contact>
+					<!-- 患者与联系人的关系 -->
+					<relationship>
+						<coding>
+							<system/>
+							<code value="03"/>
+							<display value="配偶"/>
+						</coding>
+					</relationship>
+					<!-- 联系人姓名 -->
+					<name>
+						<text value="贺超"/>
+					</name>
+					<!-- 联系人电话 -->
+					<telecom>
+						<system value="phone"> </system>
+						<value value="15928590760"/>
+					</telecom>
+					<!-- 联系人地址 -->
+					<address>
+						<use value="home"/>
+						<!-- 地址全部内容描述 -->
+						<text value="公兴镇青云寺一组"/>
+					</address>
+				</contact>
+			</Patient>
+		</resource>
+	</entry>
+	<!--文档中医疗卫生事件的就诊场景,即入院场景记录[base]/Encounter/23429563-->
+	<entry>
+		<fullUrl value="[base]/Encounter/23429563"/>
+		<resource>
+			<Encounter>
+				<!-- 就诊号 -->
+				<id value="23429563"/>
+				<!-- 扩展_医疗保险支付方式（费别） -->
+				<extension url="[base]/StructureDefinition/extension_costCategoryCode">
+					<valueCodeableConcept>
+						<coding>
+							<system/>
+							<code value="02"/>
+							<display value="社会保险"/>
+						</coding>
+					</valueCodeableConcept>
+				</extension>
+				<!-- 扩展_是否是日间患者 -->
+				<extension url="[base]/StructureDefinition/extension_daytimePatient">
+					<valueString value="是"/>
+				</extension>
+				<!-- 扩展_住院次数 -->
+				<extension url="[base]/StructureDefinition/extension_hospitalNumber">
+					<valuePositiveInt value="1"/>
+				</extension>
+				<!-- 扩展_转科科室：多个科室以^分隔 -->
+				<extension url="[base]/StructureDefinition/extension_referralDepartment">
+					<valueString value="转科科室1^转科科室2"/>
+				</extension>
+				<!-- 住院号 -->
+				<identifier>
+					<system/>
+					<value value="78945645641"/>
+				</identifier>
+				<!-- 就诊状态（必填项） -->
+				<status value="in-progress">
+					<extension url="[base]/StructureDefinition/extension_encounterStatus">
+						<valueCodeableConcept>
+							<coding>
+								<system/>
+								<code value="A"/>
+								<display value="在就诊"/>
+							</coding>
+						</valueCodeableConcept>
+					</extension>
+				</status>
+				<!-- 就诊类型：住院 -->
+				<class>
+					<code value="Hospital"/>
+					<display value="住院"/>
+				</class>
+				<!-- 就诊的入院和出院时间 -->
+				<period>
+					<!-- 入院时间 -->
+					<start value="2019-03-04T10:00:00+08:00"/>
+					<!-- 出院时间 -->
+					<end value="2019-03-14T10:00:00+08:00"/>
+				</period>
+				<!-- 实际住院天数 -->
+				<length>
+					<value value="30"/>
+					<unit value="d"/>
+				</length>
+				<!-- 患者住院信息 -->
+				<hospitalization>
+					<!-- 患者入院信息: -->
+					<admitSource>
+						<!-- 患者入院情况：1.危 2.急 3.一般 -->
+						<extension url="[base]/StructureDefinition/extension_admisSituation">
+							<valueCodeableConcept>
+								<coding>
+									<system/>
+									<code value="3"/>
+									<display value="一般"/>
+								</coding>
+							</valueCodeableConcept>
+						</extension>
+						<!-- 如果入院途径是3 的时候才存在的其他医疗机构名称 -->
+						<extension url="[base]/StructureDefinition/extension_otherTransOrg">
+							<valueReference>
+								<type value="Organization"/>
+								<!-- 医疗机构编码 -->
+								<identifier>
+									<system/>
+									<value value="1321546"/>
+								</identifier>
+								<!-- 医疗机构名称 -->
+								<display value="华西医院"/>
+							</valueReference>
+						</extension>
+						<!-- 患者入院途径：1.急诊 2.门诊 3.其他医疗机构转入 4.其他途径 -->
+						<coding>
+							<system/>
+							<code value="3"/>
+							<display value="其他医疗机构转入"/>
+						</coding>
+					</admitSource>
+					<!-- 出院病房 -->
+					<destination>
+						<type value="Location"/>
+						<!-- 编码 -->
+						<identifier>
+							<system/>
+							<value value="1321546"/>
+						</identifier>
+						<display value="锦江生殖医学科病区"/>
+					</destination>
+					<!-- 离院信息（患者去向） -->
+					<dischargeDisposition>
+						<!-- 扩展_拟接受医疗机构具体名称(只有“医嘱离院”和“医嘱转社区卫生服务机构/乡镇卫生院”的离院方式才会有此字段） -->
+						<extension url="[base]/StructureDefinition/extension_toReceOrgans">
+							<valueReference>
+								<type value="Organization"/>
+								<!-- 医疗机构编码 -->
+								<identifier>
+									<system/>
+									<value value="4561546"/>
+								</identifier>
+								<display value="拟接受医疗机构具体名称"/>
+							</valueReference>
+						</extension>
+						<!--死亡患者尸检标志:当离院方式为“死亡”的时候，尸检标志才可能为true-->
+						<extension url="[base]/StructureDefinition/extension_deaPatAutopsy">
+							<valueCodeableConcept>
+								<coding>
+									<system/>
+									<code value="2"/>
+									<display value="是"/>
+								</coding>
+							</valueCodeableConcept>
+						</extension>
+						<!-- 离院时透析（血透、腹透）尿素氮值 -->
+						<extension url="[base]/StructureDefinition/extension_dialyUreaNitValue">
+							<valueString value="200ml"/>
+						</extension>
+						<!-- 离院方式：1.医嘱离院 2.医嘱转院 3.医嘱转社区卫生服务机构/乡镇卫生院 4.非医嘱离院 5.死亡 9.其他 -->
+						<coding>
+							<system value="2.16.156.10011.2.3.1.265"/>
+							<code value="1"/>
+							<display value="医嘱离院"/>
+						</coding>
+					</dischargeDisposition>
+				</hospitalization>
+				<!-- 入院科别 -->
+				<location>
+					<location>
+						<!-- 资源类型 -->
+						<type value="Location"/>
+						<!-- 科室代码 -->
+						<identifier>
+							<system/>
+							<value value="ZYMZ006"/>
+						</identifier>
+						<display value="锦江生殖医学科"/>
+					</location>
+					<!-- 标识位置类型 -->
+					<physicalType>
+						<coding>
+							<system/>
+							<code value="001"/>
+							<display value="入院科室"/>
+						</coding>
+					</physicalType>
+				</location>
+				<!-- 入院病房 -->
+				<location>
+					<!-- 病房代码 -->
+					<location>
+						<!-- 资源类型 -->
+						<type value="Location"/>
+						<!-- 病区代码 -->
+						<identifier>
+							<system/>
+							<value value="bf1545"/>
+						</identifier>
+						<display value="锦江生殖医学科病区"/>
+					</location>
+					<!-- 标识位置类型 -->
+					<physicalType>
+						<coding>
+							<system/>
+							<code value="002"/>
+							<display value="入院病区"/>
+						</coding>
+					</physicalType>
+				</location>
+				<!-- 出院科别 -->
+				<location>
+					<location>
+						<!-- 资源类型 -->
+						<type value="Location"/>
+						<!-- 科室代码 -->
+						<identifier>
+							<system/>
+							<value value="ZYMZ006"/>
+						</identifier>
+						<display value="锦江生殖医学科"/>
+					</location>
+					<!-- 标识位置类型 -->
+					<physicalType>
+						<coding>
+							<system/>
+							<code value="003"/>
+							<display value="出院科室"/>
+						</coding>
+					</physicalType>
+				</location>
+			</Encounter>
+		</resource>
+	</entry>
+	<!--生命体征章节的详细信息-->
+	<entry>
+		<fullUrl value="[base]/List/vitalSigns"/>
+		<resource>
+			<List>
+				<id value="vitalSigns"/>
+				<contained>
+					<!--新生儿入院体重的详细信息-->
+					<Observation>
+						<id value="VS1Obser1"/>
+						<!-- 描述 -->
+						<extension url="[base]/StructureDefinition/extension_observationText">
+							<valueString value="3500g"/>
+						</extension>
+						<!--状态（必填项）-->
+						<status value="final"/>
+						<!-- 观察结果大类：生命体征-->
+						<category>
+							<coding>
+								<system value="http://hl7.org/fhir/observation-category"/>
+								<code value="vital-signs"/>
+								<display value="Vital Signs"/>
+							</coding>
+						</category>
+						<!-- 观察结果子类：新生儿入院体重-->
+						<code>
+							<coding>
+								<system/>
+								<code value="NBAdmissionWeight"/>
+								<display value="新生儿入院体重"/>
+							</coding>
+						</code>
+						<!-- 观察结果值：体重值-->
+						<valueQuantity>
+							<value value="3500"/>
+							<unit value="g"/>
+						</valueQuantity>
+					</Observation>
+				</contained>
+				<contained>
+					<!--新生儿出生体重-->
+					<Observation>
+						<id value="VS1Obser2"/>
+						<!-- 描述 -->
+						<extension url="[base]/StructureDefinition/extension_observationText">
+							<valueString value="3500g"/>
+						</extension>
+						<!--状态（必填项）-->
+						<status value="final"/>
+						<!-- 观察结果大类：生命体征 -->
+						<category>
+							<coding>
+								<system value="http://hl7.org/fhir/observation-category"/>
+								<code value="vital-signs"/>
+								<display value="Vital Signs"/>
+							</coding>
+						</category>
+						<!-- 观察结果子类：新生儿出生体重-->
+						<code>
+							<coding>
+								<system/>
+								<code value="NBBirthWeight"/>
+								<display value="新生儿出生体重"/>
+							</coding>
+						</code>
+						<!-- 观察结果值：体重值-->
+						<valueQuantity>
+							<value value="3500"/>
+							<unit value="g"/>
+						</valueQuantity>
+					</Observation>
+				</contained>
+				<!--List资源的状态（必填项） -->
+				<status value="current"/>
+				<!-- 模式（必填项） -->
+				<mode value="working"/>
+				<!-- 列表标题 -->
+				<title value="生命体征章节"/>
+				<!-- 患者 -->
+				<subject>
+					<reference value="[base]/Patient/Pat1"/>
+					<display/>
+				</subject>
+				<!-- 当前章节包含所有内容的文本描述 -->
+				<note>
+					<text value="新生儿入院体重3500g,新生儿出生体重3500g"/>
+				</note>
+				<!-- 结构化：新生儿入院体重条目 -->
+				<entry>
+					<item>
+						<reference value="#VS1Obser1"/>
+						<display value="新生儿入院体重"/>
+					</item>
+				</entry>
+				<!-- 结构化：新生儿出生体重条目-->
+				<entry>
+					<item>
+						<reference value="#VS1Obser2"/>
+						<display value="新生儿出生体重"/>
+					</item>
+				</entry>
+			</List>
+		</resource>
+	</entry>
+	<!-- 诊断章节-门（急）诊诊断子章节 -->
+	<entry>
+		<fullUrl value="[base]/List/Diag1Emer1"/>
+		<resource>
+			<List>
+				<id value="emer1"/>
+				<contained>
+					<!-- 门（急）诊诊断 -->
+					<Condition>
+						<id value="Emer1"/>
+						<!-- 诊断类型：门（急）诊诊断 -->
+						<category>
+							<coding>
+								<system/>
+								<code value="EmergencyDiagnosis"/>
+								<display value="门（急）诊诊断"/>
+							</coding>
+						</category>
+						<!-- 疾病编码 ICD-10 -->
+						<code>
+							<coding>
+								<system/>
+								<code value="Z31.201"/>
+								<display value="取卵"/>
+							</coding>
+						</code>
+						<!-- 诊断对象（必填项）-->
+						<subject>
+							<reference value="[base]/Patient/Pat1"/>
+							<display value="张红"/>
+						</subject>
+						<!-- 诊断的文本内容 -->
+						<note>
+							<text value="患者在住院前，由门（急）诊接诊医师在住院证上填写的门（急）诊诊断"/>
+						</note>
+					</Condition>
+				</contained>
+				<!-- 固定值（必填项）-->
+				<status value="current"/>
+				<!-- 固定值（必填项）-->
+				<mode value="snapshot"/>
+				<title value="门（急）诊诊断"/>
+				<note>
+					<text/>
+				</note>
+				<!-- 结构化：门（急）诊诊断 -->
+				<entry>
+					<item>
+						<reference value="#emer1"/>
+					</item>
+				</entry>
+			</List>
+		</resource>
+	</entry>
+	<!-- 诊断章节-入院诊断子章节 -->
+	<entry>
+		<fullUrl value="[base]/List/Diag1Adm1"/>
+		<resource>
+			<List>
+				<id value="Diag1Adm1"/>
+				<contained>
+					<!-- 入院诊断 -->
+					<Condition>
+						<id value="admission"/>
+						<!-- 诊断类型：入院诊断 -->
+						<category>
+							<coding>
+								<system/>
+								<code value="admission"/>
+								<display value="入院诊断"/>
+							</coding>
+						</category>
+						<!-- 疾病编码 ICD-10 -->
+						<code>
+							<coding>
+								<system/>
+								<code value="Z31.201"/>
+								<display value="取卵"/>
+							</coding>
+						</code>
+						<!-- 诊断对象（必填项）-->
+						<subject>
+							<reference value="[base]/Patient/Pat1"/>
+							<display value="张红"/>
+						</subject>
+						<abatementDateTime value="2019-05-30"/>
+						<!-- 诊断的文本内容 -->
+						<note>
+							<text value="入院诊断的其他描述性文本内容"/>
+						</note>
+					</Condition>
+				</contained>
+				<!-- 固定值（必填项）-->
+				<status value="current"/>
+				<!-- 固定值（必填项）-->
+				<mode value="snapshot"/>
+				<title value="入院诊断"/>
+				<note>
+					<text/>
+				</note>
+				<!-- 结构化：入院诊断 -->
+				<entry>
+					<item>
+						<reference value="#admission"/>
+					</item>
+				</entry>
+			</List>
+		</resource>
+	</entry>
+	<!-- 诊断章节-出院主诊断子章节 -->
+	<entry>
+		<fullUrl value="[base]/List/MainDischargeDiag"/>
+		<resource>
+			<List>
+				<id value="MainDischargeDiag"/>
+				<contained>
+					<!-- 出院主诊断 -->
+					<Condition>
+						<id value="DMastDiag1"/>
+						<!-- 诊断类型 -->
+						<category>
+							<coding>
+								<system/>
+								<code value="DMastDiag1"/>
+								<display value="出院主诊断"/>
+							</coding>
+						</category>
+						<!-- 出院主要诊断疾病代码 ICD-10-->
+						<code>
+							<coding>
+								<system/>
+								<code value="	Z31.201"/>
+								<display value="取卵"/>
+							</coding>
+						</code>
+						<!-- 诊断对象（必填项）-->
+						<subject>
+							<reference value="[base]/Patient/Pat1"/>
+							<display value="张红"/>
+						</subject>
+						<!-- 入院病情代码：1.有，2.临床未确定，3.情况不明，4.无 -->
+						<evidence>
+							<code>
+								<coding>
+									<system/>
+									<code value="1"/>
+									<display value="有"/>
+								</coding>
+							</code>
+						</evidence>
+						<!-- 出院情况代码：1.治愈 2.好转 3.未愈 4.死亡 5.其他 -->
+						<evidence>
+							<code>
+								<coding>
+									<system/>
+									<code value="1"/>
+									<display value="治愈"/>
+								</coding>
+							</code>
+						</evidence>
+						<!-- 诊断的文本内容 -->
+						<note>
+							<text value="出院主诊断描述性文本内容"/>
+						</note>
+					</Condition>
+				</contained>
+				<!-- 固定值（必填项）-->
+				<status value="current"/>
+				<!-- 固定值（必填项）-->
+				<mode value="snapshot"/>
+				<title value="出院主诊断"/>
+				<note>
+					<text/>
+				</note>
+				<!-- 结构化：出院主诊断 -->
+				<entry>
+					<item>
+						<reference value="#DMastDiag1"/>
+					</item>
+				</entry>
+			</List>
+		</resource>
+	</entry>
+	<!-- 诊断章节-出院其他诊断子章节 -->
+	<entry>
+		<fullUrl value="[base]/List/Diag1DOtherDiag1"/>
+		<resource>
+			<List>
+				<id value="Diag1DOtherDiag1"/>
+				<!-- 原发不孕  -->
+				<contained>
+					<!-- 出院其他诊断 -->
+					<Condition>
+						<id value="FDOtherDiag"/>
+						<!-- 诊断类型 -->
+						<category>
+							<coding>
+								<system/>
+								<code value="DOtherDiag1"/>
+								<display value="出院其他诊断"/>
+							</coding>
+						</category>
+						<!-- 出院其他诊断疾病代码 ICD-10-->
+						<code>
+							<coding>
+								<system/>
+								<code value="N97.904"/>
+								<display value="原发不孕"/>
+							</coding>
+						</code>
+						<!-- 诊断对象（必填项）-->
+						<subject>
+							<reference value="[base]/Patient/Pat1"/>
+							<display value="张红"/>
+						</subject>
+						<!-- 入院病情代码：1.有，2.临床未确定，3.情况不明，4.无 -->
+						<evidence>
+							<code>
+								<coding>
+									<system/>
+									<code value="1"/>
+									<display value="有"/>
+								</coding>
+							</code>
+						</evidence>
+						<!-- 出院情况代码：1.治愈 2.好转 3.未愈 4.死亡 5.其他 -->
+						<evidence>
+							<code>
+								<coding>
+									<system/>
+									<code value="5"/>
+									<display value="其他"/>
+								</coding>
+							</code>
+						</evidence>
+						<!-- 诊断的文本内容 -->
+						<note>
+							<text value="出院其他诊断描述性文本内容"/>
+						</note>
+					</Condition>
+				</contained>
+				<!-- 右侧输卵管阻塞  -->
+				<contained>
+					<!-- 出院其他诊断 -->
+					<Condition>
+						<id value="SDOtherDiag"/>
+						<!-- 诊断类型 -->
+						<category>
+							<coding>
+								<system/>
+								<code value="DOtherDiag1"/>
+								<display value="出院其他诊断"/>
+							</coding>
+						</category>
+						<!-- 出院其他诊断疾病代码 ICD-10-->
+						<code>
+							<coding>
+								<system/>
+								<code value="N97.101"/>
+								<display value="右侧输卵管阻塞"/>
+							</coding>
+						</code>
+						<!-- 诊断对象（必填项）-->
+						<subject>
+							<reference value="[base]/Patient/Pat1"/>
+							<display value="张红"/>
+						</subject>
+						<!-- 入院病情代码：1.有，2.临床未确定，3.情况不明，4.无 -->
+						<evidence>
+							<code>
+								<coding>
+									<system/>
+									<code value="1"/>
+									<display value="有"/>
+								</coding>
+							</code>
+						</evidence>
+						<!-- 出院情况代码：1.治愈 2.好转 3.未愈 4.死亡 5.其他 -->
+						<evidence>
+							<code>
+								<coding>
+									<system/>
+									<code value="5"/>
+									<display value="其他"/>
+								</coding>
+							</code>
+						</evidence>
+						<!-- 诊断的文本内容 -->
+						<note>
+							<text value="出院其他诊断描述性文本内容"/>
+						</note>
+					</Condition>
+				</contained>
+				<!-- 固定值（必填项）-->
+				<status value="current"/>
+				<!-- 固定值（必填项）-->
+				<mode value="snapshot"/>
+				<title value="出院其他诊断"/>
+				<note>
+					<text/>
+				</note>
+				<!-- 结构化：出院其他诊断（原发不孕） -->
+				<entry>
+					<item>
+						<reference value="#FDOtherDiag"/>
+					</item>
+				</entry>
+				<!-- 结构化：出院其他诊断（右侧输卵管阻塞） -->
+				<entry>
+					<item>
+						<reference value="#ODOtherDiag"/>
+					</item>
+				</entry>
+			</List>
+		</resource>
+	</entry>
+	<!-- 诊断章节-病理诊断子章节 -->
+	<entry>
+		<fullUrl value="[base]/List/Diag1Path1"/>
+		<resource>
+			<List>
+				<id value="Diag1Path1"/>
+				<!-- 病理诊断：冰冻 -->
+				<contained>
+					<Condition>
+						<id value="FPath1"/>
+						<!-- 冰冻检查 -->
+						<extension url="[base]/StructureDefinition/extension_frozenInspection">
+							<valueCodeableConcept>
+								<coding>
+									<system/>
+									<code value="2"/>
+									<display value="未做"/>
+								</coding>
+							</valueCodeableConcept>
+						</extension>
+						<!-- 病理诊断编号 -->
+						<identifier>
+							<system/>
+							<value value="PA345677"/>
+						</identifier>
+						<!-- 诊断类型 -->
+						<category>
+							<coding>
+								<system/>
+								<code value="PathologicalDiagnosis"/>
+								<display value="病理诊断"/>
+							</coding>
+						</category>
+						<!-- 诊断代码ICD-10 -->
+						<code>
+							<coding>
+								<system/>
+								<code value="2"/>
+								<display value="黏膜组织慢性炎"/>
+							</coding>
+						</code>
+						<!-- 诊断对象（必填项）-->
+						<subject>
+							<reference value="[base]/Patient/Pat1"/>
+							<display value="张红"/>
+						</subject>
+						<!-- 病理诊断的文本描述  -->
+						<note>
+							<text value="病理诊断的文本描述"/>
+						</note>
+					</Condition>
+				</contained>
+				<!-- 病理诊断：石蜡检查 -->
+				<contained>
+					<Condition>
+						<id value="SPath1"/>
+						<!-- 石蜡检查 -->
+						<extension url="[base]/StructureDefinition/extension_paraffinInspection">
+							<valueCodeableConcept>
+								<coding>
+									<system/>
+									<code value="2"/>
+									<display value="未做"/>
+								</coding>
+							</valueCodeableConcept>
+						</extension>
+						<!-- 病理诊断编号 -->
+						<identifier>
+							<system/>
+							<value value="PA345688"/>
+						</identifier>
+						<!-- 诊断类型 -->
+						<category>
+							<coding>
+								<system/>
+								<code value="PathologicalDiagnosis"/>
+								<display value="病理诊断"/>
+							</coding>
+						</category>
+						<!-- 诊断代码ICD-10 -->
+						<code>
+							<coding>
+								<system/>
+								<code value="3"/>
+								<display value="宫颈低级别鳞状上皮内病"/>
+							</coding>
+						</code>
+						<!-- 诊断对象（必填项）-->
+						<subject>
+							<reference value="[base]/Patient/Pat1"/>
+							<display value="张红"/>
+						</subject>
+						<!-- 病理诊断的文本描述  -->
+						<note>
+							<text value="病理诊断的文本描述"/>
+						</note>
+					</Condition>
+				</contained>
+				<!-- 固定值（必填项）-->
+				<status value="current"/>
+				<!-- 固定值（必填项）-->
+				<mode value="snapshot"/>
+				<title value="病理诊断"/>
+				<note>
+					<text/>
+				</note>
+				<!-- 结构化：病理诊断 -->
+				<entry>
+					<item>
+						<reference value="#FPath1"/>
+					</item>
+				</entry>
+				<!-- 结构化：病理诊断 -->
+				<entry>
+					<item>
+						<reference value="#SPath1"/>
+					</item>
+				</entry>
+			</List>
+		</resource>
+	</entry>
+	<!-- 主要健康问题章节 -->
+	<entry>
+		<fullUrl value="[base]/List/ProList1"/>
+		<resource>
+			<List>
+				<id value="ProList1"/>
+				<contained>
+					<!-- 住院患者损伤和中毒 -->
+					<Condition>
+						<id value="PL1PDamage1"/>
+						<!-- 诊断类型：住院患者损伤和中毒 -->
+						<category>
+							<coding>
+								<system/>
+								<code value="InjuryANDPois"/>
+								<display value="住院患者损伤和中毒"/>
+							</coding>
+						</category>
+						<!-- （诊断）疾病代码 -->
+						<code>
+							<coding>
+								<system value="2.16.156.10011.2.3.3.11.5"/>
+								<code value="1"/>
+								<display value="关节痛"/>
+							</coding>
+						</code>
+						<!-- 诊断对象（强制性） -->
+						<subject>
+							<reference value="[base]/Patient/Pat1"/>
+							<display value="张红"/>
+						</subject>
+						<!-- 损伤外部原因描述 -->
+						<note>
+							<text value="损伤外部原因文本描述"/>
+						</note>
+					</Condition>
+				</contained>
+				<contained>
+					<!-- 颅脑损伤患者入院前昏迷  -->
+					<Condition>
+						<id value="PL1DamageBComa1"/>
+						<!-- 颅脑损伤患者入院前昏迷时间 -->
+						<extension url="[base]/StructureDefinition/extension_PL1DamageBComa1Time">
+							<!-- 颅脑损伤患者入院前昏迷时间：天数-->
+							<extension url="PL1DamageBComa1Day">
+								<valueQuantity>
+									<value value="3"/>
+									<unit value="d"/>
+								</valueQuantity>
+							</extension>
+							<!-- 颅脑损伤患者入院前昏迷时间：小时数 -->
+							<extension url="PL1DamageBComa1Hour">
+								<valueQuantity>
+									<value value="3"/>
+									<unit value="h"/>
+								</valueQuantity>
+							</extension>
+							<!-- 颅脑损伤患者入院前昏迷时间：分钟数 -->
+							<extension url="PL1DamageBComa1DMinute">
+								<valueQuantity>
+									<value value="30"/>
+									<unit value="min"/>
+								</valueQuantity>
+							</extension>
+						</extension>
+						<!-- 诊断类型：颅脑损伤患者入院前昏迷 -->
+						<category>
+							<coding>
+								<system/>
+								<code value="BAHeadInjComatose"/>
+								<display value="颅脑损伤患者入院前昏迷"/>
+							</coding>
+						</category>
+						<!-- 诊断对象（强制性） -->
+						<subject>
+							<reference value="[base]/Patient/Pat1"/>
+							<display value="张红"/>
+						</subject>
+					</Condition>
+				</contained>
+				<!-- 颅脑损伤患者入院后昏迷  -->
+				<contained>
+					<Condition>
+						<id value="PL1DamageAComa1"/>
+						<!-- 颅脑损伤患者入院后昏迷时间 -->
+						<extension url="[base]/StructureDefinition/extension_PL1DamageAComa1Time">
+							<!-- 颅脑损伤患者入院后昏迷时间：天数 -->
+							<extension url="PL1DamageAComa1Day">
+								<valueQuantity>
+									<value value="3"/>
+									<unit value="d"/>
+								</valueQuantity>
+							</extension>
+							<!-- 颅脑损伤患者入院后昏迷时间：小时数 -->
+							<extension url="PL1DamageAComa1Hour">
+								<valueQuantity>
+									<value value="3"/>
+									<unit value="h"/>
+								</valueQuantity>
+							</extension>
+							<!-- 颅脑损伤患者入院后昏迷时间：分钟数 -->
+							<extension url="PL1DamageAComa1Minute">
+								<valueQuantity>
+									<value value="30"/>
+									<unit value="min"/>
+								</valueQuantity>
+							</extension>
+						</extension>
+						<!-- 诊断类型：颅脑损伤患者入院后昏迷 -->
+						<category>
+							<coding>
+								<system/>
+								<code value="ACHeadInjComatose"/>
+								<display value="颅脑损伤患者入院后昏迷"/>
+							</coding>
+						</category>
+						<!-- 诊断对象（强制性） -->
+						<subject>
+							<reference value="[base]/Patient/Pat1"/>
+							<display value="张红"/>
+						</subject>
+					</Condition>
+				</contained>
+				<!--List资源的状态（必填项） -->
+				<status value="current"/>
+				<!-- 模式（必填项） -->
+				<mode value="working"/>
+				<!-- 列表标题 -->
+				<title value="主要健康问题章节"/>
+				<!-- 患者 -->
+				<subject>
+					<reference value="[base]/Patient/Pat1"/>
+					<display/>
+				</subject>
+				<!-- 当前章节包含的所有内容的文本性描述 -->
+				<note>
+					<text/>
+				</note>
+				<!-- 住院患者损伤和中毒条目 -->
+				<entry>
+					<item>
+						<reference value="#PL1PDamage1"/>
+						<display value="住院患者损伤和中毒的疾病状态和原因"/>
+					</item>
+				</entry>
+				<!-- 颅脑损伤患者入院前昏迷条目 -->
+				<entry>
+					<item>
+						<reference value="#PL1DamageBComa1"/>
+						<display value="颅脑损伤患者入院前昏迷时间"/>
+					</item>
+				</entry>
+				<!-- 颅脑损伤患者入院后昏迷条目 -->
+				<entry>
+					<item>
+						<reference value="#PL1DamageAComa1"/>
+						<display value="颅脑损伤患者入院后昏迷时间"/>
+					</item>
+				</entry>
+			</List>
+		</resource>
+	</entry>
+	<!-- 过敏史章节:过敏源描述[base]/List/Allergy1-->
+	<entry>
+		<fullUrl value="[base]/List/Allergy1"/>
+		<resource>
+			<List>
+				<id value="Allergy1"/>
+				<contained>
+					<!--过敏药物1-->
+					<AllergyIntolerance>
+						<id value="LAllergy1"/>
+						<!-- 标识过敏还是不耐-->
+						<type value="allergy"/>
+						<!-- 标识过敏类型（过敏源）：food食物|medication药物|environment环境|biologic活生物体-->
+						<category value="medication"/>
+						<!-- 过敏药物1 -->
+						<code>
+							<text value="过敏药物1描述"/>
+						</code>
+						<!-- 过敏对象（必填项） -->
+						<patient>
+							<reference value="[base]/Patient/Pat1"/>
+							<display value="张红"/>
+						</patient>
+					</AllergyIntolerance>
+				</contained>
+				<!--过敏药物2-->
+				<contained>
+					<AllergyIntolerance>
+						<id value="LAllergy2"/>
+						<!-- 标识过敏还是不耐-->
+						<type value="allergy"/>
+						<!-- 标识过敏类型：food食物|medication药物|environment环境|biologic活生物体-->
+						<category value="medication"/>
+						<!-- 过敏药物2 -->
+						<code>
+							<text value="过敏药物2描述"/>
+						</code>
+						<!-- 过敏对象（必填项） -->
+						<patient>
+							<reference value="[base]/Patient/Pat1"/>
+							<display value="张红"/>
+						</patient>
+					</AllergyIntolerance>
+				</contained>
+				<!--List资源的状态（必填项） -->
+				<status value="current"/>
+				<!--（必填项）-->
+				<mode value="working"/>
+				<!-- 列表标题 -->
+				<title value="过敏史章节"/>
+				<!-- 患者 -->
+				<subject>
+					<reference value="[base]/Patient/Pat1"/>
+					<display/>
+				</subject>
+				<!--对所有过敏药物的文本描述-->
+				<note>
+					<text value="过敏药物1，过敏药物2"/>
+				</note>
+				<!--多个过敏药物，以多个entry的形式表示-->
+				<entry>
+					<item>
+						<reference value="#LAllergy1"/>
+						<display value="药物过敏1"/>
+					</item>
+				</entry>
+				<entry>
+					<item>
+						<reference value="#LAllergy2"/>
+						<display value="药物过敏2"/>
+					</item>
+				</entry>
+			</List>
+		</resource>
+	</entry>
+	<!-- 实验室检查章节的详细内容-->
+	<entry>
+		<fullUrl value="[base]/List/LabInspection1"/>
+		<resource>
+			<List>
+				<id value="LabInspection1"/>
+				<contained>
+					<!-- ABO血型 -->
+					<Observation>
+						<id value="LIABOBlood1"/>
+						<!--状态（必填项）-->
+						<status value="final"/>
+						<!-- 观察项大类 -->
+						<category>
+							<coding>
+								<system/>
+								<code value="laboratory"/>
+								<display value="实验室"/>
+							</coding>
+						</category>
+						<!-- 观察项子类：ABO血型 -->
+						<code>
+							<coding>
+								<system value="2.16.156.10011.2.2.1"/>
+								<code value="DE04.50.001.00"/>
+								<display value="ABO血型"/>
+							</coding>
+						</code>
+						<!-- 观察项结果值：ABO血型值 -->
+						<valueCodeableConcept>
+							<coding>
+								<system value="2.16.156.10011.2.3.1.85"/>
+								<code value="1"/>
+								<display value="A型"/>
+							</coding>
+						</valueCodeableConcept>
+					</Observation>
+				</contained>
+				<contained>
+					<!-- Rh血型 -->
+					<Observation>
+						<id value="LIRHBlood1"/>
+						<!--状态（必填项）-->
+						<status value="final"/>
+						<!-- 观察项大类 -->
+						<category>
+							<coding>
+								<system/>
+								<code value="laboratory"/>
+								<display value="实验室"/>
+							</coding>
+						</category>
+						<!-- 观察项子类：Rh血型 -->
+						<code>
+							<coding>
+								<system value="2.16.156.10011.2.2.1"/>
+								<code value="DE04.50.010.00"/>
+								<display value="Rh血型"/>
+							</coding>
+						</code>
+						<!-- 观察项结果值：RH血型值 -->
+						<valueCodeableConcept>
+							<coding>
+								<system value="2.16.156.10011.2.3.1.250"/>
+								<code value="1"/>
+								<display value="阴性"/>
+							</coding>
+						</valueCodeableConcept>
+					</Observation>
+				</contained>
+				<contained>
+					<!-- X片 -->
+					<Observation>
+						<id value="XPiece"/>
+						<!--状态（必填项）-->
+						<status value="final"/>
+						<!-- 观察项大类 -->
+						<category>
+							<coding>
+								<system/>
+								<code value="specInspection"/>
+								<display value="特殊检查"/>
+							</coding>
+						</category>
+						<!-- 观察项子类：X片 -->
+						<code>
+							<coding>
+								<system/>
+								<code value="XPiece"/>
+								<display value="X片"/>
+							</coding>
+						</code>
+					</Observation>
+				</contained>
+				<contained>
+					<!-- 超声心动图 -->
+					<Observation>
+						<id value="echocardiogram"/>
+						<!--状态（必填项）-->
+						<status value="final"/>
+						<!-- 观察项大类 -->
+						<category>
+							<coding>
+								<system/>
+								<code value="specInspection"/>
+								<display value="特殊检查"/>
+							</coding>
+						</category>
+						<!-- 观察项子类：X片 -->
+						<code>
+							<coding>
+								<system/>
+								<code value="echocardiogram"/>
+								<display value="超声心动图"/>
+							</coding>
+						</code>
+					</Observation>
+				</contained>
+				<!--List资源的状态（必填项） -->
+				<status value="current"/>
+				<!-- 模式（必填项） -->
+				<mode value="working"/>
+				<!-- 列表标题 -->
+				<title value="实验室检查章节"/>
+				<!-- 患者 -->
+				<subject>
+					<reference value="[base]/Patient/Pat1"/>
+					<display/>
+				</subject>
+				<!-- 当前章节包含所有内容的文本描述 -->
+				<note>
+					<text/>
+				</note>
+				<!--ABO血型条目-->
+				<entry>
+					<item>
+						<reference value="#LIABOBlood1"/>
+						<display value="ABO血型的观察项"/>
+					</item>
+				</entry>
+				<!--RH 血型条目-->
+				<entry>
+					<item>
+						<reference value="#LIRHBlood1"/>
+						<display value="RH血型的观察项"/>
+					</item>
+				</entry>
+				<!-- 特殊检查：X片  -->
+				<entry>
+					<item>
+						<reference value="#XPiece"/>
+						<display value="X片"/>
+					</item>
+				</entry>
+				<!-- 特殊检查：超声心动图  -->
+				<entry>
+					<item>
+						<reference value="#echocardiogram"/>
+						<display value="超声心动图"/>
+					</item>
+				</entry>
+			</List>
+		</resource>
+	</entry>
+	<!--手术操作章节 -->
+	<entry>
+		<fullUrl value="[base]/List/thisProce1"/>
+		<resource>
+			<List>
+				<id value="thisProce1"/>
+				<contained>
+					<!-- 手术详细信息 -->
+					<Procedure>
+						<id value="Proce1Appendectomy"/>
+						<!-- 扩展_手术级别 -->
+						<extension url="[base]/StructureDefinition/extension_operationLevel">
+							<valueCodeableConcept>
+								<coding>
+									<system/>
+									<code value="1"/>
+									<display value="I级"/>
+								</coding>
+							</valueCodeableConcept>
+						</extension>
+						<!-- 扩展_手术切口愈合等级 -->
+						<extension url="[base]/StructureDefinition/extension_cutType">
+							<valueCodeableConcept>
+								<coding>
+									<system/>
+									<code value="1"/>
+									<display value="0类/甲"/>
+								</coding>
+							</valueCodeableConcept>
+						</extension>
+						<!-- 扩展_麻醉方式 -->
+						<extension url="[base]/StructureDefinition/extension_anesthesiaMethod">
+							<valueCodeableConcept>
+								<coding>
+									<system/>
+									<code value="1"/>
+									<display value="全身麻醉"/>
+								</coding>
+							</valueCodeableConcept>
+						</extension>
+						<!--手术状态（必填项）-->
+						<status value="completed"/>
+						<!-- 手术及操作编码 ICD-9-CM -->
+						<code>
+							<coding>
+								<system/>
+								<code value="35.96003"/>
+								<display value="经皮肺动脉瓣球囊扩张成形术"/>
+							</coding>
+						</code>
+						<!--手术对象（必填项） -->
+						<subject>
+							<reference value="[base]/Patient/Pat1"/>
+							<display value="张红"/>
+						</subject>
+						<!-- 手术及操作日期 -->
+						<!--performedDateTime value="2019-05-30"/-->
+						<occurrenceDateTime value="2019-05-30"/>
+						<!-- 手术者详细信息 -->
+						<performer>
+							<!-- 手术过程中的角色 -->
+							<function>
+								<coding>
+									<system/>
+									<code value="10"/>
+									<display value="手术者"/>
+								</coding>
+							</function>
+							<!-- 手术者信息 -->
+							<actor>
+								<type value="Practitioner"/>
+								<!-- 医护人员编码 -->
+								<identifier>
+									<system/>
+									<value value="456789"/>
+								</identifier>
+								<display value="华益民"/>
+							</actor>
+						</performer>
+						<!-- 第一助手详细信息 -->
+						<performer>
+							<!-- 手术过程中的角色 -->
+							<function>
+								<coding>
+									<system/>
+									<code value="11"> </code>
+									<display value="第一助手"/>
+								</coding>
+							</function>
+							<!-- 第一助手信息 -->
+							<actor>
+								<type value="Practitioner"/>
+								<!-- 医护人员编码 -->
+								<identifier>
+									<system/>
+									<value value="456123"/>
+								</identifier>
+								<display value="王一斌"/>
+							</actor>
+						</performer>
+						<!-- 第二助手详细信息 -->
+						<performer>
+							<!-- 手术过程中的角色 -->
+							<function>
+								<coding>
+									<system/>
+									<code value="12"/>
+									<display value="第二助手"/>
+								</coding>
+							</function>
+							<!-- 第二助手信息 -->
+							<actor>
+								<type value="Practitioner"/>
+								<!-- 医护人员编码 -->
+								<identifier>
+									<system/>
+									<value value="123456"/>
+								</identifier>
+								<display value="石晓青"/>
+							</actor>
+						</performer>
+						<!-- 麻醉医师详细信息 -->
+						<performer>
+							<!-- 手术过程中的角色 -->
+							<function>
+								<coding>
+									<system/>
+									<code value="13"> </code>
+									<display value="麻醉医师"/>
+								</coding>
+							</function>
+							<!-- 第麻醉医师信息 -->
+							<actor>
+								<type value="Practitioner"/>
+								<!-- 医护人员编码 -->
+								<identifier>
+									<system/>
+									<value value="456148"/>
+								</identifier>
+								<display value="唐昱英"/>
+							</actor>
+						</performer>
+						<!-- 手术及操作其他描述性信息 -->
+						<note>
+							<text value="手术的详细描述"/>
+						</note>
+					</Procedure>
+				</contained>
+				<!-- I类手术切口预防性应用抗菌药物信息 -->
+				<extension url="[base]/StructureDefinition/extension_ISurgIncisAntDrugInfo">
+					<!--药物名称 -->
+					<extension url="[base]/StructureDefinition/extension_medName">
+						<valueString value="阿莫西林"/>
+					</extension>
+					<!-- 使用持续时间 -->
+					<extension url="[base]/StructureDefinition/extension_duration">
+						<valueString value="5小时"/>
+					</extension>
+					<!-- 联合用药 -->
+					<extension url="[base]/StructureDefinition/extension_combMedication">
+						<valueString value="青霉素"/>
+					</extension>
+				</extension>
+				<!-- I类切口预防性应用抗菌药物药物信息 -->
+				<extension url="[base]/StructureDefinition/extension_IIncisAntDrugInfo">
+					<!--药物名称 -->
+					<extension url="[base]/StructureDefinition/extension_medName">
+						<valueString value="阿莫西林"/>
+					</extension>
+					<!-- 使用持续时间 -->
+					<extension url="[base]/StructureDefinition/extension_duration">
+						<valueString value="5小时"/>
+					</extension>
+					<!-- 联合用药 -->
+					<extension url="[base]/StructureDefinition/extension_combMedication">
+						<valueString value="青霉素"/>
+					</extension>
+				</extension>
+				<!-- 主要手术风险分级（NNIS评分） -->
+				<extension url="[base]/StructureDefinition/extension_NNISScore">
+					<valueString value="1"/>
+				</extension>
+				<!-- 主要手术麻醉分级（ASA分级） -->
+				<extension url="[base]/StructureDefinition/extension_ASAClass">
+					<valueString value="P3"/>
+				</extension>
+				<!--List资源的状态（必填项） -->
+				<status value="current"/>
+				<!--模式（必填项）-->
+				<mode value="working"/>
+				<!-- 列表标题 -->
+				<title value="手术操作章节"/>
+				<!-- 当前章节包含所有内容的文本描述 -->
+				<note>
+					<text/>
+				</note>
+				<!--多个手术，多个entry表示-->
+				<entry>
+					<item>
+						<reference value="#Proce1Appendectomy"/>
+						<display value="经皮肺动脉瓣球囊扩张成形术"/>
+					</item>
+				</entry>
+			</List>
+		</resource>
+	</entry>
+	<!-- 治疗计划章节-重返手术室手术计划子章节-->
+	<entry>
+		<fullUrl value="[base]/CarePlan/31DayReHospCarePlan1"/>
+		<resource>
+			<CarePlan>
+				<id value="31DayReHospCarePlan1"/>
+				<!-- 计划的状态（必填项） -->
+				<status value="active"/>
+				<!-- 计划目的（必填项）-->
+				<intent value="plan"/>
+				<!--计划类型-->
+				<category>
+					<coding>
+						<system/>
+						<code value="returnSurgPlan"/>
+						<display value="重返手术室手术计划"/>
+					</coding>
+				</category>
+				<!-- 计划对象（必填项） -->
+				<subject>
+					<reference value="[base]/Patient/Pat1"/>
+					<display value="张红"/>
+				</subject>
+				<!-- 重返手术室手术的目的 -->
+				<goal>
+					<display value="重返手术室手术的目的的文本描述"/>
+				</goal>
+			</CarePlan>
+		</resource>
+	</entry>
+	<!-- 治疗计划章节-出院31天再住院计划（计划目的)子章节-->
+	<entry>
+		<fullUrl value="[base]/CarePlan/31DayReHospCarePlan1"/>
+		<resource>
+			<CarePlan>
+				<id value="31DayReHospCarePlan1"/>
+				<!--31天再住院计划的状态（必填项） -->
+				<status value="active"/>
+				<!-- 计划目的（必填项）-->
+				<intent value="plan"/>
+				<!--计划类型-->
+				<category>
+					<coding>
+						<system/>
+						<code value="31DayReHospPlan"/>
+						<display value="31天再住院计划"/>
+					</coding>
+				</category>
+				<!-- 31天再住院对象（必填项） -->
+				<subject>
+					<reference value="[base]/Patient/Pat1"/>
+					<display value="张红"/>
+				</subject>
+				<!-- 出院31天内再住院目的 -->
+				<goal>
+					<display value="出院31天内再住院目的文本描述"/>
+				</goal>
+			</CarePlan>
+		</resource>
+	</entry>
+	<!-- 扩展章节 -->
+	<entry>
+		<fullUrl value="[base]/List/extensionSec"/>
+		<resource>
+			<List>
+				<id value="extensionSec"/>
+				<!-- 扩展_是否为肿瘤患者 -->
+				<extension url="[base]/StructureDefinition/extension_tumorPatFlag">
+					<valueString value="是"/>
+				</extension>
+				<!-- 扩展_最高诊断依据 -->
+				<extension url="[base]/StructureDefinition/extension_HighDiagBasic">
+					<valueString value="主要诊断"/>
+				</extension>
+				<!-- 扩展_肿瘤分期 -->
+				<extension url="[base]/StructureDefinition/extension_tumorStaging">
+					<valueString value="临床分期"/>
+				</extension>
+				<!-- 扩展_输血信息 -->
+				<extension url="[base]/StructureDefinition/extension_bloodTranInfo">
+					<!-- 扩展_输血反应 -->
+					<extension url="bloodTraReact">
+						<valueCodeableConcept>
+							<coding>
+								<system/>
+								<code value="3"/>
+								<display value="未输"/>
+							</coding>
+						</valueCodeableConcept>
+					</extension>
+					<!-- 扩展_红细胞输血量 -->
+					<extension url="edCellTranNum">
+						<valueString value="0U"/>
+					</extension>
+					<!-- 扩展_血小板输血量 -->
+					<extension url="plateletTranNum">
+						<valueString value="0单位"/>
+					</extension>
+					<!-- 扩展_血浆输血量 -->
+					<extension url="plasmaTranNum">
+						<valueString value="0ml"/>
+					</extension>
+					<!-- 扩展_全血输血量 -->
+					<extension url="wholebloTranNum">
+						<valueString value="0ml"/>
+					</extension>
+					<!-- 扩展_自体血回输量 -->
+					<extension url="reAutoBloTranNum">
+						<valueString value="0ml"/>
+					</extension>
+					<!-- 扩展_白蛋白 -->
+					<extension url="albuminTranNum">
+						<valueString value="0g"/>
+					</extension>
+					<!-- 扩展_冷沉淀 -->
+					<extension url="coldPreTranNum">
+						<valueString value="0U"/>
+					</extension>
+					<!-- 扩展_其他血液制品 -->
+					<extension url="otherBloodProdTranNum">
+						<valueString value="0单位"/>
+					</extension>
+				</extension>
+				<!-- 扩展_疑难病例标志 -->
+				<extension url="[base]/StructureDefinition/extension_diffCaseFlag">
+					<valueCodeableConcept>
+						<coding>
+							<system/>
+							<code value="2"/>
+							<display value="否"/>
+						</coding>
+					</valueCodeableConcept>
+				</extension>
+				<!-- 扩展_危重病例标志 -->
+				<extension url="[base]/StructureDefinition/extension_critCaseFlag">
+					<valueCodeableConcept>
+						<coding>
+							<system/>
+							<code value="2"/>
+							<display value="否"/>
+						</coding>
+					</valueCodeableConcept>
+				</extension>
+				<!-- 扩展_抢救情况 -->
+				<extension url="[base]/StructureDefinition/extension_rescueInfo">
+					<!-- 扩展_抢救次数 -->
+					<extension url="rescueNumber">
+						<valuePositiveInt value="4"/>
+					</extension>
+					<!-- 扩展_成功抢救次数 -->
+					<extension url="succRescueNumber">
+						<valuePositiveInt value="2"/>
+					</extension>
+				</extension>
+				<!-- 扩展_临床路径信息 -->
+				<extension url="[base]/StructureDefinition/extension_clinPathwayInfo">
+					<!-- 扩展_是否实施临床路径 -->
+					<extension url="impleFlag">
+						<valueString value="否"/>
+					</extension>
+					<!-- 扩展_是否完成临床路径 -->
+					<extension url="compleFlag">
+						<valueString value="否"/>
+					</extension>
+					<!-- 扩展_退出原因 -->
+					<extension url="withdrawalReason">
+						<valueString value="无"/>
+					</extension>
+				</extension>
+				<!-- 扩展_变异信息 -->
+				<extension url="[base]/StructureDefinition/extension_variatInfo">
+					<!-- 扩展_是否变异 -->
+					<extension url="variatFlag">
+						<valueString value="否"/>
+					</extension>
+					<!-- 扩展_变异原因 -->
+					<extension url="variatRescue">
+						<valueString value="无"/>
+					</extension>
+				</extension>
+				<!-- 院感 -->
+				<extension url="[base]/StructureDefinition/extension_infectionFlag">
+					<valueCodeableConcept>
+						<coding>
+							<system/>
+							<code value="2"/>
+							<display value="无"/>
+						</coding>
+					</valueCodeableConcept>
+				</extension>
+				<status value="current"></status>
+				<mode value="working"></mode>
+				<title value="扩展章节"/>
+				<note >
+					<text></text>
+				</note>
+			</List>
+		</resource>
+	</entry>
+</Bundle>

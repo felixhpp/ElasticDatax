@@ -16,6 +16,10 @@ import io.searchbox.cluster.Health;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * ES监控服务
+ * @author felix
+ */
 @Service
 public class ElasticMonitorServiceImpl implements ElasticMonitorService {
     private Logger logger = LoggerFactory.getLogger(ElasticBulkService.class);

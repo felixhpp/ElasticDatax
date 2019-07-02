@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--定义根目录节点为elasticMapper, 子节点为property， 可以有多个-->
-<!ELEMENT elasticMapper (property+,addProperty*)>
+<!ELEMENT elasticMapper (property+,addProperty*,filters)>
 <!--+ ：表示一次或者多次 ? ：表示零次或者一次  * ：表示零次或者多次 无 ：子元素只能出现一次-->
 <!ELEMENT property (methodConvertor* | dicConvertor? | dateFormatConvertor? | dateConcatConvertor? | valueFormatConvertor? | sqlConvertor)>
 <!ELEMENT methodConvertor (parameter+)>
@@ -15,6 +15,14 @@
 <!ELEMENT parameter (#PCDATA)>
 <!ELEMENT const (#PCDATA)>
 <!ELEMENT sql (#PCDATA)>
+<!ELEMENT filters (sourceFilter, targetFilter)>
+<!--对原始对象过滤-->
+<!ELEMENT sourceFilter (must,should)>
+<!--对转换后的对象过滤-->
+<!ELEMENT targetFilter (must,should)>
+<!ELEMENT must (filter+)>
+<!ELEMENT should (filter+)>
+<!ELEMENT filter (#PCDATA)>
 <!-- elasticMapper name属性是必须的，且唯一 -->
 <!ATTLIST elasticMapper name ID #REQUIRED>
 <!-- property sourceName属性是必须的 -->
@@ -60,7 +68,7 @@
 <!ATTLIST dicConvertor dicType (
         DiagnoseType | Deptartment | Sex | National | AdmType | Marital | Hospital |
         DiagnoseName | OrderItem | OrdType | OrdCateage | OrderStatus | Duration |
-        Freq | AdmStatus | LisItem | PHDrgMaterial |
+        Freq | AdmStatus | LisItem | PHDrgMaterial | InstrUsage | PHCGeneric | PHCGoods
         )  #REQUIRED>
 <!ATTLIST dateFormatConvertor methodName (
         formatDate |
@@ -78,3 +86,8 @@
 <!ATTLIST dateParameter value CDATA #REQUIRED>
 <!ATTLIST timeParameter value CDATA #REQUIRED>
 <!ATTLIST const targetName CDATA #REQUIRED>
+
+<!ATTLIST filter filterName CDATA #REQUIRED>
+<!ATTLIST filter filterMethod (
+        isNotEmpty | equert | notEquert
+        ) #REQUIRED>

@@ -1,5 +1,7 @@
 package com.example.demo.core.utils;
 
+import org.springframework.util.StringUtils;
+
 import java.util.Map;
 
 public class ESBulkModel {
@@ -51,5 +53,13 @@ public class ESBulkModel {
 
     final public void setMapData(Map<String, Object> mapData) {
         this.mapData = mapData;
+    }
+
+    final public boolean isEmpty(){
+        if(id == null || id == "") return false;
+        if(routing == null || routing =="") return false;
+        if(mapData == null || mapData.size() == 0) return false;
+
+        return true;
     }
 }

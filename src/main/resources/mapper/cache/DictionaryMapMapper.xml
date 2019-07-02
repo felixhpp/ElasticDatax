@@ -79,7 +79,7 @@
     </select>
     <!-- 根据编码查询科室-->
     <select id="getDeptByCode" resultMap="DeptMap" parameterType="java.util.Map">
-        SELECT * FROM mdm_USER.CT_Dept u WHERE 1 = 1 AND CTS_Code = #{code}
+        SELECT * FROM mdm_USER.CT_Dept u WHERE 1 = 1 AND CTD_Code = #{code}
     </select>
 
     <!-- 查询所有医院 -->

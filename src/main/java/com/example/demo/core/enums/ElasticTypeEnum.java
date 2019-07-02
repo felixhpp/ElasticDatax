@@ -23,7 +23,10 @@ public enum  ElasticTypeEnum {
     // 检验项
     Lisitem(7, "pa_lisitem", "lisitem", "lisitem.xml"),
     // 病案首页
-    MedicalRecordHomePage(8, "basy", "medicalrecordhomepage", "medicalrecordhomepage.xml")
+    MedicalRecordHomePage(8, "basy", "medicalrecordhomepage", "medicalrecordhomepage.xml"),
+
+    // 用药
+    Medicine(9, "pa_medicine", "medicine", "medicine.xml"),
     ;
     private static Logger logger = LoggerFactory.getLogger(ElasticTypeEnum.class);
     private int type;

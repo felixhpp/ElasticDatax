@@ -19,47 +19,28 @@
     <!-- 医嘱大类字典 -->
     <resultMap id="OrdCategoryMap" type="com.example.demo.entity.DictionaryMap">
         <!--column数据库中表的名  property是对应类的属性  -->
-        <result column="CTC_Code" property="dicCode" jdbcType="VARCHAR" />
-        <result column="CTC_Desc" property="dicName" jdbcType="VARCHAR" />
+        <result column="CateCode" property="dicCode" jdbcType="VARCHAR" />
+        <result column="CateDesc" property="dicName" jdbcType="VARCHAR" />
     </resultMap>
     <!-- 查询所有医嘱大类 -->
     <select id="getAllOrdCategory" resultMap="OrdCategoryMap">
-        SELECT * FROM  mdm_USER.CT_Category
+        SELECT
+            a.CTC_Desc AS CateDesc,
+            c.CTARCIM_Code AS CateCode
+        FROM mdm_USER.CT_Category a,
+            mdm_USER.CT_ChildCategory b,
+            mdm_USER.CT_ARCItmMast c
+        WHERE a.CTC_Code=b.CTCC_Category AND c.CTARCIM_ChildCategory=b.CTCC_Code
     </select>
     <!-- 根据编码查询医嘱大类 -->
     <select id="getOrdCategoryByCode" resultMap="OrdCategoryMap" parameterType="java.util.Map">
-        SELECT * FROM mdm_USER.CT_Category u WHERE 1 = 1 AND CTC_Code = #{code}
-    </select>
-
-    <!--药品通用名字典-->
-    <resultMap id="PHCGenericMap" type="com.example.demo.entity.DictionaryMap">
-        <!--column数据库中表的名  property是对应类的属性  -->
-        <result column="CTPHCG_Code" property="dicCode" jdbcType="VARCHAR" />
-        <result column="CTPHCG_Desc" property="dicName" jdbcType="VARCHAR" />
-    </resultMap>
-    <!-- 查询所有药品通用名 -->
-    <select id="getAllPHCGeneric" resultMap="PHCGenericMap">
-        SELECT * FROM  mdm_USER.CT_PHCGeneric
-    </select>
-    <!-- 根据编码查询药品通用名 -->
-    <select id="getPHCGenericByCode" resultMap="PHCGenericMap" parameterType="java.util.Map">
-        SELECT * FROM mdm_USER.CT_PHCGeneric u WHERE 1 = 1 AND CTPHCG_Code = #{code}
-    </select>
-
-
-    <!--药学项字典-->
-    <resultMap id="PHDrgMaterialItmMap" type="com.example.demo.entity.DictionaryMap">
-        <!--column数据库中表的名  property是对应类的属性  -->
-        <result column="CTPHDMI_Code" property="dicCode" jdbcType="VARCHAR" />
-        <result column="CTPHDMI_Desc" property="dicName" jdbcType="VARCHAR" />
-    </resultMap>
-    <!-- 查询所有药学项字典 -->
-    <select id="getAllPHDrgMaterialItm" resultMap="PHDrgMaterialItmMap">
-        SELECT * FROM  mdm_USER.CT_PHDrgMaterialItm
-    </select>
-    <!-- 根据编码查询药学项字典-->
-    <select id="getPHDrgMaterialItmByCode" resultMap="PHDrgMaterialItmMap" parameterType="java.util.Map">
-        SELECT * FROM mdm_USER.CT_PHDrgMaterialItm u WHERE 1 = 1 AND CTPHDMI_Code = #{code}
+        SELECT
+            a.CTC_Desc AS CateDesc,
+            c.CTARCIM_Code AS CateCode
+        FROM mdm_USER.CT_Category a,
+            mdm_USER.CT_ChildCategory b,
+            mdm_USER.CT_ARCItmMast c
+        WHERE a.CTC_Code=b.CTCC_Category AND c.CTARCIM_ChildCategory=b.CTCC_Code AND c.CTARCIM_Code = #{code}
     </select>
 
     <!--医嘱类型字典-->
@@ -121,4 +102,107 @@
     <select id="getDurationByCode" resultMap="DurationMap" parameterType="java.util.Map">
         SELECT * FROM mdm_USER.CT_Duration u WHERE 1 = 1 AND CTD_Code = #{code}
     </select>
+
+    <!--用药途径-->
+    <resultMap id="InstrMap" type="com.example.demo.entity.DictionaryMap">
+        <!--column数据库中表的名  property是对应类的属性  -->
+        <result column="CTI_Code" property="dicCode" jdbcType="VARCHAR" />
+        <result column="CTI_Desc" property="dicName" jdbcType="VARCHAR" />
+    </resultMap>
+    <!-- 查询所有用药途径 -->
+    <select id="getAllInstr" resultMap="InstrMap">
+        SELECT * FROM  mdm_USER.CT_Instr
+    </select>
+    <!-- 根据编码查询用药途径 -->
+    <select id="getInstrByCode" resultMap="InstrMap" parameterType="java.util.Map">
+        SELECT * FROM mdm_USER.CT_Instr u WHERE 1 = 1 AND CTI_Code = #{code}
+    </select>
+
+    <!--医嘱子分类-->
+    <resultMap id="ChildCategoryMap" type="com.example.demo.entity.DictionaryMap">
+        <!--column数据库中表的名  property是对应类的属性  -->
+        <result column="ChildCate_Code" property="dicCode" jdbcType="VARCHAR" />
+        <result column="ChildCate_Desc" property="dicName" jdbcType="VARCHAR" />
+    </resultMap>
+    <!-- 查询所有医嘱子分类 -->
+    <select id="getAllChildCategory" resultMap="ChildCategoryMap">
+        SELECT
+            b.CTARCIM_Code AS ChildCate_Code,
+            a.CTCC_Desc AS ChildCate_Desc
+        FROM  mdm_USER.CT_ChildCategory a,
+            mdm_USER.CT_ARCItmMast b
+        WHERE a.CTCC_Code=b.CTARCIM_ChildCategory
+    </select>
+    <!-- 根据编码查询医嘱子分类 -->
+    <select id="getChildCategoryByCode" resultMap="ChildCategoryMap" parameterType="java.util.Map">
+        SELECT
+            b.CTARCIM_Code AS ChildCate_Code,
+            a.CTCC_Desc AS ChildCate_Desc
+        FROM  mdm_USER.CT_ChildCategory a,
+            mdm_USER.CT_ARCItmMast b
+        WHERE a.CTCC_Code=b.CTARCIM_ChildCategory AND b.CTARCIM_Code = #{code}
+    </select>
+
+    <!--药品通用名字典-->
+    <resultMap id="PHCGenericMap" type="com.example.demo.entity.DictionaryMap">
+        <!--column数据库中表的名  property是对应类的属性  -->
+        <result column="GenericCode" property="dicCode" jdbcType="VARCHAR" />
+        <result column="GenericDesc" property="dicName" jdbcType="VARCHAR" />
+    </resultMap>
+    <!-- 查询所有药品通用名 -->
+    <select id="getAllPHCGeneric" resultMap="PHCGenericMap">
+       SELECT a.CTPHDMI_Code AS GenericCode,a.CTPHDMI_GenericName AS GenericDesc FROM mdm_User.CT_PHDrgMaterialItm a
+    </select>
+    <!-- 根据编码查询药品通用名 code 需要去掉域名 -->
+    <select id="getPHCGenericByCode" resultMap="PHCGenericMap" parameterType="java.util.Map">
+        SELECT a.CTPHDMI_Code AS GenericCode,a.CTPHDMI_GenericName AS GenericDesc FROM mdm_User.CT_PHDrgMaterialItm a WHERE CTPHDMI_Code = #{code}
+    </select>
+
+    <!--药品商品名称-->
+    <resultMap id="PHCGoodsMap" type="com.example.demo.entity.DictionaryMap">
+        <!--column数据库中表的名  property是对应类的属性  -->
+        <result column="GoodsCode" property="dicCode" jdbcType="VARCHAR" />
+        <result column="GoodsDesc" property="dicName" jdbcType="VARCHAR" />
+    </resultMap>
+    <!-- 查询所有药品商品名称 -->
+    <select id="getAllPHCGoods" resultMap="PHCGoodsMap">
+       SELECT a.CTPHDMI_Code AS GoodsCode,a.CTPHDMI_GoodsName AS GoodsDesc FROM mdm_User.CT_PHDrgMaterialItm a
+    </select>
+    <!-- 根据编码查询药品商品名称 code 需要去掉域名 -->
+    <select id="getPHCGoodsByCode" resultMap="PHCGoodsMap" parameterType="java.util.Map">
+        SELECT a.CTPHDMI_Code AS GoodsCode,a.CTPHDMI_GoodsName AS GoodsDesc FROM mdm_User.CT_PHDrgMaterialItm a WHERE CTPHDMI_Code = #{code}
+    </select>
+
+    <!--药学项字典-->
+    <resultMap id="PHDrgMaterialItmMap" type="com.example.demo.entity.DictionaryMap">
+        <!--column数据库中表的名  property是对应类的属性  -->
+        <result column="CTPHDMI_Code" property="dicCode" jdbcType="VARCHAR" />
+        <result column="CTPHDMI_Desc" property="dicName" jdbcType="VARCHAR" />
+    </resultMap>
+    <!-- 查询所有药学项字典 -->
+    <select id="getAllPHDrgMaterialItm" resultMap="PHDrgMaterialItmMap">
+        SELECT * FROM  mdm_USER.CT_PHDrgMaterialItm
+    </select>
+    <!-- 根据编码查询药学项字典-->
+    <select id="getPHDrgMaterialItmByCode" resultMap="PHDrgMaterialItmMap" parameterType="java.util.Map">
+        SELECT * FROM mdm_USER.CT_PHDrgMaterialItm u WHERE 1 = 1 AND CTPHDMI_Code = #{code}
+    </select>
+
+    <!--&lt;!&ndash;药学大分类&ndash;&gt;-->
+    <!--<resultMap id="PHCCategoryMap" type="com.example.demo.entity.DictionaryMap">-->
+        <!--&lt;!&ndash;column数据库中表的名  property是对应类的属性  &ndash;&gt;-->
+        <!--<result column="CTPHCC_Code" property="dicCode" jdbcType="VARCHAR" />-->
+        <!--<result column="CTPHCC_Desc" property="dicName" jdbcType="VARCHAR" />-->
+    <!--</resultMap>-->
+    <!--&lt;!&ndash; 查询所有药学大分类 &ndash;&gt;-->
+    <!--<select id="getAllPHCCategory" resultMap="PHCCategoryMap">-->
+        <!--SELECT * FROM mdm_User.CT_PHCCategory  WHERE CTPHCC_ParentCode IS NULL-->
+    <!--</select>-->
+    <!--&lt;!&ndash; 根据编码查询药学大分类 &ndash;&gt;-->
+    <!--<select id="getPHCCategoryByCode" resultMap="PHCCategoryMap" parameterType="java.util.Map">-->
+    <!--SELECT b.CTARCIM_Code AS ChildCate_Code, a.CTCC_Desc AS ChildCate_Desc FROM  mdm_USER.CT_ChildCategory a-->
+        <!--LEFT JOIN mdm_USER.CT_ARCItmMast b ON a.CTCC_Code=b.CTARCIM_ChildCategory-->
+        <!--WHERE b.CTARCIM_Code = #{code}-->
+    <!--</select>-->
+
 </mapper>

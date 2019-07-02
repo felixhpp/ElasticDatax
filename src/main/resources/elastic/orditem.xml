@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE elasticMapper SYSTEM "elasticmapping.dtd">
 <elasticMapper name="diagnose">
-    <!--property配置字段映射信息
-        sourceName：源字段名称
-        targetName: 目标字段名称
-        convert： 是否进行转换， 如果true, 则将通过调用方法或者动态执行sql获取转换后的值
-        valueType: 字段数据类型，
-        dicType: 字典类型   com.example.demo.core.dics 包下的类路径
-        -->
     <property sourceName="ord_id"  targetName="Ord_Id" valueType="String" idField="true"></property>
     <property sourceName="ord_admno" targetName="Ord_AdmNo" valueType="String" parentField="true"></property>
     <property sourceName="ord_regno" targetName="Ord_RegNo" valueType="String" routingField="true"></property>
@@ -20,9 +13,9 @@
         </dicConvertor>
     </property>
     <!--医嘱大分类-->
-    <property sourceName="ord_cate_code" targetName="Ord_Category" valueType="String">
+    <property sourceName="ord_code" targetName="Ord_Category" valueType="String">
         <dicConvertor methodName="getByCode" dicType="OrdCateage">
-            <parameter></parameter>
+            <parameter>ord_code</parameter>
         </dicConvertor>
     </property>
     <!--医嘱类型-->
@@ -37,16 +30,19 @@
     <!--疗程-->
     <property sourceName="ord_duration_code" targetName="Ord_Duration" valueType="String">
         <dicConvertor methodName="getByCode" dicType="Duration">
-            <parameter></parameter>
+            <parameter>ord_duration_code</parameter>
         </dicConvertor>
     </property>
     <!--用法 - 用药途径-->
-    <property sourceName="ord_usage" targetName="Ord_Usage" valueType="String">
+    <property sourceName="ord_usage_code" targetName="Ord_Usage" valueType="String">
+        <dicConvertor methodName="getByCode" dicType="InstrUsage">
+            <parameter></parameter>
+        </dicConvertor>
     </property>
     <!--频次-->
     <property sourceName="ord_freq_code" targetName="Ord_Freq" valueType="String">
         <dicConvertor methodName="getByCode" dicType="Freq">
-            <parameter></parameter>
+            <parameter>ord_freq_code</parameter>
         </dicConvertor>
     </property>
     <!--医嘱开始时间-->
@@ -75,7 +71,7 @@
     <!--开医嘱科室-->
     <property sourceName="ord_dept_code" targetName="Ord_Dept" valueType="String">
         <dicConvertor methodName="getByCode" dicType="Deptartment">
-            <parameter></parameter>
+            <parameter>ord_dept_code</parameter>
         </dicConvertor>
     </property>
     <!--执行医嘱科室-->
@@ -83,6 +79,13 @@
         <dicConvertor methodName="getByCode" dicType="Deptartment">
             <parameter></parameter>
         </dicConvertor>
+    </property>
+    <!--医嘱执行时间-->
+    <property sourceName="ord_dateexecuted" targetName="Ord_ExecDate">
+        <dateConcatConvertor methodName="concatDatetime">
+            <dateParameter value="ord_dateexecuted"></dateParameter>
+            <timeParameter value="ord_timeexecuted"></timeParameter>
+        </dateConcatConvertor>
     </property>
     <!--归一后医嘱编码-->
     <property sourceName="ord_code" targetName="Ord_MedDicCode" valueType="String">
@@ -93,4 +96,6 @@
             <parameter></parameter>
         </dicConvertor>
     </property>
+    <!--单次剂量-->
+    <property sourceName="ord_doseqty" targetName="Ord_DoseQty" valueType="String"></property>
 </elasticMapper>

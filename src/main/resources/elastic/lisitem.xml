@@ -1,16 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE elasticMapper SYSTEM "elasticmapping.dtd">
-<elasticMapper name="patient">
-    <!--property配置字段映射信息
-        sourceName：源字段名称
-        targetName: 目标字段名称
-        convert： 是否进行转换， 如果true, 则将通过调用方法或者动态执行sql获取转换后的值
-        valueType: 字段数据类型，
-        dicType: 字典类型  包括：dept，sex， national，admType，diagnoseType，diagnoseName，marital
-        -->
-    <!--
-        parameter: 为源数据字段名称
-    -->
+<elasticMapper name="lisitem">
     <!--检验ID-->
     <property sourceName="lis_id" targetName="Lis_Id" valueType="String" idField="true" ></property>
     <property sourceName="lis_admno" targetName="Lis_AdmNo" valueType="String" parentField="true"></property>
@@ -22,8 +12,7 @@
         </dicConvertor>
     </property>
     <!--检验值-->
-    <property sourceName="lis_value" targetName="Lis_Value" valueType="String">
-    </property>
+    <property sourceName="lis_value" targetName="Lis_Value" valueType="String"></property>
     <property sourceName="lis_result" targetName="Lis_Result" valueType="String"></property>
     <property sourceName="lis_name_code" targetName="Lis_GenericCode"  valueType="String"></property>
     <!--格式化后的检验值,为了方便比较-->
@@ -39,6 +28,5 @@
         </dateFormatConvertor>
     </property>
     <!--距离手术天数-->
-    <property sourceName="lis_operationdays" targetName="Lis_OperationDays" valueType="String">
-    </property>
+    <property sourceName="lis_operationdays" targetName="Lis_OperationDays" valueType="String"></property>
 </elasticMapper>

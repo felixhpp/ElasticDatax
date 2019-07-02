@@ -19,9 +19,11 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 默认的字典获取
+ * @author felix
  */
 @Service
 public class DefaultDicMapServiceImpl implements DefaultDicMapService {
@@ -35,7 +37,7 @@ public class DefaultDicMapServiceImpl implements DefaultDicMapService {
     private static final String DicBusinessFieldcode = "00001";
     private static final Logger log = LoggerFactory.getLogger(DefaultDicMapServiceImpl.class);
 
-    private static Map<String, Cache> cacheMap = new HashMap<>();
+    private static ConcurrentHashMap<String, Cache> cacheMap = new ConcurrentHashMap<>();
     @Autowired
     private ElasticMapperBean mapperBean;
     /**
@@ -45,6 +47,10 @@ public class DefaultDicMapServiceImpl implements DefaultDicMapService {
      * @throws Exception
      */
     public String getDicNnameByCode(String code, DictionaryTypeEnum typeEnum) throws Exception {
+        if(code == null || code == ""){
+            return "";
+        }
+
         DictionaryMap dictionaryMap = null;
         String name = "";
         String cacheName = typeEnum.getCacheName();
@@ -58,7 +64,12 @@ public class DefaultDicMapServiceImpl implements DefaultDicMapService {
             cacheMap.put(cacheName, cache);
         }
 
-        String key = typeEnum.getCachePrefix() + DicBusinessFieldcode + "_" + code;
+        //去除code中的域名
+        if(code.startsWith(DicBusinessFieldcode)){
+            code = code.replace(DicBusinessFieldcode, "");
+        }
+
+        String key = typeEnum.getCachePrefix() + code;
         Element value = cache != null ? cache.get(key): null;
 
         if(value != null){
@@ -66,63 +77,87 @@ public class DefaultDicMapServiceImpl implements DefaultDicMapService {
             name = o != null ? o.toString() : "";
         }else {
             log.error("*******" + typeEnum.getCacheName() + "缓存里没有"+key+", 从数据库拿数据");
+            String newCode = DicBusinessFieldcode + "_" + code;
+
             switch (typeEnum){
                 case DIAGNOSE_NAME:
-                    dictionaryMap = dictionaryMapMapper.getDiagnoseByCode(code);
+                    dictionaryMap = dictionaryMapMapper.getDiagnoseByCode(newCode);
                     break;
                 case DEPARTMENT:
-                    dictionaryMap = dictionaryMapMapper.getDeptByCode(code);
+                    dictionaryMap = dictionaryMapMapper.getDeptByCode(newCode);
                     break;
                 case SEX:
-                    dictionaryMap = dictionaryMapMapper.getSexByCode(code);
+                    dictionaryMap = dictionaryMapMapper.getSexByCode(newCode);
                     break;
                 case MARITAL:
-                    dictionaryMap = dictionaryMapMapper.getMaritalByCode(code);
+                    dictionaryMap = dictionaryMapMapper.getMaritalByCode(newCode);
                     break;
                 case NATIONAL:
-                    dictionaryMap = dictionaryMapMapper.getNationByCode(code);
+                    dictionaryMap = dictionaryMapMapper.getNationByCode(newCode);
                     break;
                 case HOSPITAL:
-                    dictionaryMap = dictionaryMapMapper.getHospitalByCode(code);
+                    dictionaryMap = dictionaryMapMapper.getHospitalByCode(newCode);
                     break;
                 case DIAGNOSE_TYPE:
-                    dictionaryMap = dictionaryMapMapper.getDiagnoseTypeByCode(code);
+                    dictionaryMap = dictionaryMapMapper.getDiagnoseTypeByCode(newCode);
                     break;
                 case ADM_TYPE:
-                    dictionaryMap = dictionaryMapMapper.getAdmTypeByCode(code);
+                    dictionaryMap = dictionaryMapMapper.getAdmTypeByCode(newCode);
                     break;
                 case AdmStatus:
-                    dictionaryMap = dictionaryMapMapper.getAdmStatusByCode(code);
+                    dictionaryMap = dictionaryMapMapper.getAdmStatusByCode(newCode);
                     break;
                 case LisItem:
-                    dictionaryMap = dictionaryMapMapper.getLisItemByCode(code);
+                    dictionaryMap = dictionaryMapMapper.getLisItemByCode(newCode);
                     break;
                 case ORDSER_ITEM:           //医嘱相关字典， 使用dicOrderItemMappper
-                    dictionaryMap = dicOrderItemMappper.getOrdItemNameByCode(code);
+                    dictionaryMap = dicOrderItemMappper.getOrdItemNameByCode(newCode);
                     break;
                 case ORDER_CATEAGE:     //医嘱大分类
-                    dictionaryMap = dicOrderItemMappper.getOrdCategoryByCode(code);
+                    dictionaryMap = dicOrderItemMappper.getOrdCategoryByCode(newCode);
                     break;
                 case ORDER_TYPE:
-                    dictionaryMap = dicOrderItemMappper.getPriorityByCode(code);
+                    dictionaryMap = dicOrderItemMappper.getPriorityByCode(newCode);
                     break;
                 case ORDER_STATUS:
-                    dictionaryMap = dicOrderItemMappper.getOrderStatusByCode(code);
+                    dictionaryMap = dicOrderItemMappper.getOrderStatusByCode(newCode);
                     break;
                 case DURATION:
-                    dictionaryMap = dicOrderItemMappper.getDurationByCode(code);
+                    dictionaryMap = dicOrderItemMappper.getDurationByCode(newCode);
                     break;
                 case FREQ:
-                    dictionaryMap = dicOrderItemMappper.getFreqByCode(code);
+                    dictionaryMap = dicOrderItemMappper.getFreqByCode(newCode);
                     break;
                 case PHDrgMaterial:         // 药学项
-                    dictionaryMap = dicOrderItemMappper.getPHDrgMaterialItmByCode(code);
+                    dictionaryMap = dicOrderItemMappper.getPHDrgMaterialItmByCode(newCode);
                     break;
-
+                case InstrUsage:            // 用药途径
+                    dictionaryMap = dicOrderItemMappper.getInstrByCode(newCode);
+                    break;
+                case OrdChildCategory:
+                    dictionaryMap = dicOrderItemMappper.getChildCategoryByCode(newCode);
+                    break;
+                case PHCGeneric:        // 药品通用名
+                    // 通用名需要把域名去掉
+                    dictionaryMap = dicOrderItemMappper.getPHCGenericByCode(code);
+                    break;
+                case PHCGoods:          // 药品商品名
+                    // 商品名需要把域名去掉
+                    dictionaryMap = dicOrderItemMappper.getPHCGoodsByCode(code);
+                    break;
             }
             if(dictionaryMap != null){
-                cache.put(new Element(key, dictionaryMap.getDicName()));
-                name = dictionaryMap.getDicName();
+
+                String curDicName = dictionaryMap.getDicName();
+                if(curDicName.startsWith(DicBusinessFieldcode)){
+                    curDicName = curDicName.replace(DicBusinessFieldcode, "");
+                }
+
+                cache.put(new Element(key, curDicName));
+                name = curDicName;
+            }else { // 防止字典表没有时重复查询问题
+                cache.put(new Element(key, ""));
+                name = "";
             }
             cache.flush();
         }
@@ -187,6 +222,18 @@ public class DefaultDicMapServiceImpl implements DefaultDicMapService {
                 break;
             case PHDrgMaterial:
                 dictionaryMaps = dicOrderItemMappper.getAllPHDrgMaterialItm();
+                break;
+            case InstrUsage:
+                dictionaryMaps = dicOrderItemMappper.getAllInstr();
+                break;
+            case OrdChildCategory:
+                dictionaryMaps = dicOrderItemMappper.getAllChildCategory();
+                break;
+            case PHCGeneric:        // 药品通用名
+                dictionaryMaps = dicOrderItemMappper.getAllPHCGeneric();
+                break;
+            case PHCGoods:  // 商品名
+                dictionaryMaps = dicOrderItemMappper.getAllPHCGoods();
                 break;
         }
 

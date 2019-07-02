@@ -1,6 +1,8 @@
 server:
   port: 8080
-    # 下面是配置undertow作为服务器的参数
+  tomcat:
+    max-http-post-size: 100MB
+  # 下面是配置undertow作为服务器的参数
 #    undertow:
 #      # 设置IO线程数, 它主要执行非阻塞的任务,它们会负责多个连接, 默认设置每个CPU核心一个线程
 #      io-threads: 2
@@ -21,6 +23,10 @@ mybatis:
 spring:
   profiles:
     active: dev
+  servlet:
+    multipart:
+      max-request-size: 100MB
+      max-file-size: 100MB
   freemarker:
     template-loader-path: classpath:/templates/
     suffix: .html

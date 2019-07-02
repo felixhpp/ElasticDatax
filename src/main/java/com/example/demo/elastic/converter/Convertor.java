@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * elasticmapping 转换器
+ * elasticmapping 通用转换器
  * @author felix
  */
 public class Convertor {
@@ -20,6 +20,7 @@ public class Convertor {
     private String dateParamField = null;
     private String timeParamField = null;
     private String formatType = null;
+    // 执行的sql
     private String sql = null;
 
     final public String getConvertType() {
@@ -90,6 +91,10 @@ public class Convertor {
         this.convertParamFieldNames.add(paramFiledName);
     }
 
+    /**
+     * 获取格式化的format 类型， 如yyyy-MM-dd ; yyyy-MM-dd hh:mm:ss等
+     * @return
+     */
     final public String getPattern(){
         if(formatType == null || formatType == ""){
             return null;
