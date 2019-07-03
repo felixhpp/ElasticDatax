@@ -1,7 +1,7 @@
 /*!
  * iCheck v1.0.1, http://git.io/arlzeA
  * =================================
- * Powerful jQuery and Zepto plugin for checkboxes and radio buttons customization
+ * Powerful jQuery and Zepto plugins for checkboxes and radio buttons customization
  *
  * (c) 2013 Damir Sultanov, http://fronteed.com
  * MIT Licensed

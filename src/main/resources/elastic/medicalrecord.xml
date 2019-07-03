@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE elasticMapper SYSTEM "elasticmapping.dtd">
-<elasticMapper name="medicalrecord">
+<elasticMapper name="medicalrecord" desc="导入就诊信息数据">
     <property sourceName="mr_admid"  targetName="MR_AdmID" valueType="String" idField="true" desc="就诊号">
     </property>
     <property sourceName="mr_regno" targetName="MR_RegNo" valueType="String" routingField="true" parentField="true" desc="登记号">
     </property>
     <!--就诊时年龄， 需要通过生日字段mr_birthday计算-->
-    <property sourceName="mr_admage" targetName="MR_AdmAge"  valueType="String"  desc="就诊时年龄">
+    <property sourceName="mr_birthday" targetName="MR_AdmAge"  valueType="String"  desc="就诊时年龄">
+        <calculateConvertor methodName="differentYears">
+            <startDateParameter value="mr_birthday"></startDateParameter>
+            <endDateParameter value="mr_admdate"></endDateParameter>
+        </calculateConvertor>
     </property>
     <property sourceName="mr_admhospital_code" targetName="MR_AdmHospital" valueType="String">
         <dicConvertor methodName="getByCode" dicType="Hospital">
@@ -52,4 +56,9 @@
             <parameter></parameter>
         </dicConvertor>
     </property>
+    <outputs>
+        <output>
+            <elasticsearch index="csmsearch" type="medicalrecord"></elasticsearch>
+        </output>
+    </outputs>
 </elasticMapper>

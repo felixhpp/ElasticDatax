@@ -19,7 +19,7 @@ public enum CaseXmlEnum {
 
     Code(11, "code"),
     Parent(12, "patient"),
-    Encounter(13,"encounter"),
+    Encounter(13, "encounter"),
     ;
 
     private int type;
@@ -32,7 +32,7 @@ public enum CaseXmlEnum {
         this.name = name;
     }
 
-    public String getName(){
+    public String getName() {
         return this.name;
     }
 

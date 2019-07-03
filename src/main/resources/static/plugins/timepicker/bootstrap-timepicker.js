@@ -1161,7 +1161,7 @@
   $.fn.timepicker.Constructor = Timepicker;
 
   $(document).on(
-    'focus.timepicker.data-api click.timepicker.data-api',
+    'focus.timepicker.data-plugins click.timepicker.data-plugins',
     '[data-provide="timepicker"]',
     function(e){
       var $this = $(this);

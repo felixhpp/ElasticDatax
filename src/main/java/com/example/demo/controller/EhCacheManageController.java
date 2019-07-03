@@ -25,13 +25,13 @@ public class EhCacheManageController {
     }
 
     @GetMapping("getDicCache/{cacheName}/{prefix}")
-    public RestResult getDicCache(@PathVariable String cacheName,@PathVariable String prefix) throws Exception {
+    public RestResult getDicCache(@PathVariable String cacheName, @PathVariable String prefix) throws Exception {
         Map<String, Object> dic = ehCacheService.getDicCache(cacheName, prefix);
         return ResultUtil.success(dic);
     }
 
     @GetMapping("refresh/elasticmapper")
-    public RestResult refreshElasticMapperXmlCache() throws Exception{
+    public RestResult refreshElasticMapperXmlCache() throws Exception {
         ehCacheService.refreshElasticMapperXmlCache();
         return ResultUtil.success();
     }

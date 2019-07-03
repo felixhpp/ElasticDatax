@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE elasticMapper SYSTEM "elasticmapping.dtd">
-<elasticMapper name="lisitem">
+<elasticMapper name="lisitem" desc="导入检验数据">
     <!--检验ID-->
     <property sourceName="lis_id" targetName="Lis_Id" valueType="String" idField="true" ></property>
     <property sourceName="lis_admno" targetName="Lis_AdmNo" valueType="String" parentField="true"></property>
@@ -29,4 +29,9 @@
     </property>
     <!--距离手术天数-->
     <property sourceName="lis_operationdays" targetName="Lis_OperationDays" valueType="String"></property>
+    <outputs>
+        <output>
+            <elasticsearch index="csmsearch" type="lisitem"></elasticsearch>
+        </output>
+    </outputs>
 </elasticMapper>

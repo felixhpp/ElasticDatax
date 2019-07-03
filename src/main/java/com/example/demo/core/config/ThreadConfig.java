@@ -20,7 +20,8 @@ import java.util.concurrent.TimeUnit;
 public class ThreadConfig implements AsyncConfigurer {
 
     /**
-     *  默认线程池线程池
+     * 默认线程池线程池
+     *
      * @return
      */
     @Bean
@@ -32,8 +33,8 @@ public class ThreadConfig implements AsyncConfigurer {
     }
 
     @Bean(name = "convertThreadPool")
-    public ThreadPoolTaskExecutor convertThreadPool(){
-        ThreadPoolTaskExecutor threadPool  = new ThreadPoolTaskExecutor();
+    public ThreadPoolTaskExecutor convertThreadPool() {
+        ThreadPoolTaskExecutor threadPool = new ThreadPoolTaskExecutor();
         //设置核心线程数
         threadPool.setCorePoolSize(2);
         //设置最大线程数

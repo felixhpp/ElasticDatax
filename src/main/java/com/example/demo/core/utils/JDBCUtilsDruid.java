@@ -13,21 +13,22 @@ import java.util.Properties;
 
 /**
  * Druid连接池工具类
+ *
  * @author felix
  */
 public class JDBCUtilsDruid {
-    private static DataSource ds=null;
+    private static DataSource ds = null;
 
-    static{
+    static {
         InputStream is = JDBCUtilsDruid.class.getClassLoader().getResourceAsStream("druid.properties");
-        Properties properties=new Properties();
+        Properties properties = new Properties();
 
         try {
             properties.load(is);
-            ds= DruidDataSourceFactory.createDataSource(properties);
+            ds = DruidDataSourceFactory.createDataSource(properties);
         } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             try {
                 is.close();
             } catch (IOException e) {
@@ -36,7 +37,7 @@ public class JDBCUtilsDruid {
         }
     }
 
-    public static DataSource getDateSource(){
+    public static DataSource getDateSource() {
         return ds;
     }
 
@@ -44,44 +45,46 @@ public class JDBCUtilsDruid {
         return ds.getConnection();
     }
 
-    public static void close(ResultSet resultSet, Statement statement, Connection connection){
+    public static void close(ResultSet resultSet, Statement statement, Connection connection) {
         closeSource(resultSet);
         closeSource(statement);
         closeSource(connection);
     }
 
-    public static void close(Statement statement,Connection connection){
-        close(null,statement,connection);
+    public static void close(Statement statement, Connection connection) {
+        close(null, statement, connection);
     }
 
-    private static void closeSource(ResultSet resultSet){
+    private static void closeSource(ResultSet resultSet) {
         try {
-            if (resultSet!=null)
+            if (resultSet != null)
                 resultSet.close();
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
-            resultSet=null;
+        } finally {
+            resultSet = null;
         }
     }
-    private static void closeSource(Statement statement){
+
+    private static void closeSource(Statement statement) {
         try {
-            if (statement!=null)
+            if (statement != null)
                 statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
-            statement=null;
+        } finally {
+            statement = null;
         }
     }
-    private static void closeSource(Connection connection){
+
+    private static void closeSource(Connection connection) {
         try {
-            if(connection!=null)
+            if (connection != null)
                 connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
-            connection=null;
+        } finally {
+            connection = null;
         }
     }
 }

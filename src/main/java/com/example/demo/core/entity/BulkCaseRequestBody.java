@@ -44,11 +44,11 @@ public class BulkCaseRequestBody {
         this.documentContent = documentContent;
     }
 
-    final public void setTheme(String theme){
+    final public void setTheme(String theme) {
         this.theme = theme;
     }
 
-    final public String getTheme(){
+    final public String getTheme() {
 
         return this.theme;
     }

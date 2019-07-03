@@ -143,7 +143,7 @@ throw new Error('AdminLTE requires jQuery')
  * Adds box widget functions to boxes.
  *
  * @Usage: $('.my-box').boxWidget(options)
- *         This plugin auto activates on any element using the `.box` class
+ *         This plugins auto activates on any element using the `.box` class
  *         Pass any option as data-option="value"
  */
 +function ($) {

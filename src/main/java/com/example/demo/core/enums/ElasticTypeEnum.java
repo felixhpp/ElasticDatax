@@ -6,16 +6,17 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Elastic type 和theme对应的枚举
+ *
  * @author felix
  */
-public enum  ElasticTypeEnum {
+public enum ElasticTypeEnum {
     //病人基本信息
-    PATIENT(1,"pa_patient", "patient", "patient.xml"),
+    PATIENT(1, "pa_patient", "patient", "patient.xml"),
     // 就诊记录
-    MEDICAL_RECORD(2,"pa_adm", "medicalrecord", "medicalrecord.xml"),
+    MEDICAL_RECORD(2, "pa_adm", "medicalrecord", "medicalrecord.xml"),
     // 诊断
-    DIAGNOSE(3,"pa_diagnose", "diagnose", "diagnose.xml"),
-    DIAGNOSE_Statistics(4,"pa_diagnose_statistics", "diagnoseforstatistics", "diagnoseforstatistics.xml"),
+    DIAGNOSE(3, "pa_diagnose", "diagnose", "diagnose.xml"),
+    DIAGNOSE_Statistics(4, "pa_diagnose_statistics", "diagnoseforstatistics", "diagnoseforstatistics.xml"),
     // 药物医嘱
     ORDITEM(5, "pa_orditem", "orditem", "orditem.xml"),
     // 入院记录
@@ -40,6 +41,7 @@ public enum  ElasticTypeEnum {
         this.esType = esType;
         this.fileName = fileName;
     }
+
     final public String getTheme() {
         return theme;
     }
@@ -48,16 +50,17 @@ public enum  ElasticTypeEnum {
         return esType;
     }
 
-    final public String getFileName(){
+    final public String getFileName() {
         return fileName;
     }
 
     /**
      * 通过ES类型获取对应的枚举
+     *
      * @param type
      * @return
      */
-    public static ElasticTypeEnum getByEsType(String type){
+    public static ElasticTypeEnum getByEsType(String type) {
         type = type.toLowerCase().trim();
         for (ElasticTypeEnum aparameter : values()) {
             if (aparameter.getEsType().equals(type)) {
@@ -71,6 +74,7 @@ public enum  ElasticTypeEnum {
 
     /**
      * 通过theme名称获取对应的枚举
+     *
      * @param theme
      * @return
      */

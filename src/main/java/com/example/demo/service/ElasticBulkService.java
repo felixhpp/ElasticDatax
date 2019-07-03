@@ -14,6 +14,13 @@ import java.util.Map;
 public interface ElasticBulkService {
     BulkResponseBody bulk(String theme, List<Map<String, Object>> dataList);
     BulkResponseBody bulk(String theme, String dataJsonStr);
+
+    /**
+     * 批量向ES导入自动补全数据
+     * @return
+     */
+    BulkResponseBody bulkSuggestion();
+
     String getPatientByRegNo(String regNo) throws IOException;
 
     BulkResponseBody bulkCase(List<BulkCaseRequestBody> caseRequestBodies);

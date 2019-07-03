@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class ElasticMonitorController {
 
     @GetMapping(path = "monitor")
-    public String indices(){
+    public String indices() {
         return "/web/monitor/clusters";
     }
 }

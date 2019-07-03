@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE elasticMapper SYSTEM "elasticmapping.dtd">
-<elasticMapper name="medicine">
+<elasticMapper name="ordris" desc="导入检查数据">
     <!--id字段-->
     <property sourceName="or_id"  targetName="OR_Id" valueType="String" idField="true"></property>
     <!--关联就诊ID-->
@@ -16,9 +16,14 @@
     <!--检查项目归一后编码-->
     <property sourceName="or_genericcode" targetName="OR_GenericCode" valueType="String"></property>
     <!--检查项目归一后名称-->
-    <property sourceName="OR_genericname" targetName="OR_GenericName" valueType="String"></property>
+    <property sourceName="or_genericname" targetName="OR_GenericName" valueType="String"></property>
     <!--检查描述-->
     <property sourceName="or_desc" targetName="OR_Desc" valueType="String"></property>
     <!--检查结论-->
     <property sourceName="or_result" targetName="OR_Result" valueType="String"></property>
+    <outputs>
+        <output>
+            <elasticsearch index="csmsearch" type="ordlis"></elasticsearch>
+        </output>
+    </outputs>
 </elasticMapper>

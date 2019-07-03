@@ -30,7 +30,7 @@ public class BulkDbProcessor implements Closeable {
 //        void afterBulk(long executionId, BulkRequest request, Throwable failure);
     }
 
-    public static class Builder{
+    public static class Builder {
         private final Listener listener;
         private final Runnable onClose;
         private int concurrentRequests = 1;
@@ -51,7 +51,7 @@ public class BulkDbProcessor implements Closeable {
         // 记录上一次写入的时间， 超过一定时间执行
         private long prevAddTime;
 
-        private Builder( Listener listener,Runnable onClose){
+        private Builder(Listener listener, Runnable onClose) {
             this.listener = listener;
             this.onClose = onClose;
         }

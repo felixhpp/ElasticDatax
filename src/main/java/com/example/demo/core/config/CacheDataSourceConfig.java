@@ -21,7 +21,7 @@ import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 @Configuration
-@MapperScan(basePackages = "com.example.demo.mapper.cache", sqlSessionTemplateRef  = "cacheSqlSessionTemplate",
+@MapperScan(basePackages = "com.example.demo.mapper.cache", sqlSessionTemplateRef = "cacheSqlSessionTemplate",
         nameGenerator = Application.SpringBeanNameGenerator.class)
 public class CacheDataSourceConfig {
     private static final Logger log = LoggerFactory.getLogger(CacheDataSourceConfig.class);
@@ -29,7 +29,7 @@ public class CacheDataSourceConfig {
 
     @Bean(name = "cacheDataSource")
     @Qualifier("cacheDataSource")
-    @ConfigurationProperties(prefix="spring.datasource.cache")
+    @ConfigurationProperties(prefix = "spring.datasource.cache")
     public DataSource secondaryDataSource() {
         log.info("Init Cache DataSource");
         return DruidDataSourceBuilder.create().build();
@@ -42,9 +42,10 @@ public class CacheDataSourceConfig {
 
     /**
      * 创建工厂
-     *@param dataSource
-     *@throws Exception
-     *@return SqlSessionFactory
+     *
+     * @param dataSource
+     * @return SqlSessionFactory
+     * @throws Exception
      */
     @Bean(name = "cacheSqlSessionFactory")
     public SqlSessionFactory cacheSqlSessionFactory(@Qualifier("cacheDataSource") DataSource dataSource) throws Exception {
@@ -57,8 +58,9 @@ public class CacheDataSourceConfig {
 
     /**
      * 创建事务
-     *@param dataSource
-     *@return DataSourceTransactionManager
+     *
+     * @param dataSource
+     * @return DataSourceTransactionManager
      */
     @Bean(name = "cacheTransactionManager")
     public DataSourceTransactionManager cacheDataSourceTransactionManager(@Qualifier("cacheDataSource") DataSource dataSource) {
@@ -67,8 +69,9 @@ public class CacheDataSourceConfig {
 
     /**
      * 创建模板
-     *@param sqlSessionFactory
-     *@return SqlSessionTemplate
+     *
+     * @param sqlSessionFactory
+     * @return SqlSessionTemplate
      */
     @Bean(name = "cacheSqlSessionTemplate")
     public SqlSessionTemplate cacheSqlSessionTemplate(@Qualifier("cacheSqlSessionFactory") SqlSessionFactory sqlSessionFactory) {

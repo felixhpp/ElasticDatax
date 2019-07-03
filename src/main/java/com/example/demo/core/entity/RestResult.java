@@ -2,6 +2,7 @@ package com.example.demo.core.entity;
 
 /**
  * http 返回的最外层对象
+ *
  * @author felix
  */
 public class RestResult<T> {
@@ -47,7 +48,6 @@ public class RestResult<T> {
      * 因为实际开发过程中服务器时间可能跟本地时间不一致，加上这个时间戳便于日后定位）
      */
     //private Timestamp currentTime;
-
     final public Integer getCode() {
         return code;
     }
@@ -80,7 +80,7 @@ public class RestResult<T> {
         this.data = data;
     }
 
-    public RestResult(){
+    public RestResult() {
 
     }
 

@@ -1,5 +1,5 @@
 /*
-Input Mask plugin extensions
+Input Mask plugins extensions
 http://github.com/RobinHerbots/jquery.inputmask
 Copyright (c) 2010 - 2014 Robin Herbots
 Licensed under the MIT license (http://www.opensource.org/licenses/mit-license.php)

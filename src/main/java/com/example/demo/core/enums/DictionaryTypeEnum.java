@@ -7,24 +7,24 @@ import org.slf4j.LoggerFactory;
 /**
  * 字典类型 枚举
  */
-public enum  DictionaryTypeEnum {
+public enum DictionaryTypeEnum {
     DEPARTMENT(1, "Deptartment", "科室",
-            CacheName.defaultCacheName,"dept_"),       // 科室字典
+            CacheName.defaultCacheName, "dept_"),       // 科室字典
     SEX(2, "Sex", "性别",
-            CacheName.defaultCacheName,"sex_"),              // 性别
+            CacheName.defaultCacheName, "sex_"),              // 性别
     NATIONAL(3, "National", "国籍",
             CacheName.defaultCacheName, "national_"),         // 国籍
     ADM_TYPE(4, "AdmType", "就诊类型",
-            CacheName.defaultCacheName,"adm_type_"),         // 就诊类型
+            CacheName.defaultCacheName, "adm_type_"),         // 就诊类型
 
     DIAGNOSE_TYPE(5, "DiagnoseType", "诊断类型",
-            CacheName.defaultCacheName,"diagnose_type_"),   // 诊断类型
+            CacheName.defaultCacheName, "diagnose_type_"),   // 诊断类型
     DIAGNOSE_NAME(6, "DiagnoseName", "诊断名称",
             CacheName.diagnoseCacheName, "diagnose_name_"),  // 诊断名称
     MARITAL(7, "Marital", "婚姻状态",
-            CacheName.defaultCacheName,"marital_"),  // 婚姻状态
+            CacheName.defaultCacheName, "marital_"),  // 婚姻状态
     HOSPITAL(8, "Hospital", "医院",
-            CacheName.defaultCacheName,"hospital_"),
+            CacheName.defaultCacheName, "hospital_"),
 
     ORDSER_ITEM(9, "OrderItem", "医嘱项目",
             CacheName.itemCaseName, "order_"),
@@ -39,7 +39,7 @@ public enum  DictionaryTypeEnum {
     FREQ(14, "Freq", "给药频次",
             CacheName.defaultCacheName, "freq_"),
     AdmStatus(15, "AdmStatus", "就诊状态",
-         CacheName.defaultCacheName, "freq_"),
+            CacheName.defaultCacheName, "freq_"),
     LisItem(16, "LisItem", "检验项",
             CacheName.itemCaseName, "lisitem_"),
     PHDrgMaterial(17, "PHDrgMaterial", "药学项",
@@ -49,12 +49,13 @@ public enum  DictionaryTypeEnum {
     OrdChildCategory(19, "OrdChildCategory", "医嘱子分类",
             CacheName.itemCaseName, "childcate_"),
     PHCGeneric(20, "PHCGeneric", "药品通用名",
-                     CacheName.itemCaseName, "phcgeneric_"),
+            CacheName.itemCaseName, "phcgeneric_"),
     PHCGoods(21, "PHCGoods", "药品商品名称",
             CacheName.itemCaseName, "phcgoods_"),
     ;
     private static final Logger logger = LoggerFactory.getLogger(DictionaryTypeEnum.class);
-    interface CacheName{
+
+    interface CacheName {
         String defaultCacheName = "dic_dicCache";
         String diagnoseCacheName = "dic_diagnoseCache";
         String itemCaseName = "dic_itemCache";
@@ -69,8 +70,8 @@ public enum  DictionaryTypeEnum {
      */
     private String cachePrefix;
 
-    private DictionaryTypeEnum(int type, String name, String desc, String cacheName, String cachePrefix){
-        this.type=type;
+    private DictionaryTypeEnum(int type, String name, String desc, String cacheName, String cachePrefix) {
+        this.type = type;
         this.name = name;
         this.desc = desc;
         this.cacheName = cacheName;
@@ -85,19 +86,20 @@ public enum  DictionaryTypeEnum {
         return name;
     }
 
-    final public String getDesc(){
+    final public String getDesc() {
         return desc;
     }
-    final public String getCachePrefix(){
+
+    final public String getCachePrefix() {
         return cachePrefix;
     }
 
-    final public String getCacheName(){
+    final public String getCacheName() {
         return cacheName;
     }
 
-    public static DictionaryTypeEnum getByName(String name){
-        if(name == null || name ==""){
+    public static DictionaryTypeEnum getByName(String name) {
+        if (name == null || name == "") {
             return null;
         }
         for (DictionaryTypeEnum aparameter : values()) {

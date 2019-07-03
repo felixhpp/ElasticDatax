@@ -2,8 +2,8 @@ package com.example.demo.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.example.demo.core.utils.SpringUtils;
-import com.example.demo.elastic.converter.ElasticMapperBean;
-import com.example.demo.elastic.analysis.ElasticXmlToBean;
+import com.example.demo.jobs.converter.ElasticMapperBean;
+import com.example.demo.jobs.analysis.ElasticXmlToBean;
 import com.example.demo.service.EhCacheService;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
@@ -73,7 +73,7 @@ public class EhCacheServiceImpl implements EhCacheService {
 //        Cache cache =cacheManager.getCache("mapperCache");
 //        //
 //        ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-//        Resource[] resources = resolver.getResources("classpath*:elastic/*.xml");
+//        Resource[] resources = resolver.getResources("classpath*:jobs/*.xml");
 //
 //        for (Resource r : resources) {
 //            String fileName = r.getFilename();

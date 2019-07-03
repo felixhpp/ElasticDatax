@@ -5,20 +5,19 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONReader;
 import com.example.demo.core.entity.BulkResponseBody;
 import com.example.demo.core.entity.RestResult;
-import com.example.demo.core.utils.ESBulkModel;
+import com.example.demo.core.entity.ESBulkModel;
 import com.example.demo.core.enums.ElasticTypeEnum;
 import com.example.demo.core.utils.ResultUtil;
-import com.example.demo.elastic.ConvertPipeline;
-import com.example.demo.elastic.analysis.CaseRecordXmlAnaly;
+import com.example.demo.jobs.ConvertPipeline;
+import com.example.demo.jobs.analysis.CaseRecordXmlAnaly;
 import com.example.demo.service.DefaultDicMapService;
 import com.example.demo.service.ElasticBulkService;
 import org.dom4j.Document;
 import org.dom4j.io.SAXReader;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.system.ApplicationHome;
 import org.springframework.util.ResourceUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
 import java.io.StringReader;
@@ -32,7 +31,7 @@ import java.util.Map;
 public class DemoTestController {
     private int TOTAL = 5000;
     private boolean isDev = false;
-    
+
     @Autowired
     private DefaultDicMapService defaultDicMapService;
 
@@ -72,6 +71,7 @@ public class DemoTestController {
 
     /**
      * 数据转换测试
+     *
      * @return
      */
     @GetMapping("convert/diagnose")
@@ -98,6 +98,12 @@ public class DemoTestController {
         return ResultUtil.success(reList);
     }
 
+    @GetMapping("convert/suggestion")
+    public RestResult suggestion() {
+        BulkResponseBody result = elasticBulkService.bulkSuggestion();
+        return ResultUtil.success(result);
+    }
+
     @GetMapping("bulk/orditem")
     public RestResult bulkOrdItem() throws Exception {
         List<Map<String, Object>> maps = buildOrdItemData();
@@ -107,41 +113,54 @@ public class DemoTestController {
         return ResultUtil.success(responseBody);
     }
 
-    @GetMapping("convert/case")
-    public RestResult convertCaseRecord() throws Exception {
+    @GetMapping("convert/case/{fileName}")
+    public RestResult convertCaseRecord(@PathVariable String fileName) throws Exception {
         // 创建SAXReader的对象reader
         SAXReader reader = new SAXReader();
-        String fileName = "ryjl01.xml";
-        File file = new File(System.getProperty("user.dir") +"/" + fileName);
-        if(!file.exists()){
-            file =  new File(ResourceUtils.getURL("classpath:" + fileName).getPath());
+        String curfileName = "ryjl-all.xml";
+        ElasticTypeEnum typeEnum = ElasticTypeEnum.Residentadmitnote;
+        switch (fileName){
+            case "ryjl":
+            case "ryjl.xml":
+                curfileName = "ryjl-all.xml";
+                typeEnum = ElasticTypeEnum.Residentadmitnote;
+                break;
+            case "basy":
+            case "basy.xml":
+                curfileName = "bnsy-all.xml";
+                typeEnum = ElasticTypeEnum.MedicalRecordHomePage;
+                break;
+        }
+        File file = new File(System.getProperty("user.dir") + "/" + curfileName);
+        if (!file.exists()) {
+            file = new File(ResourceUtils.getURL("classpath:" + fileName).getPath());
         }
 
         Document document = reader.read(file);
-        Map<String, Object> maps = CaseRecordXmlAnaly.analyCaseRecordXml(document, ElasticTypeEnum.Residentadmitnote);
+        Map<String, Object> maps = CaseRecordXmlAnaly.analyCaseRecordXml(document, typeEnum);
         maps.put("documentid", "11111");
         ESBulkModel bulkMode = ConvertPipeline
-                .convertToBulkModel(ElasticTypeEnum.Residentadmitnote, maps, true);
+                .convertToBulkModel(typeEnum, maps, true);
         //elasticBulkService.bulkCase(bodys);
         return ResultUtil.success(bulkMode);
     }
 
-    private List<Map<String, Object>> buildDiagnoseData(){
+    private List<Map<String, Object>> buildDiagnoseData() {
         List<Map<String, Object>> maps = new ArrayList<>();
         int total = TOTAL;
         String[] diagtype = {"M", "PRE"};
-        String[] diagnose = {"1", "2","3","","", ""};
-        String[] diagnoseName = {"上感", "支气管炎","哮喘 AR","外阴瘙痒","","",""};
-        for (int i = 0;i<total;i++){
+        String[] diagnose = {"1", "2", "3", "", "", ""};
+        String[] diagnoseName = {"上感", "支气管炎", "哮喘 AR", "外阴瘙痒", "", "", ""};
+        for (int i = 0; i < total; i++) {
             Map<String, Object> object = new HashMap<>();
-            object.put("id","123" + i);
+            object.put("id", "123" + i);
             object.put("routing", "1234" + i);
             object.put("diag_id", "1234567" + i);
             object.put("diag_admid", "1234" + i);
             object.put("diag_regno", "1234" + i);
             object.put("diag_date", "2019-01-01 00:00:00");
             object.put("diag_time", "11:01:01");
-            if(!isDev){
+            if (!isDev) {
                 object.put("diag_type_code", getRandom(diagtype));
                 object.put("diag_code", getRandom(diagnose));
                 object.put("diag_name", getRandom(diagnoseName));
@@ -152,22 +171,22 @@ public class DemoTestController {
         return maps;
     }
 
-    private List<Map<String, Object>> buildPatientData(){
+    private List<Map<String, Object>> buildPatientData() {
         int total = TOTAL;
         List<Map<String, Object>> maps = new ArrayList<>();
         String[] sexCode = {"F", "M", "I"};
-        String[] nationCode = {"01", "02", "03", "04","04"};
-        String[] maritalCode = {"1", "2", "5", "3","4"};
-        String[] birthday = {"", null, "2018-01-01", "2018-10-3 11:11:00","2018-01-01 11:11:00.0"};
-        for (int i = 0;i<total;i++){
+        String[] nationCode = {"01", "02", "03", "04", "04"};
+        String[] maritalCode = {"1", "2", "5", "3", "4"};
+        String[] birthday = {"", null, "2018-01-01", "2018-10-3 11:11:00", "2018-01-01 11:11:00.0"};
+        for (int i = 0; i < total; i++) {
             Map<String, Object> object = new HashMap<>();
-            object.put("id","123" + i);
+            object.put("id", "123" + i);
             object.put("routing", "1234" + i);
             object.put("pat_regno", "1234" + i);
             object.put("pat_recordno", "12314" + i);
             object.put("pat_name", "测试姓名" + i);
             object.put("pat_idcard", "141122199309090101" + i);
-            if(!isDev){
+            if (!isDev) {
                 object.put("pat_gender_code", getRandom(sexCode));
                 object.put("pat_nation_code", getRandom(nationCode));
                 object.put("pat_marital_code", getRandom(maritalCode));
@@ -181,16 +200,17 @@ public class DemoTestController {
         return maps;
     }
 
-    private List<Map<String, Object>> buildAdmData(){
+    private List<Map<String, Object>> buildAdmData() {
         int total = TOTAL;
         List<Map<String, Object>> maps = new ArrayList<>();
+        String[] birthday = {"1990-01-02", "1980-01-02", "1995-11-02", ""};
         String[] hospitalCode = {"HXEY", "1001", "1002"};
-        String[] admType = {"O","E", "I", "H", ""};
-        String[] admState = {"A","C", "D", "P", ""};
+        String[] admType = {"O", "E", "I", "H", ""};
+        String[] admState = {"A", "C", "D", "P", ""};
         String[] deptCode = {"03071074-IP07400-HX07401B", "03071074-IP07400-HX07403G",
                 "03071075-IP07500-HX07501B", "03071075-IP07500-JJ07503G"};
-        String[] maritalCode = {"1", "2", "5", "3","4"};
-        for (int i = 0;i<total;i++){
+
+        for (int i = 0; i < total; i++) {
             Map<String, Object> object = new HashMap<>();
             object.put("mr_admid", "1234" + i);
             object.put("mr_regno", "12314" + i);
@@ -199,12 +219,14 @@ public class DemoTestController {
             object.put("mr_admtime", "10:20:20");
             object.put("mr_dischdate", "2010-11-01 00:0:00");
             object.put("mr_dischtime", "10:20:20");
-            if(!isDev){
+
+            if (!isDev) {
                 object.put("mr_admhospital_code", getRandom(hospitalCode));
                 object.put("mr_admtype_code", getRandom(admType));
                 object.put("mr_admdept_code", getRandom(deptCode));
                 object.put("mr_dischdept_code", getRandom(deptCode));
                 object.put("mr_visitstatus_code", getRandom(admState));
+                object.put("mr_birthday", getRandom(birthday));
             }
 
             maps.add(object);
@@ -213,23 +235,23 @@ public class DemoTestController {
         return maps;
     }
 
-    private List<Map<String, Object>> buildOrdItemData(){
+    private List<Map<String, Object>> buildOrdItemData() {
         int total = TOTAL;
         List<Map<String, Object>> maps = new ArrayList<>();
-        String[] ord_name ={"010101010100003","010101010100005","010101010200001",
-                "010101010500001","010101020105001","010702020000001"};
+        String[] ord_name = {"010101010100003", "010101010100005", "010101010200001",
+                "010101010500001", "010101020105001", "010702020000001"};
         String[] ord_type = {"S", "OUT", "NORM"};
         String[] ord_status = {"V", "U", "H", "D", "P"};
-        String[] ord_cate = {"01","02","03","04"};
-        String[] freq_code = {"Tid","Bid","Qd","Qid"};
-        String[] ord_duration_code = {"1","2","3","4"};
+        String[] ord_cate = {"01", "02", "03", "04"};
+        String[] freq_code = {"Tid", "Bid", "Qd", "Qid"};
+        String[] ord_duration_code = {"1", "2", "3", "4"};
 
         String[] deptCode = {"03071074-IP07400-HX07401B", "03071074-IP07400-HX07403G",
-                     "03071075-IP07500-HX07501B", "03071075-IP07500-JJ07503G"};
-        String[] ord_usage = {"口服","含服","静脉注射",""};
-        for (int i = 0;i<total;i++){
+                "03071075-IP07500-HX07501B", "03071075-IP07500-JJ07503G"};
+        String[] ord_usage = {"口服", "含服", "静脉注射", ""};
+        for (int i = 0; i < total; i++) {
             Map<String, Object> object = new HashMap<>();
-            object.put("ord_id","123" + i);
+            object.put("ord_id", "123" + i);
             object.put("ord_admno", "1234" + i);
             object.put("ord_regno", "1234" + i);
             object.put("ord_startdate", "2010-01-01 00:00:00");
@@ -237,7 +259,7 @@ public class DemoTestController {
             object.put("ord_enddate", "2010-11-01 00:00:00");
             object.put("ord_endtime", "10:21:60");
             object.put("ord_doseqty", "1");
-            if(!isDev){
+            if (!isDev) {
                 object.put("ord_code", getRandom(ord_name));
                 object.put("ord_type_code", getRandom(ord_type));
                 object.put("ord_status_code", getRandom(ord_status));
@@ -254,8 +276,9 @@ public class DemoTestController {
 
         return maps;
     }
-    private List<Map<String, Object>> strToMap(String dataJsonStr){
-        long startTime=System.currentTimeMillis();   //获取开始时间
+
+    private List<Map<String, Object>> strToMap(String dataJsonStr) {
+        long startTime = System.currentTimeMillis();   //获取开始时间
         JSONReader reader = new JSONReader(new StringReader(dataJsonStr));//已流的方式处理，这里很快
         reader.startArray();
         List<Map<String, Object>> rsList = new ArrayList<Map<String, Object>>();
@@ -274,18 +297,18 @@ public class DemoTestController {
             reader.endObject();
         }
         reader.endArray();
-        long endTime=System.currentTimeMillis(); //获取结束时间
-        System.out.println("strToMap耗时：" + (endTime-startTime)+"ms");
+        long endTime = System.currentTimeMillis(); //获取结束时间
+        System.out.println("strToMap耗时：" + (endTime - startTime) + "ms");
 
-        return  rsList;
+        return rsList;
     }
 
-    private List<Map<String, Object>> strToMapBy(String dataJsonStr){
-        long startTime=System.currentTimeMillis();   //获取开始时间
+    private List<Map<String, Object>> strToMapBy(String dataJsonStr) {
+        long startTime = System.currentTimeMillis();   //获取开始时间
 
-        List<Map<String,Object>> listObjectFir = JSONArray.parseObject(dataJsonStr,List.class);
-        long endTime=System.currentTimeMillis(); //获取结束时间
-        System.out.println("strToMap JSON 耗时：" + (endTime-startTime)+"ms");
+        List<Map<String, Object>> listObjectFir = JSONArray.parseObject(dataJsonStr, List.class);
+        long endTime = System.currentTimeMillis(); //获取结束时间
+        System.out.println("strToMap JSON 耗时：" + (endTime - startTime) + "ms");
 
         return listObjectFir;
     }
@@ -293,50 +316,50 @@ public class DemoTestController {
     private List<Object> exeConvert(List<Map<String, Object>> maps, ElasticTypeEnum typeEnum) throws Exception {
 
         List<Object> reList = new ArrayList<>();
-        long startTime=System.currentTimeMillis();   //获取开始时间
+        long startTime = System.currentTimeMillis();   //获取开始时间
         List<ESBulkModel> bulkModels = defaultDicMapService.test(maps, typeEnum);
 
-        if(bulkModels.size() > 10){
+        if (bulkModels.size() > 10) {
             reList.addAll(bulkModels.subList(0, 10));
-        }else {
+        } else {
             reList.addAll(bulkModels.subList(0, bulkModels.size()));
         }
 
 
-        if(typeEnum.equals(ElasticTypeEnum.ORDITEM)){
+        if (typeEnum.equals(ElasticTypeEnum.ORDITEM)) {
             int i = 0;
             // 转换药物
             // 转换用药
-            for(ESBulkModel bulkModel : bulkModels){
+            for (ESBulkModel bulkModel : bulkModels) {
                 ESBulkModel otherModel = ConvertPipeline.convertToBulkModel(ElasticTypeEnum.Medicine,
                         bulkModel.getMapData(), true);
-                if(i < 10){
+                if (i < 10) {
                     reList.add(otherModel);
                 }
                 i++;
             }
         }
 
-        long endTime=System.currentTimeMillis(); //获取结束时间
+        long endTime = System.currentTimeMillis(); //获取结束时间
         Map<String, String> m = new HashMap<>();
-        m.put("totla", "共有" + bulkModels.size()+ "条");
-        m.put("exeTime", "执行时间：" + (endTime-startTime)+"ms");
+        m.put("totla", "共有" + bulkModels.size() + "条");
+        m.put("exeTime", "执行时间：" + (endTime - startTime) + "ms");
         reList.add(m);
 
-        return  reList;
+        return reList;
     }
 
-    private BulkResponseBody exeBulk(List<Map<String, Object>> reList, ElasticTypeEnum typeEnum){
+    private BulkResponseBody exeBulk(List<Map<String, Object>> reList, ElasticTypeEnum typeEnum) {
         String dataStr = JSON.toJSONString(reList);
-        long startTime=System.currentTimeMillis();   //获取开始时间
+        long startTime = System.currentTimeMillis();   //获取开始时间
         String theme = typeEnum.getTheme();
         BulkResponseBody responseBody = elasticBulkService.bulk(theme, dataStr);
-        long endTime=System.currentTimeMillis(); //获取结束时间
-        System.out.println("bulk es耗时：" + (endTime-startTime)+"ms");
+        long endTime = System.currentTimeMillis(); //获取结束时间
+        System.out.println("bulk es耗时：" + (endTime - startTime) + "ms");
         return responseBody;
     }
 
-    private String getRandom(String[] arr){
+    private String getRandom(String[] arr) {
         int index = (int) (Math.random() * arr.length);
 
         return arr[index];

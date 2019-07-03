@@ -21,18 +21,19 @@ import javax.sql.DataSource;
 
 /**
  * 主数据源配置信息
+ *
  * @author felix
  */
 @Configuration
-@MapperScan(basePackages = "com.example.demo.mapper.primary", sqlSessionTemplateRef  = "primarySqlSessionTemplate"
-       , nameGenerator = Application.SpringBeanNameGenerator.class)
+@MapperScan(basePackages = "com.example.demo.mapper.primary", sqlSessionTemplateRef = "primarySqlSessionTemplate"
+        , nameGenerator = Application.SpringBeanNameGenerator.class)
 public class PrimaryDataSourceConfig {
     private static final Logger log = LoggerFactory.getLogger(PrimaryDataSourceConfig.class);
 
     @Bean(name = "primaryDataSource")
     @Qualifier("primaryDataSource")
     @Primary
-    @ConfigurationProperties(prefix="spring.datasource.primary")
+    @ConfigurationProperties(prefix = "spring.datasource.primary")
     public DataSource primaryDataSource() {
         log.info("Init Primary DataSource");
         return DruidDataSourceBuilder.create().build();
@@ -40,6 +41,7 @@ public class PrimaryDataSourceConfig {
 
     /**
      * 创建primaryJdbcTemplate
+     *
      * @param dataSource
      * @return
      */
@@ -50,9 +52,10 @@ public class PrimaryDataSourceConfig {
 
     /**
      * 创建工厂
-     *@param dataSource
-     *@throws Exception
-     *@return SqlSessionFactory
+     *
+     * @param dataSource
+     * @return SqlSessionFactory
+     * @throws Exception
      */
     @Bean(name = "primarySqlSessionFactory")
     @Primary
@@ -66,8 +69,9 @@ public class PrimaryDataSourceConfig {
 
     /**
      * 创建事务
-     *@param dataSource
-     *@return DataSourceTransactionManager
+     *
+     * @param dataSource
+     * @return DataSourceTransactionManager
      */
     @Bean(name = "primaryTransactionManager")
     @Primary
@@ -77,8 +81,9 @@ public class PrimaryDataSourceConfig {
 
     /**
      * 创建模板
-     *@param sqlSessionFactory
-     *@return SqlSessionTemplate
+     *
+     * @param sqlSessionFactory
+     * @return SqlSessionTemplate
      */
     @Bean(name = "primarySqlSessionTemplate")
     @Primary

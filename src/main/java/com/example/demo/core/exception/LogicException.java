@@ -4,6 +4,7 @@ import com.example.demo.core.entity.StateCode;
 
 /**
  * 业务逻辑异常类
+ *
  * @author felix
  */
 public class LogicException extends RuntimeException {

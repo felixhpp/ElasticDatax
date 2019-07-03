@@ -21,11 +21,12 @@ import java.net.UnknownHostException;
 
 /**
  * elasticsearch配置信息
+ *
  * @author felix
  */
 @Configuration
 public class ElasticsearchConfig {
-    private static final Logger logger = LoggerFactory.getLogger(ElasticsearchConfig.class);
+    private static final Logger logger = LoggerFactory.getLogger("elasticsearch-server");
 
     /**
      * elk集群地址
@@ -67,7 +68,7 @@ public class ElasticsearchConfig {
             transportClient = TransportClient.builder().settings(esSetting).build();
             InetSocketTransportAddress inetSocketTransportAddress =
                     new InetSocketTransportAddress(InetAddress.getByName(hostName),
-                    Integer.valueOf(port));
+                            Integer.valueOf(port));
             transportClient.addTransportAddresses(inetSocketTransportAddress);
             logger.info("Setting server pool to a list of 1 servers: [{}]", hostName);
         } catch (Exception e) {
@@ -82,12 +83,12 @@ public class ElasticsearchConfig {
         return BulkProcessor.builder(client, new BulkProcessor.Listener() {
             @Override
             public void beforeBulk(long l, BulkRequest bulkRequest) {
-                System.out.println("beforeBulk :" + l);
+                //System.out.println("beforeBulk :" + l);
             }
 
             @Override
             public void afterBulk(long l, BulkRequest bulkRequest, BulkResponse bulkResponse) {
-                logger.info("[ {} ] data bulk finish.",bulkRequest.numberOfActions() );
+                logger.info("[ {} ] data bulk finish. in {} milliseconds", bulkRequest.numberOfActions(), bulkResponse.getTook().getMillis());
             }
 
             @Override

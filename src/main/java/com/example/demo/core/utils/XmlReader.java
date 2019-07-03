@@ -9,11 +9,17 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+/**
+ * XML 读取工具类
+ *
+ * @author felix
+ */
 public class XmlReader {
     private static final Logger logger = LoggerFactory.getLogger(XmlReader.class);
 
     /**
      * 读取xml文件,获取xml字符串
+     *
      * @param filePath 文件名， 需要带xml后缀
      * @return
      */
@@ -26,12 +32,12 @@ public class XmlReader {
             BufferedReader br = new BufferedReader(new InputStreamReader(resource.getInputStream(), "utf-8"));
             StringBuffer buffer = new StringBuffer();
             String line = "";
-            while ((line = br.readLine()) !=null) {
+            while ((line = br.readLine()) != null) {
                 buffer.append(line);
             }
             br.close();
-            return  buffer.toString();
-        }catch (IOException e){
+            return buffer.toString();
+        } catch (IOException e) {
             logger.error("read xml error: {}", e.getMessage());
         }
         return "";

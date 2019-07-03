@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE elasticMapper SYSTEM "elasticmapping.dtd">
-<elasticMapper name="medicalrecordhomepage">
+<elasticMapper name="medicalrecordhomepage" desc="导入病案首页数据">
+    <property sourceName="documentid"  targetName="MRHP_Id" valueType="String" idField="true"></property>
+    <!--就诊号ID-->
+    <property sourceName="visitnumber" targetName="MRHP_AdmNo" valueType="String" parentField="true"></property>
+    <!--登记号-->
+    <property sourceName="patientid" targetName="MRHP_RegNo"  valueType="String" routingField="true"></property>
     <property sourceName="patientNationality" targetName="MRHP_Nationality" valueType="String" desc="国籍"></property>
     <property sourceName="patientNation" targetName="MRHP_Nation" valueType="String" desc="民族"></property>
     <property sourceName="patientAge" targetName="MRHP_AdmAge" desc="就诊时年龄"></property>
@@ -145,4 +150,10 @@
     <property sourceName="DiseaseCode6" targetName="MRHP_DiseaseCode6" desc="出院其他诊断编码6"></property>
     <property sourceName="DischDiagOther7" targetName="MRHP_DischDiagOther7" desc="出院其他诊断7"></property>
     <property sourceName="DiseaseCode7" targetName="MRHP_DiseaseCode7" desc="出院其他诊断编码7"></property>
+
+    <outputs>
+        <output>
+            <elasticsearch index="csmsearch" type="medicalrecordhomepage"></elasticsearch>
+        </output>
+    </outputs>
 </elasticMapper>

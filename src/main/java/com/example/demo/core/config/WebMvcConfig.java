@@ -34,6 +34,7 @@ import java.util.Map;
 
 /**
  * Spring MVC 配置
+ *
  * @author felix
  */
 @Configuration
@@ -43,7 +44,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Value("${spring.profiles.active}")
     private String env;//当前激活的配置文件
 
-    //使用阿里 FastJson 作为JSON MessageConverter
+    /**
+     * 使用阿里 FastJson 作为JSON MessageConverter
+     *
+     * @param converters
+     */
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         FastJsonHttpMessageConverter converter = new FastJsonHttpMessageConverter();
@@ -56,7 +61,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
         converters.add(converter);
     }
 
-    //解决跨域问题
+    /**
+     * 解决跨域问题
+     *
+     * @param registry
+     */
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**") // **代表所有路径
@@ -111,7 +120,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
                     //记录请求日志
                     logger.info("Request API: [{}] - Request IP: [{}]",
-                               request.getRequestURI(), getIpAddress(request));
+                            request.getRequestURI(), getIpAddress(request));
                     //验证登录
 //                    Object obj = request.getSession().getAttribute(Const.LOGIN_SESSION_KEY);
 //                    if (obj != null) {

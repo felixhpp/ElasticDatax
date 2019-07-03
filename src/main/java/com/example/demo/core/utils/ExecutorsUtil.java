@@ -14,6 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * 能实时将线程池使用信息打印到日志中，方便我们进行问题排查、系统调优
  * 该类继承ThreadPoolExecutor类，覆盖了shutdown(), shutdownNow(), beforeExecute() 和 afterExecute()
  * 方法来统计线程池的执行情况
+ *
  * @author felix
  */
 public class ExecutorsUtil extends ThreadPoolExecutor {
@@ -27,12 +28,13 @@ public class ExecutorsUtil extends ThreadPoolExecutor {
 
     /**
      * 调用父类的构造方法，并初始化HashMap和线程池名称
-     * @param corePoolSize 线程池核心线程数
+     *
+     * @param corePoolSize    线程池核心线程数
      * @param maximumPoolSize 线程池最大线程数
-     * @param keepAliveTime 线程的最大空闲时间
-     * @param unit 空闲时间的单位
-     * @param workQueue 保存被提交任务的队列
-     * @param poolName 线程池名称
+     * @param keepAliveTime   线程的最大空闲时间
+     * @param unit            空闲时间的单位
+     * @param workQueue       保存被提交任务的队列
+     * @param poolName        线程池名称
      */
     public ExecutorsUtil(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue,
                          String poolName) {
@@ -56,6 +58,7 @@ public class ExecutorsUtil extends ThreadPoolExecutor {
 
     /**
      * 线程池立即关闭时，统计线程池情况
+     *
      * @return
      */
     @Override
@@ -69,6 +72,7 @@ public class ExecutorsUtil extends ThreadPoolExecutor {
 
     /**
      * 任务执行之前，记录任务开始时间
+     *
      * @param t
      * @param r
      */
@@ -79,6 +83,7 @@ public class ExecutorsUtil extends ThreadPoolExecutor {
 
     /**
      * 任务执行之后，计算任务结束时间
+     *
      * @param r
      * @param t
      */
@@ -97,6 +102,7 @@ public class ExecutorsUtil extends ThreadPoolExecutor {
 
     /**
      * 创建固定线程池，代码源于Executors.newFixedThreadPool方法，这里增加了poolName
+     *
      * @param nThreads 线程数量
      * @param poolName 线程池名称
      * @return
@@ -107,6 +113,7 @@ public class ExecutorsUtil extends ThreadPoolExecutor {
 
     /**
      * 创建缓存型线程池，代码源于Executors.newCachedThreadPool方法，这里增加了poolName
+     *
      * @param poolName
      * @return
      */

@@ -1,10 +1,11 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.core.bean.ElasticMapperBean;
+import com.example.demo.core.bean.ConvertConfigBean;
+import com.example.demo.core.entity.ESBulkModel;
 import com.example.demo.core.enums.DictionaryTypeEnum;
 import com.example.demo.core.enums.ElasticTypeEnum;
 import com.example.demo.core.utils.*;
-import com.example.demo.elastic.ConvertPipeline;
+import com.example.demo.jobs.ConvertPipeline;
 import com.example.demo.entity.DictionaryMap;
 import com.example.demo.service.DefaultDicMapService;
 import net.sf.ehcache.Cache;
@@ -16,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -39,7 +39,7 @@ public class DefaultDicMapServiceImpl implements DefaultDicMapService {
 
     private static ConcurrentHashMap<String, Cache> cacheMap = new ConcurrentHashMap<>();
     @Autowired
-    private ElasticMapperBean mapperBean;
+    private ConvertConfigBean mapperBean;
     /**
      * 通过code获取字典
      * @param code

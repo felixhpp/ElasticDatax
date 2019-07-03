@@ -14,14 +14,17 @@ import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 
+/**
+ * 通用方法
+ *
+ * @author felix
+ */
 public class Common {
     private static final Logger log = LoggerFactory.getLogger(Common.class);
+
     public static String toJSONString(Object object) {
         String jsonString = JSON.toJSONString(object, SerializerFeature.PrettyFormat, SerializerFeature.WriteMapNullValue, SerializerFeature.WriteDateUseDateFormat);
         return jsonString;
@@ -29,6 +32,7 @@ public class Common {
 
     /**
      * 判断是否base64编码
+     *
      * @param str
      * @return
      */
@@ -37,4 +41,27 @@ public class Common {
         return Pattern.matches(base64Pattern, str);
     }
 
+    /**
+     * 判断对象是否为空
+     * @param s
+     * @return
+     */
+    public static boolean isEmpty(Object s) {
+        if (s == null) {
+            return true;
+        }
+        if ((s instanceof String) && (((String)s).trim().length() == 0)) {
+            return true;
+        }
+        if (s instanceof Map) {
+            return ((Map<?, ?>)s).isEmpty();
+        }
+        if (s instanceof List) {
+            return ((List<?>)s).isEmpty();
+        }
+        if (s instanceof Object[]) {
+            return (((Object[])s).length == 0);
+        }
+        return false;
+    }
 }

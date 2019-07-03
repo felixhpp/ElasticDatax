@@ -4,8 +4,9 @@ package com.example.demo;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.demo.core.enums.ElasticTypeEnum;
-import com.example.demo.core.utils.ESBulkModel;
-import com.example.demo.elastic.mapper.BaseMapper;
+import com.example.demo.core.entity.ESBulkModel;
+import com.example.demo.core.utils.DateFormatUtil;
+import com.example.demo.jobs.Pipeline;
 import com.example.demo.service.TaskService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +18,7 @@ import org.springframework.core.task.TaskRejectedException;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -36,10 +38,24 @@ public class ApplicationTests {
     }
 
     @Test
+    public void dateTest() throws Exception{
+        long start = System.currentTimeMillis();
+        String date1 = "2019-2-1 00:00:00";
+        String bron = "2016-1-2";
+        Date sDate = DateFormatUtil.parseDateString(date1, "yyyy-MM-dd");
+        Date eDate = DateFormatUtil.parseDateString(bron, "yyyy-MM-dd");
+        long d = DateFormatUtil.differentYears(sDate, eDate);
+        long end2 = System.currentTimeMillis();
+        System.out.println("tool2: " + (end2-start) + "ms");
+        long d1 = DateFormatUtil.differentYears(sDate, eDate);
+        long end3 = System.currentTimeMillis();
+        System.out.println("tool: " + (end3-start) + "ms" + " 间隔" + d);
+    }
+
+    @Test
     public void convert() throws Exception {
         Integer i = 100;
-        BaseMapper mapper = BaseMapper.getInstance(ElasticTypeEnum.PATIENT);
-        mapper.setOnMapper(true);
+        Pipeline mapper = Pipeline.getInstance(ElasticTypeEnum.PATIENT, true);
         for(Integer j = 0; j<i; j++){
             JSONObject object = new JSONObject();
             object.put("id","123" + j);

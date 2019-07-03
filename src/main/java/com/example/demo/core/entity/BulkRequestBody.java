@@ -9,6 +9,8 @@ import java.util.ArrayList;
 
 /**
  * 批量导入ES Request Body对象
+ *
+ * @author felix
  */
 public class BulkRequestBody {
 

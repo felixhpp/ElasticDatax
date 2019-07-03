@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE elasticMapper SYSTEM "elasticmapping.dtd">
-<elasticMapper name="diagnoseStatistic">
+<elasticMapper name="diagnoseStatistic" desc="导入诊断统计数据">
     <!--诊断信息（统计使用）  通过diagnose 映射-->
     <property sourceName="Diag_Id"  targetName="DFS_Id"  valueType="String" idField="true"></property>
     <property sourceName="Diag_AdmId" targetName="DFS_AdmId" valueType="String" parentField="true"></property>
@@ -10,4 +10,9 @@
     <property sourceName="Diag_Name" targetName="DFS_Name" valueType="String">
     </property>
     <property sourceName="Diag_Code" targetName="DFS_Code" valueType="String"></property>
+    <outputs>
+        <output>
+            <elasticsearch index="csmsearch" type="diagnoseforstatistics"></elasticsearch>
+        </output>
+    </outputs>
 </elasticMapper>

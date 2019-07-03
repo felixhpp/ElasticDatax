@@ -1,16 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--定义根目录节点为elasticMapper, 子节点为property， 可以有多个-->
-<!ELEMENT elasticMapper (property+,addProperty*,filters)>
+<!ELEMENT elasticMapper (property+,addProperty*,filters, outputs)>
 <!--+ ：表示一次或者多次 ? ：表示零次或者一次  * ：表示零次或者多次 无 ：子元素只能出现一次-->
-<!ELEMENT property (methodConvertor* | dicConvertor? | dateFormatConvertor? | dateConcatConvertor? | valueFormatConvertor? | sqlConvertor)>
+<!ELEMENT property (
+        methodConvertor* | dicConvertor? | dateFormatConvertor? |
+        dateConcatConvertor? | valueFormatConvertor? | sqlConvertor | calculateConvertor |
+        if
+        )>
+<!ELEMENT if (
+        methodConvertor* | dicConvertor? | dateFormatConvertor? |
+        dateConcatConvertor? | valueFormatConvertor? | sqlConvertor | calculateConvertor
+        )>
 <!ELEMENT methodConvertor (parameter+)>
 <!ELEMENT dateFormatConvertor (parameter)>
 <!ELEMENT dicConvertor (parameter)>
+<!--通过某一个字段计算-->
+<!ELEMENT calculateConvertor (startDateParameter,endDateParameter)>
 <!ELEMENT sqlConvertor (#PCDATA)>
 <!ELEMENT dateConcatConvertor (dateParameter, timeParameter)>
 <!ELEMENT valueFormatConvertor (parameter)>
 <!ELEMENT dateParameter (#PCDATA)>
 <!ELEMENT timeParameter (#PCDATA)>
+<!ELEMENT startDateParameter (#PCDATA)>
+<!ELEMENT endDateParameter (#PCDATA)>
 <!ELEMENT addProperty (const*,sql*)>
 <!ELEMENT parameter (#PCDATA)>
 <!ELEMENT const (#PCDATA)>
@@ -23,8 +35,14 @@
 <!ELEMENT must (filter+)>
 <!ELEMENT should (filter+)>
 <!ELEMENT filter (#PCDATA)>
+<!ELEMENT outputs (output*)>
+<!ELEMENT output (elasticsearch | datasource | mapperFile)>
+<!ELEMENT elasticsearch (#PCDATA)>
+<!ELEMENT datasource (#PCDATA)>
+<!ELEMENT mapperFile (#PCDATA)>
 <!-- elasticMapper name属性是必须的，且唯一 -->
 <!ATTLIST elasticMapper name ID #REQUIRED>
+<!ATTLIST elasticMapper desc #PCDATA>
 <!-- property sourceName属性是必须的 -->
 <!ATTLIST property sourceName CDATA #REQUIRED>
 <!-- property targetName属性是必须的 -->
@@ -50,10 +68,17 @@
         yyyy-MM-dd hh:mm:ss |
         hh:mm:ss |
         ) #IMPLED "yyyy-MM-dd">
+
+<!ATTLIST if field CDATA #REQUIRED>
+<!ATTLIST if test(
+        isNotEmpty | equert | notEquert | isEmpty
+        ) #REQUIRED>
+
 <!-- methodConvertor 参数方法 -->
 <!ATTLIST methodConvertor methodName (
         test |
         )  #REQUIRED>
+
 <!ATTLIST parameter type (
         String | string |
         Integer | int |
@@ -62,6 +87,7 @@
         Boolean | bool |
         Date | date
         ) #IMPLED "java.lang.String">
+
 <!ATTLIST dicConvertor methodName (
         getByCode
         )  #REQUIRED>
@@ -70,6 +96,9 @@
         DiagnoseName | OrderItem | OrdType | OrdCateage | OrderStatus | Duration |
         Freq | AdmStatus | LisItem | PHDrgMaterial | InstrUsage | PHCGeneric | PHCGoods
         )  #REQUIRED>
+<!ATTLIST calculateConvertor methodName (
+        differentDays | differentYears | differentWeeks
+        )>
 <!ATTLIST dateFormatConvertor methodName (
         formatDate |
         ) #REQUIRED "formatDate">
@@ -77,17 +106,26 @@
 <!ATTLIST dateFormatConvertor formatType (
         shortDate | longDate | time |
         ) #REQUIRED "shortDate">
+
 <!ATTLIST dateConcatConvertor methodName (
         concatDatetime |
         ) #REQUIRED "concatDatetime">
+
 <!ATTLIST valueFormatConvertor methodName (
         formatValue |
         ) #REQUIRED "formatValue">
+
 <!ATTLIST dateParameter value CDATA #REQUIRED>
 <!ATTLIST timeParameter value CDATA #REQUIRED>
+<!ATTLIST startDateParameter value CDATA #REQUIRED>
+<!ATTLIST endDateParameter value CDATA #REQUIRED>
 <!ATTLIST const targetName CDATA #REQUIRED>
 
 <!ATTLIST filter filterName CDATA #REQUIRED>
 <!ATTLIST filter filterMethod (
         isNotEmpty | equert | notEquert
         ) #REQUIRED>
+
+<!ATTLIST elasticsearch index CDATA #REQUIRED>
+<!ATTLIST elasticsearch type CDATA #REQUIRED>
+<!ATTLIST mapperFile fileName CDATA #REQUIRED>

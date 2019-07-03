@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE elasticMapper SYSTEM "elasticmapping.dtd">
-<elasticMapper name="diagnose">
+<elasticMapper name="diagnose" desc="导入诊断数据">
     <property sourceName="diag_id"  targetName="Diag_Id" valueType="String" idField="true"></property>
     <property sourceName="diag_admid" targetName="Diag_AdmId" valueType="String" parentField="true"></property>
     <property sourceName="diag_regno" targetName="Diag_RegNo"  valueType="String" routingField="true"></property>
@@ -17,9 +17,11 @@
     </property>
     <!--诊断名称  通过编码获取-->
     <property sourceName="diag_name" targetName="Diag_Name" valueType="String">
-        <dicConvertor methodName="getByCode" dicType="DiagnoseName">
-            <parameter>diag_code</parameter>
-        </dicConvertor>
+        <if field="diag_name" test="isEmpty">
+            <dicConvertor methodName="getByCode" dicType="DiagnoseName">
+                <parameter>diag_code</parameter>
+            </dicConvertor>
+        </if>
     </property>
     <!--诊断编码-->
     <property sourceName="diag_code" targetName="Diag_Code " valueType="String"></property>
@@ -33,4 +35,12 @@
             </should>
         </sourceFilter>
     </filters>
+    <outputs>
+        <output>
+            <elasticsearch index="csmsearch" type="diagnose"></elasticsearch>
+        </output>
+        <output>
+            <mapperFile fileName="diagnoseforstatistics.xml"></mapperFile>
+        </output>
+    </outputs>
 </elasticMapper>

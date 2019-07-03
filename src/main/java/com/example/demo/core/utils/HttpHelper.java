@@ -11,6 +11,7 @@ import java.util.*;
 
 /**
  * http请求帮助类
+ *
  * @author felix
  */
 public class HttpHelper {
@@ -27,7 +28,8 @@ public class HttpHelper {
 
     /**
      * 向指定 URL 发送GET方法的请求
-     * @param url 请求的URL
+     *
+     * @param url    请求的URL
      * @param params 参数
      * @param header header
      * @return
@@ -59,17 +61,17 @@ public class HttpHelper {
         connection.setConnectTimeout(5000);
         connection.setReadTimeout(15000);
         // 设置通用的请求属性
-        if (header!=null) {
-            Iterator<Map.Entry<String, String>> it =header.entrySet().iterator();
-            while(it.hasNext()){
+        if (header != null) {
+            Iterator<Map.Entry<String, String>> it = header.entrySet().iterator();
+            while (it.hasNext()) {
                 Map.Entry<String, String> entry = it.next();
-                System.out.println(entry.getKey()+":::"+entry.getValue());
+                System.out.println(entry.getKey() + ":::" + entry.getValue());
                 connection.setRequestProperty(entry.getKey(), entry.getValue());
             }
         }
         connection.setRequestProperty("accept", "*/*");
         connection.setRequestProperty("connection", "Keep-Alive");
-        connection.setRequestProperty("user-agent","Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
+        connection.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
         // 建立实际的连接
         connection.connect();
         // 获取所有响应头字段
@@ -89,7 +91,8 @@ public class HttpHelper {
 
     /**
      * 向指定 URL 发送POST方法的请求
-     * @param url 请求的URL
+     *
+     * @param url    请求的URL
      * @param params 参数
      * @return
      * @throws UnsupportedEncodingException
@@ -122,7 +125,7 @@ public class HttpHelper {
         conn.setConnectTimeout(5000);
         conn.setReadTimeout(15000);
         // 设置通用的请求属性
-        if (header!=null) {
+        if (header != null) {
             for (Map.Entry<String, String> entry : header.entrySet()) {
                 conn.setRequestProperty(entry.getKey(), entry.getValue());
             }
@@ -147,10 +150,10 @@ public class HttpHelper {
         while ((line = in.readLine()) != null) {
             result += line;
         }
-        if(out!=null){
+        if (out != null) {
             out.close();
         }
-        if(in!=null){
+        if (in != null) {
             in.close();
         }
         return result;

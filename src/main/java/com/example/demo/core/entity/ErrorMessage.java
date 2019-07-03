@@ -2,6 +2,7 @@ package com.example.demo.core.entity;
 
 /**
  * 错误提示集合类
+ *
  * @author felix
  */
 public class ErrorMessage {

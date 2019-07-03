@@ -1,21 +1,39 @@
 package com.example.demo.core.utils;
 
 import org.apache.commons.lang3.time.FastDateFormat;
+import org.apache.lucene.analysis.ngram.EdgeNGramFilterFactory;
 
 import java.text.ParseException;
+import java.time.*;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
 
-final public class DateFormatUtil {
+/**
+ * 日期格式化工具类
+ *
+ * @author felix
+ */
+public final class DateFormatUtil {
+    private static final String LONG_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    private static final String SHORT_DATE_FORMAT = "yyyy-MM-dd";
+    private static final String TIME_DATE_FORMAT = "HH:mm:ss";
+
+    public static void main(String[] args){
+
+    }
+
+    
     /**
      * 解析日期时间字符串
      * 用FastDateFormat 代替 SimpleDateFormat，SimpleDateFormat在线程内不完全
+     *
      * @param timeString 日期字符串
-     * @param pattern  格式化字符串 yyyy-MM-dd  或者 HH:mm:ss 或者 yyyy-MM-dd HH:mm:ss
+     * @param pattern    格式化字符串 yyyy-MM-dd  或者 HH:mm:ss 或者 yyyy-MM-dd HH:mm:ss
      * @return
      */
     public static Date parseDateString(String timeString, String pattern) {
-        if ((timeString == null) || timeString == "") {
+        if ((timeString == null) || timeString.equals("")) {
             return null;
         }
 
@@ -29,10 +47,11 @@ final public class DateFormatUtil {
 
     /**
      * 获取日期字符串
+     *
      * @param date
      * @return yyyy-MM-dd格式的字符串
      */
-    public static String getDateString(Date date){
+    public static String getDateString(Date date) {
         if (date == null) {
             return null;
         }
@@ -42,10 +61,11 @@ final public class DateFormatUtil {
 
     /**
      * 获取时间字符串
+     *
      * @param date
      * @return
      */
-    public static String getTimeString(Date date){
+    public static String getTimeString(Date date) {
         if (date == null) {
             return null;
         }
@@ -55,10 +75,11 @@ final public class DateFormatUtil {
 
     /**
      * 获取yyyy-MM-dd HH:mm:ss 格式的日期时间字符串
+     *
      * @param date
      * @return
      */
-    public static String getDatetimeString(Date date){
+    public static String getDatetimeString(Date date) {
         if (date == null) {
             return null;
         }
@@ -66,45 +87,135 @@ final public class DateFormatUtil {
         return FastDateFormat.getInstance("yyyy-MM-dd HH:mm:ss").format(date);
     }
 
+    /**
+     * 计算当前日期与{@code startDate}的间隔天数
+     *
+     * @param startDate 日期
+     * @return 间隔天数
+     */
+    public static long differentDays(LocalDate startDate){
+        return LocalDate.now().until(startDate, ChronoUnit.DAYS);
+    }
+    /**
+     * 计算日期{@code startDate}与{@code endDate}的间隔天数
+     *
+     * @param startDate 开始日期
+     * @param endDate 结束日期
+     * @return 间隔天数
+     */
+    public static long differentDays(LocalDate startDate, LocalDate endDate){
+        return endDate.until(startDate, ChronoUnit.DAYS);
+    }
+
+
 
     /**
-     * 通过时间秒毫秒数判断两个时间的间隔
-     * @param date1
-     * @param date2
-     * @return
+     * 计算日期{@code startDate}与{@code endDate}的间隔天数
+     *
+     * @param startDate 开始日期
+     * @param endDate 结束日期
+     * @return 间隔天数
      */
-    public static int differentDaysByMillisecond(Date date1,Date date2)
-    {
-        Calendar cal1 = Calendar.getInstance();
-        cal1.setTime(date1);
+    public static long differentDays(Date startDate, Date endDate){
+        LocalDate startLocalDate = UDateToLocalDate(startDate);
+        LocalDate endLocalDate = UDateToLocalDate(endDate);
 
-        Calendar cal2 = Calendar.getInstance();
-        cal2.setTime(date2);
-        int day1= cal1.get(Calendar.DAY_OF_YEAR);
-        int day2 = cal2.get(Calendar.DAY_OF_YEAR);
+        return differentDays(startLocalDate, endLocalDate);
+    }
 
-        int year1 = cal1.get(Calendar.YEAR);
-        int year2 = cal2.get(Calendar.YEAR);
-        if(year1 != year2)   //同一年
-        {
-            int timeDistance = 0 ;
-            for(int i = year1 ; i < year2 ; i ++)
-            {
-                if(i%4==0 && i%100!=0 || i%400==0)    //闰年
-                {
-                    timeDistance += 366;
-                }
-                else    //不是闰年
-                {
-                    timeDistance += 365;
-                }
-            }
+    /**
+     * 计算日期{@code startDate}与{@code endDate}的间隔年数
+     *
+     * @param startDate 开始日期
+     * @param endDate 结束日期
+     * @return 间隔年数
+     */
+    public static long differentYears(LocalDate startDate, LocalDate endDate){
+        return endDate.until(startDate, ChronoUnit.YEARS);
+    }
 
-            return timeDistance + (day2-day1) ;
-        }
-        else    //不同年
-        {
-            return day2-day1;
-        }
+    /**
+     * 计算日期{@code startDate}与{@code endDate}的间隔年数
+     *
+     * @param startDate 开始日期
+     * @param endDate 结束日期
+     * @return 间隔年数
+     */
+    public static long differentYears(Date startDate, Date endDate){
+        LocalDate startLocalDate = UDateToLocalDate(startDate);
+        LocalDate endLocalDate = UDateToLocalDate(endDate);
+
+        return differentYears(startLocalDate, endLocalDate);
+    }
+
+    /**
+     * 将Date类型的{@code date} 转 LocalDateTime
+     *
+     * @param date 需要转换的日期
+     */
+    public static LocalDateTime UDateToLocalDateTime(Date date) {
+        Instant instant = date.toInstant();
+        ZoneId zone = ZoneId.systemDefault();
+
+        return LocalDateTime.ofInstant(instant, zone);
+    }
+
+    /**
+     * 将Date类型的{@code date} 转 LocalDate
+     *
+     * @param date 需要转换的日期
+     */
+    public static LocalDate UDateToLocalDate(Date date) {
+        Instant instant = date.toInstant();
+        ZoneId zone = ZoneId.systemDefault();
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, zone);
+        return localDateTime.toLocalDate();
+    }
+
+    /**
+     * 将Date类型的{@code date} 转 LocalTime
+     *
+     * @param date 需要转换的日期
+     */
+    public static LocalTime UDateToLocalTime(Date date) {
+        Instant instant = date.toInstant();
+        ZoneId zone = ZoneId.systemDefault();
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, zone);
+        return localDateTime.toLocalTime();
+    }
+
+    /**
+     * 将LocalDateTime 类型的{@code localDateTime} 转 Date
+     *
+     * @param localDateTime 需要转换的时间
+     */
+    public static Date LocalDateTimeToUdate(LocalDateTime localDateTime) {
+        ZoneId zone = ZoneId.systemDefault();
+        Instant instant = localDateTime.atZone(zone).toInstant();
+        return Date.from(instant);
+    }
+
+    /**
+     * 将LocalDateTime 类型的{@code localDateTime} 转 Date
+     *
+     * @param localDate 需要转换的日期
+     */
+    public static Date LocalDateToUdate(LocalDate localDate) {
+        ZoneId zone = ZoneId.systemDefault();
+        Instant instant = localDate.atStartOfDay().atZone(zone).toInstant();
+        return Date.from(instant);
+    }
+
+    /**
+     * 将{@code localDate} 和 {@code localTime}转 Date
+     *
+     * @param localDate 需要转换的日期
+     * @param localTime 需要转换的时间
+     */
+    public static Date LocalTimeToUdate(LocalDate localDate, LocalTime localTime) {
+        LocalDateTime localDateTime = LocalDateTime.of(localDate, localTime);
+        ZoneId zone = ZoneId.systemDefault();
+        Instant instant = localDateTime.atZone(zone).toInstant();
+        return Date.from(instant);
     }
 }

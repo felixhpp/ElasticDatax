@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE elasticMapper SYSTEM "elasticmapping.dtd">
-<elasticMapper name="diagnose">
+<elasticMapper name="diagnose" desc="导入医嘱数据">
     <property sourceName="ord_id"  targetName="Ord_Id" valueType="String" idField="true"></property>
     <property sourceName="ord_admno" targetName="Ord_AdmNo" valueType="String" parentField="true"></property>
     <property sourceName="ord_regno" targetName="Ord_RegNo" valueType="String" routingField="true"></property>
@@ -98,4 +98,9 @@
     </property>
     <!--单次剂量-->
     <property sourceName="ord_doseqty" targetName="Ord_DoseQty" valueType="String"></property>
+    <outputs>
+        <output>
+            <elasticsearch index="csmsearch" type="orditem"></elasticsearch>
+        </output>
+    </outputs>
 </elasticMapper>

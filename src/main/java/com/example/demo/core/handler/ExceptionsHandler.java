@@ -24,6 +24,7 @@ import java.util.List;
 
 /**
  * 全局异常处理
+ *
  * @author felix
  */
 @RestControllerAdvice
@@ -70,7 +71,7 @@ public class ExceptionsHandler {
         String error = null;
         String message = "";
         logger.error(e.getMessage(), e);
-        if(e instanceof MethodArgumentNotValidException){
+        if (e instanceof MethodArgumentNotValidException) {
             MethodArgumentNotValidException methodArgumentNotValidException = (MethodArgumentNotValidException) e;
             BindingResult bindingResult = methodArgumentNotValidException.getBindingResult();
             if (bindingResult.hasErrors()) {
@@ -82,10 +83,10 @@ public class ExceptionsHandler {
                 });
                 logger.error(ErrorMessage.STATUS_BADREQUEST + ", " + msg.toString());
 
-                return new RestResult().fail(-1, ErrorMessage.STATUS_BADREQUEST , msg.toString());
+                return new RestResult().fail(-1, ErrorMessage.STATUS_BADREQUEST, msg.toString());
             }
 
-        } else if(e instanceof HttpMessageNotReadableException){
+        } else if (e instanceof HttpMessageNotReadableException) {
             e.printStackTrace();
             return new RestResult().fail(501, "请求错误。", e.getMessage());
         } else if (e instanceof ServiceException) {//业务失败的异常，如“账号或密码错误”
@@ -100,7 +101,7 @@ public class ExceptionsHandler {
      */
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public RestResult maxUploadSizeExceededException() {
-        return new RestResult().fail(-1,"File is too large", null);
+        return new RestResult().fail(-1, "File is too large", null);
     }
 
     /**

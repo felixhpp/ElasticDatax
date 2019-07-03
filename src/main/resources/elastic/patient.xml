@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE elasticMapper SYSTEM "elasticmapping.dtd">
-<elasticMapper name="patient">
+<elasticMapper name="patient" desc="导入病人基本信息数据">
     <property sourceName="pat_regno" targetName="Pat_RegNo" valueType="String" idField="true" routingField="true"></property>
     <property sourceName="pat_recordno" targetName="Pat_RecordNo" valueType="String"></property>
     <property sourceName="pat_name" targetName="Pat_Name" valueType="String"></property>
@@ -25,4 +25,9 @@
             <parameter></parameter>
         </dateFormatConvertor>
     </property>
+    <outputs>
+        <output>
+            <elasticsearch index="csmsearch" type="patient"></elasticsearch>
+        </output>
+    </outputs>
 </elasticMapper>

@@ -37,33 +37,34 @@ public class ElasticApiController {
 
     /**
      * 集成平台API调用接口，批量导入ES数据
+     *
      * @param content
      * @return
      */
     @ApiOperation(value = "批量导入ES数据", notes = "批量导入ES数据")
     @ApiImplicitParam(name = "content", value = "请求json字符串", paramType = "String", required = true, dataType = "String")
     @PostMapping(path = "bulk")
-    public RestResult bulk(String content){
-        long startTime=System.currentTimeMillis();
+    public RestResult bulk(String content) {
+        long startTime = System.currentTimeMillis();
         BulkRequestBody requetsBody = JSONObject.parseObject(content, BulkRequestBody.class);
         String dataStr = requetsBody.getData();
         String theme = requetsBody.getTheme();
         BulkResponseBody result = new BulkResponseBody();
         try {
-            if(StringUtils.isEmpty(dataStr)){
+            if (StringUtils.isEmpty(dataStr)) {
                 result.setResultCode("-1");
-                result.setResultContent("content参数中data信息为null" );
+                result.setResultContent("content参数中data信息为null");
             }
-            if(StringUtils.isEmpty(theme)){
+            if (StringUtils.isEmpty(theme)) {
                 result.setResultCode("-1");
-                result.setResultContent("content参数中theme信息为null" );
+                result.setResultContent("content参数中theme信息为null");
             }
 
             List<Map<String, Object>> bulkData = JSONArray.parseObject(dataStr, ArrayList.class);
             result = elasticBulkService.bulk(theme, bulkData);
-            long endTime=System.currentTimeMillis();
-            logger.info("====bulk [" + theme+ "] finish：" + result.getResultContent()+ "  tool:" + (endTime-startTime)+"ms");
-        } catch (Exception e){
+            long endTime = System.currentTimeMillis();
+            logger.info("====bulk [" + theme + "] finish：" + result.getResultContent() + "  tool:" + (endTime - startTime) + "ms");
+        } catch (Exception e) {
             result.setResultCode("-1");
             result.setResultContent("请求异常，错误信息:" + e.getMessage());
         }
@@ -73,11 +74,12 @@ public class ElasticApiController {
 
     /**
      * 批量导入数据，数据通过写入body的当时传输
+     *
      * @param content
      * @return
      */
     @PostMapping(path = "bulkBody")
-    public RestResult bulk(@Valid @RequestBody BodyContent content){
+    public RestResult bulk(@Valid @RequestBody BodyContent content) {
         BulkRequestBody requetsBody = JSONObject.parseObject(content.getContent(), BulkRequestBody.class);
         String dataStr = requetsBody.getData();
         String theme = requetsBody.getTheme();
@@ -88,37 +90,39 @@ public class ElasticApiController {
 
     /**
      * 添加单
+     *
      * @param body
      * @return
      */
     @PostMapping(path = "bulk/casenote")
-    public RestResult bulk(@RequestBody List<BulkCaseRequestBody> body){
+    public RestResult bulk(@RequestBody List<BulkCaseRequestBody> body) {
+        if(body.size() == 0) return ResultUtil.error("body is null"); ;
         long startTime = System.currentTimeMillis();
-        String documentType = null;
         // debug
-        if(body.size() > 0){
-            documentType = body.get(0).getDocumentTypeDesc();
-            System.out.println(JSON.toJSONString(body.get(0)));
-        }
+//        if (body.size() > 0) {
+//            documentType = body.get(0).getDocumentTypeDesc();
+//            System.out.println(JSON.toJSONString(body.get(0)));
+//        }
         BulkResponseBody responseBody = elasticBulkService.bulkCase(body);
         long endTime = System.currentTimeMillis();
-        logger.info("=====bulk [ "+documentType+" ],tool：" + (endTime- startTime) + "ms，message:" + responseBody.getResultContent());
+        logger.info("=====bulk [ " + body.get(0).getDocumentTypeDesc() + " ],tool：" + (endTime - startTime) + "ms，message:" + responseBody.getResultContent());
         return ResultUtil.success(responseBody);
     }
 
     @ApiOperation(value = "根据登记号获取病人基本信息", notes = "根据登记号获取病人基本信息")
     @ApiImplicitParam(name = "regNo", value = "登记号", paramType = "path", required = true, dataType = "String")
     @GetMapping(path = "getPatient/{regNo}")
-    public RestResult getPatientByRegNo(@PathVariable(name = "regNo")String regNo) throws IOException {
+    public RestResult getPatientByRegNo(@PathVariable(name = "regNo") String regNo) throws IOException {
         return ResultUtil.success(elasticBulkService.getPatientByRegNo(regNo));
     }
 
     /**
      * 将json数组字符串解析成List<Map<String, Object>>， 效率高过fastjson JSONArray
+     *
      * @param dataJsonStr
      * @return
      */
-    private List<Map<String, Object>> strToMap(String dataJsonStr){
+    private List<Map<String, Object>> strToMap(String dataJsonStr) {
         JSONReader reader = new JSONReader(new StringReader(dataJsonStr));//已流的方式处理，这里很快
         reader.startArray();
         List<Map<String, Object>> rsList = new ArrayList<Map<String, Object>>();
@@ -138,6 +142,6 @@ public class ElasticApiController {
         }
         reader.endArray();
 
-        return  rsList;
+        return rsList;
     }
 }

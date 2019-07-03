@@ -62,7 +62,7 @@ spring:
       type: com.alibaba.druid.pool.DruidDataSource
       username: root
       password: 123456
-      url: jdbc:mysql://localhost:3316/elastic?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC
+      url: jdbc:mysql://localhost:3316/jobs?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC
       driver-class-name: com.mysql.cj.jdbc.Driver
       # 连接池配置
       initialSize: 5    # 初始化大小，最小，最大
@@ -124,7 +124,7 @@ spring:
     jest:
       uris:
         - http://127.0.0.1:9200
-      username: elastic
+      username: jobs
       password: changeme
       read-timeout: 20000 #读取超时
       connection-timeout: 20000 #连接超时

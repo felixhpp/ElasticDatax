@@ -2,7 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.core.enums.DictionaryTypeEnum;
 import com.example.demo.core.enums.ElasticTypeEnum;
-import com.example.demo.core.utils.ESBulkModel;
+import com.example.demo.core.entity.ESBulkModel;
 import com.example.demo.entity.DictionaryMap;
 
 import java.util.List;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE elasticMapper SYSTEM "elasticmapping.dtd">
-<elasticMapper name="medicine">
+<elasticMapper name="medicine" desc="导入药物数据">
     <!--id字段-->
     <property sourceName="Ord_Id"  targetName="Med_Id" valueType="String" idField="true"></property>
     <!--关联就诊ID-->
@@ -41,7 +41,7 @@
     <!--用药频率-->
     <property sourceName="Ord_Freq" targetName="Med_Frequency" valueType="String"></property>
     <!--给药开始时间-->
-    <property sourceName="Ord_StartTime" targetName="Ord_StartTime" valueType="String"></property>
+    <property sourceName="Ord_StartTime" targetName="Med_StartTime" valueType="String"></property>
     <!--给药结束时间-->
     <property sourceName="Ord_EndTime" targetName="Med_StopTime" valueType="String"></property>
     <!--用药时长,需要计算-->
@@ -60,4 +60,9 @@
     <!--</property>-->
     <!--医嘱大分类-->
     <property sourceName="Ord_Category" targetName="Med_OrdCat" valueType="String"></property>
+    <outputs>
+        <output>
+            <elasticsearch index="csmsearch" type="medicine"></elasticsearch>
+        </output>
+    </outputs>
 </elasticMapper>
