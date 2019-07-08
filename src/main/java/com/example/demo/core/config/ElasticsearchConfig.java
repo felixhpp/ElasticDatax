@@ -88,11 +88,13 @@ public class ElasticsearchConfig {
 
             @Override
             public void afterBulk(long l, BulkRequest bulkRequest, BulkResponse bulkResponse) {
+                System.out.println(bulkRequest.numberOfActions() + "data bulk finish");
                 logger.info("[ {} ] data bulk finish. in {} milliseconds", bulkRequest.numberOfActions(), bulkResponse.getTook().getMillis());
             }
 
             @Override
             public void afterBulk(long l, BulkRequest bulkRequest, Throwable throwable) {
+                System.out.println(bulkRequest.numberOfActions() + "data bulk failed, reason :" + throwable.getMessage());
                 logger.error("{} data bulk failed,reason :{}", bulkRequest.numberOfActions(), throwable);
             }
 

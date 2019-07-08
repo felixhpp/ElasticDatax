@@ -1,34 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE elasticMapper SYSTEM "elasticmapping.dtd">
 <elasticMapper name="lisitem" desc="导入检验数据">
-    <!--检验ID-->
-    <property sourceName="lis_id" targetName="Lis_Id" valueType="String" idField="true" ></property>
-    <property sourceName="lis_admno" targetName="Lis_AdmNo" valueType="String" parentField="true"></property>
-    <property sourceName="lis_regno" targetName="Lis_RegNo" valueType="String" routingField="true"></property>
-    <!--检验名称-->
-    <property sourceName="lis_name_code" targetName="Lis_Name" valueType="String">
-        <dicConvertor methodName="getByCode" dicType="LisItem">
-            <parameter></parameter>
-        </dicConvertor>
-    </property>
-    <!--检验值-->
-    <property sourceName="lis_value" targetName="Lis_Value" valueType="String"></property>
-    <property sourceName="lis_result" targetName="Lis_Result" valueType="String"></property>
-    <property sourceName="lis_name_code" targetName="Lis_GenericCode"  valueType="String"></property>
-    <!--格式化后的检验值,为了方便比较-->
-    <property sourceName="lis_value" targetName="Lis_FormatVaue" valueType="String">
-        <valueFormatConvertor methodName="formatValue">
-            <parameter></parameter>
-        </valueFormatConvertor>
-    </property>
-    <!--检验时间-->
-    <property sourceName="lis_date" targetName="Lis_DateTime" valueType="String">
-        <dateFormatConvertor methodName="formatDate" formatType="longDate">
-            <parameter></parameter>
-        </dateFormatConvertor>
-    </property>
-    <!--距离手术天数-->
-    <property sourceName="lis_operationdays" targetName="Lis_OperationDays" valueType="String"></property>
+    <propertys>
+        <!--检验ID-->
+        <property sourceName="lis_id" targetName="Lis_Id" valueType="String" idField="true" ></property>
+        <property sourceName="lis_admno" targetName="Lis_AdmNo" valueType="String" parentField="true"></property>
+        <property sourceName="lis_regno" targetName="Lis_RegNo" valueType="String" routingField="true"></property>
+        <!--检验名称-->
+        <property sourceName="lis_name_code" targetName="Lis_Name" valueType="String">
+            <dicConvertor methodName="getByCode" dicType="LisItem">
+                <parameter></parameter>
+            </dicConvertor>
+        </property>
+        <!--检验值-->
+        <property sourceName="lis_value" targetName="Lis_Value" valueType="String"></property>
+        <property sourceName="lis_result" targetName="Lis_Result" valueType="String"></property>
+        <property sourceName="lis_name_code" targetName="Lis_GenericCode"  valueType="String"></property>
+        <!--格式化后的检验值,为了方便比较-->
+        <property sourceName="lis_value" targetName="Lis_FormatVaue" valueType="String">
+            <valueFormatConvertor methodName="formatValue">
+                <parameter></parameter>
+            </valueFormatConvertor>
+        </property>
+        <!--检验时间-->
+        <property sourceName="lis_date" targetName="Lis_DateTime" valueType="String">
+            <dateFormatConvertor methodName="formatDate" formatType="longDate">
+                <parameter></parameter>
+            </dateFormatConvertor>
+        </property>
+        <!--距离手术天数-->
+        <property sourceName="lis_operationdays" targetName="Lis_OperationDays" valueType="String"></property>
+    </propertys>
+
     <outputs>
         <output>
             <elasticsearch index="csmsearch" type="lisitem"></elasticsearch>

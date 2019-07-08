@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE elasticMapper SYSTEM "elasticmapping.dtd">
+<elasticMapper name="homepagediagnose" desc="病案首页诊断部分">
+    <!--doc id 通过病案首页ID + 诊断编码 + 类型-->
+    <propertys>
+        <property sourceName="documentid" targetName="Hpd_id" desc="ID" idField="true"></property>
+        <property sourceName="patientid" targetName="Hpd_AdmNo" desc="就诊ID" parentField="true"></property>
+        <property sourceName="visitnumber" targetName="Hpd_RegNo" desc="登记号" routingField="true"></property>
+        <property sourceName="DiagName" targetName="Hpd_DiagName" desc="诊断名称"></property>
+        <property sourceName="DiagCode" targetName="Hpd_DiagCode" desc="诊断编码"></property>
+        <property sourceName="DiagType" targetName="Hpd_DiagType" desc="诊断类型"></property>
+        <property sourceName="DiagTypeCode" targetName="Hpd_DiagTypeCode" desc="诊断类型编码"></property>
+    </propertys>
+</elasticMapper>

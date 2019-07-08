@@ -28,6 +28,11 @@ public enum ElasticTypeEnum {
 
     // 用药
     Medicine(9, "pa_medicine", "medicine", "medicine.xml"),
+
+    //病案首页 - 手术
+    Home_Page_Operation(10, "basy_operation", "operation", "operation.xml"),
+    //病案首页 - 诊断
+    Home_Page_Diagnose(11, "basy_diagnose", "homepagediagnose", "homepagediagnose.xml"),
     ;
     private static Logger logger = LoggerFactory.getLogger(ElasticTypeEnum.class);
     private int type;

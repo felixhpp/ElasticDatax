@@ -66,8 +66,12 @@ public final class ESBulkModel {
     }
 
     public boolean isEmpty() {
-        if (id == null || id.equals("")) return false;
-        if (routing == null || routing.equals("")) return false;
-        return mapData != null && mapData.size() != 0;
+        if (id == null || "".equals(id)) {
+            return true;
+        }
+        if (routing == null || "".equals(routing)) {
+            return true;
+        }
+        return mapData == null || mapData.size() == 0;
     }
 }

@@ -36,6 +36,7 @@ public class ResidentAdmitNoteAnaly {
                 }
             }
         }
+        caseRecodrXmlBean.setAnalyResult(maps);
         return maps;
     }
 

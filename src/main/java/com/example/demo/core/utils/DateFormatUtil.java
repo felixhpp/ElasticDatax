@@ -1,5 +1,6 @@
 package com.example.demo.core.utils;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
 import org.apache.lucene.analysis.ngram.EdgeNGramFilterFactory;
 
@@ -33,7 +34,7 @@ public final class DateFormatUtil {
      * @return
      */
     public static Date parseDateString(String timeString, String pattern) {
-        if ((timeString == null) || timeString.equals("")) {
+        if ((timeString == null) || "".equals(timeString)) {
             return null;
         }
 
@@ -117,8 +118,8 @@ public final class DateFormatUtil {
      * @return 间隔天数
      */
     public static long differentDays(Date startDate, Date endDate){
-        LocalDate startLocalDate = UDateToLocalDate(startDate);
-        LocalDate endLocalDate = UDateToLocalDate(endDate);
+        LocalDate startLocalDate = uDateToLocalDate(startDate);
+        LocalDate endLocalDate = uDateToLocalDate(endDate);
 
         return differentDays(startLocalDate, endLocalDate);
     }
@@ -142,8 +143,8 @@ public final class DateFormatUtil {
      * @return 间隔年数
      */
     public static long differentYears(Date startDate, Date endDate){
-        LocalDate startLocalDate = UDateToLocalDate(startDate);
-        LocalDate endLocalDate = UDateToLocalDate(endDate);
+        LocalDate startLocalDate = uDateToLocalDate(startDate);
+        LocalDate endLocalDate = uDateToLocalDate(endDate);
 
         return differentYears(startLocalDate, endLocalDate);
     }
@@ -153,7 +154,7 @@ public final class DateFormatUtil {
      *
      * @param date 需要转换的日期
      */
-    public static LocalDateTime UDateToLocalDateTime(Date date) {
+    public static LocalDateTime uDateToLocalDateTime(Date date) {
         Instant instant = date.toInstant();
         ZoneId zone = ZoneId.systemDefault();
 
@@ -165,7 +166,7 @@ public final class DateFormatUtil {
      *
      * @param date 需要转换的日期
      */
-    public static LocalDate UDateToLocalDate(Date date) {
+    public static LocalDate uDateToLocalDate(Date date) {
         Instant instant = date.toInstant();
         ZoneId zone = ZoneId.systemDefault();
         LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, zone);
@@ -177,7 +178,7 @@ public final class DateFormatUtil {
      *
      * @param date 需要转换的日期
      */
-    public static LocalTime UDateToLocalTime(Date date) {
+    public static LocalTime uDateToLocalTime(Date date) {
         Instant instant = date.toInstant();
         ZoneId zone = ZoneId.systemDefault();
         LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, zone);
@@ -189,7 +190,7 @@ public final class DateFormatUtil {
      *
      * @param localDateTime 需要转换的时间
      */
-    public static Date LocalDateTimeToUdate(LocalDateTime localDateTime) {
+    public static Date localDateTimeToUdate(LocalDateTime localDateTime) {
         ZoneId zone = ZoneId.systemDefault();
         Instant instant = localDateTime.atZone(zone).toInstant();
         return Date.from(instant);
@@ -200,7 +201,7 @@ public final class DateFormatUtil {
      *
      * @param localDate 需要转换的日期
      */
-    public static Date LocalDateToUdate(LocalDate localDate) {
+    public static Date localDateToUdate(LocalDate localDate) {
         ZoneId zone = ZoneId.systemDefault();
         Instant instant = localDate.atStartOfDay().atZone(zone).toInstant();
         return Date.from(instant);
@@ -217,5 +218,29 @@ public final class DateFormatUtil {
         ZoneId zone = ZoneId.systemDefault();
         Instant instant = localDateTime.atZone(zone).toInstant();
         return Date.from(instant);
+    }
+
+    /**
+     * yyyy-MM-dd格式的日期字符串转转换为时间戳字符串
+     * @param dateStr
+     * @return
+     */
+    public static String dateToStamp(String dateStr){
+        if(StringUtils.isEmpty(dateStr)) {
+            return null;
+        }
+        try {
+            Date date = FastDateFormat.getInstance("yyyy-MM-dd").parse(dateStr);
+            LocalDate localDate = uDateToLocalDate(date);
+            if(localDate == null) {
+                return null;
+            }
+            long stamp = localDate.toEpochDay();
+            return String.valueOf(stamp);
+        }catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

@@ -7,9 +7,12 @@ import com.example.demo.core.entity.BulkCaseRequestBody;
 import com.example.demo.core.entity.BulkResponseBody;
 import com.example.demo.core.entity.ESBulkModel;
 import com.example.demo.core.enums.ElasticTypeEnum;
+import com.example.demo.core.utils.DateFormatUtil;
 import com.example.demo.entity.DictionaryMap;
 import com.example.demo.jobs.ConvertPipeline;
+import com.example.demo.jobs.analysis.CaseRecodrXmlBean;
 import com.example.demo.jobs.analysis.CaseRecordXmlAnaly;
+import com.example.demo.jobs.analysis.CaseRecordXmlOtherBean;
 import com.example.demo.service.ElasticBulkService;
 
 import io.searchbox.client.JestClient;
@@ -64,6 +67,7 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
      * @param dataJsonStr
      * @return BulkResponseBody
      */
+    @Override
     public BulkResponseBody bulk(String theme, String dataJsonStr) {
         BulkResponseBody result = new BulkResponseBody();
         try {
@@ -129,6 +133,7 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
         return result;
     }
 
+    @Override
     public BulkResponseBody bulk(String theme, List<Map<String, Object>> dataList) {
         BulkResponseBody result = new BulkResponseBody();
         try {
@@ -156,6 +161,7 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
      * @param caseRequestBodies
      * @return BulkResponseBody
      */
+    @Override
     public BulkResponseBody bulkCase(List<BulkCaseRequestBody> caseRequestBodies) {
         BulkResponseBody result = new BulkResponseBody();
 
@@ -168,12 +174,18 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
                 String theme = getCaseTheme(documenttypedesc);
                 ElasticTypeEnum typeEnum = getInstanceByTheme(theme);
                 if (typeEnum == null) {
+                    size--;
                     continue;
                 }
                 String typeName = typeEnum.getEsType();
                 // 解析document
-                Map<String, Object> map = CaseRecordXmlAnaly
+                CaseRecodrXmlBean recordBean = CaseRecordXmlAnaly
                         .analyCaseRecordXml(body.getDocumentContent(), true, typeEnum);
+                if(recordBean == null) {
+                    size--;
+                    continue;
+                }
+                Map<String, Object> map = recordBean.getAnalyResult();
                 if (map == null) {
                     continue;
                 }
@@ -182,7 +194,7 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
                 map.put("visitnumber", body.getVisitNumber());
                 ESBulkModel bulkMode = ConvertPipeline
                         .convertToBulkModel(typeEnum, map, mapperBean.getOnMapper());
-                if (!bulkMode.isEmpty()) {
+                if (bulkMode != null && !bulkMode.isEmpty()) {
                     boolean add = addBulkProcessor(bulkMode, mapperBean.getDefaultIndex(), typeName);
                     if (!add) {
                         size--;
@@ -190,6 +202,12 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
                 } else {
                     size--;
                 }
+
+                //是否有附带的信息
+                bulkOtherCaseResult(recordBean.getOperationResult(), body.getDocumentId(),
+                        body.getPatientId(), body.getVisitNumber());
+                bulkOtherCaseResult(recordBean.getDiagnoseResult(), body.getDocumentId(),
+                        body.getPatientId(), body.getVisitNumber());
             }
             result.setResultCode("0");
             result.setResultContent("成功" + size + "条");
@@ -202,12 +220,100 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
         return result;
     }
 
+    /**
+     * 病历导入测试
+     * @param bean
+     * @return
+     */
+    @Override
+    public BulkResponseBody bulkCaseTest(CaseRecodrXmlBean bean, ElasticTypeEnum typeEnum){
+        if(bean == null) {
+            return null;
+        }
+        Map<String, Object> map = bean.getAnalyResult();
+        String typeName = typeEnum.getEsType();
+        if (map == null) {
+            return null;
+        }
+        map.put("documentid", "11111");
+        map.put("patientid", "12121");
+        map.put("visitnumber", "123455");
+        ESBulkModel bulkMode = ConvertPipeline
+                .convertToBulkModel(typeEnum, map, mapperBean.getOnMapper());
+        if (bulkMode != null && !bulkMode.isEmpty()) {
+            boolean add = addBulkProcessor(bulkMode, mapperBean.getDefaultIndex(), typeName);
+        }
+        //是否有附加的信息
+        CaseRecordXmlOtherBean operationBean = bean.getOperationResult();
+        if(operationBean != null){
+            ElasticTypeEnum otherTypeEnum = operationBean.getTypeEnum();
+            List<Map<String, Object>> maps = operationBean.getMaps();
+            if(maps != null && maps.size() > 0){
+                for (Map<String, Object> curOtherMap : maps){
+                    curOtherMap.put("patientid", "12121");
+                    curOtherMap.put("visitnumber", "123455");
+                    // 拼接ID 字段
+                    StringBuilder stringBuilder = new StringBuilder();
+                    stringBuilder.append("11111");
+                    Object operCode =  curOtherMap.get("OperCode");
+                    Object operDate = curOtherMap.get("OperDate");
+                    if(operCode != null){
+                        stringBuilder.append(operCode.toString().trim());
+                    }
+                    if(operDate != null){
+                        // 转换时间戳
+                        String dateStamp = DateFormatUtil.dateToStamp(operDate.toString());
+                        stringBuilder.append(dateStamp);
+                    }
+                    curOtherMap.put("documentid", stringBuilder.toString());
+
+                    ESBulkModel otherModel = ConvertPipeline
+                            .convertToBulkModel(otherTypeEnum, curOtherMap, mapperBean.getOnMapper());
+
+                    if (otherModel != null && !otherModel.isEmpty()) {
+                        addBulkProcessor(otherModel, mapperBean.getDefaultIndex(), otherTypeEnum.getEsType());
+                    }
+                }
+            }
+        }
+        CaseRecordXmlOtherBean otherDiagBean = bean.getDiagnoseResult();
+        if(otherDiagBean != null){
+            ElasticTypeEnum otherTypeEnum = otherDiagBean.getTypeEnum();
+            List<Map<String, Object>> maps = otherDiagBean.getMaps();
+            if(maps != null && maps.size() > 0){
+                for (Map<String, Object> curOtherMap : maps){
+                    curOtherMap.put("patientid", "12121");
+                    curOtherMap.put("visitnumber", "123455");
+                    // 拼接ID 字段
+                    StringBuilder stringBuilder = new StringBuilder();
+                    stringBuilder.append("11111");
+                    Object diagCode =  curOtherMap.get("DiagCode");
+                    Object diagTypeCode = curOtherMap.get("DiagTypeCode");
+                    if(diagCode != null){
+                        stringBuilder.append(diagCode.toString().trim());
+                    }
+                    if(diagTypeCode != null){
+                        stringBuilder.append(diagTypeCode.toString().trim());
+                    }
+                    curOtherMap.put("documentid", stringBuilder.toString());
+                    ESBulkModel otherModel = ConvertPipeline
+                            .convertToBulkModel(otherTypeEnum, curOtherMap, mapperBean.getOnMapper());
+
+                    if (otherModel != null && !otherModel.isEmpty()) {
+                        addBulkProcessor(otherModel, mapperBean.getDefaultIndex(), otherTypeEnum.getEsType());
+                    }
+                }
+            }
+        }
+        return null;
+    }
 
     /**
      * 批量向ES导入自动补全数据
      *
      * @return
      */
+    @Override
     public BulkResponseBody bulkSuggestion() {
         BulkResponseBody result = new BulkResponseBody();
 
@@ -259,6 +365,7 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
      * @return
      * @throws IOException
      */
+    @Override
     public String getPatientByRegNo(String regNo) throws IOException {
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         if (StringUtils.isEmpty(regNo)) {
@@ -275,6 +382,56 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
         return jestResult.getJsonString();
     }
 
+    private void bulkOtherCaseResult(CaseRecordXmlOtherBean otherBean,
+                                     String documentid, String patientid, String visitnumber){
+        if(otherBean == null){
+            return;
+        }
+        ElasticTypeEnum otherTypeEnum = otherBean.getTypeEnum();
+        List<Map<String, Object>> maps = otherBean.getMaps();
+        if(maps != null && maps.size() > 0){
+            for (Map<String, Object> curOtherMap : maps){
+                curOtherMap.put("patientid", patientid);
+                curOtherMap.put("visitnumber", visitnumber);
+                // 拼接ID 字段
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append(documentid);
+                if(otherTypeEnum.equals(ElasticTypeEnum.Home_Page_Operation)){
+                    Object operCode =  curOtherMap.get("OperCode");
+                    Object operDate = curOtherMap.get("OperDate");
+                    if(operCode != null){
+                        stringBuilder.append(operCode.toString().trim());
+                    }
+                    if(operDate != null){
+                        // 转换时间戳
+                        String dateStamp = DateFormatUtil.dateToStamp(operDate.toString());
+                        stringBuilder.append(dateStamp);
+                    }
+                }else if(otherTypeEnum.equals(ElasticTypeEnum.Home_Page_Diagnose)){
+                    Object diagCode =  curOtherMap.get("DiagCode");
+                    Object diagTypeCode = curOtherMap.get("DiagTypeCode");
+                    if(diagCode != null){
+                        stringBuilder.append(diagCode.toString().trim());
+                    }
+                    if(diagTypeCode != null){
+                        stringBuilder.append(diagTypeCode.toString().trim());
+                    }
+                }
+
+                if(!StringUtils.isEmpty(stringBuilder)){
+                    curOtherMap.put("documentid", stringBuilder.toString());
+                }
+
+                ESBulkModel otherModel = ConvertPipeline
+                        .convertToBulkModel(otherTypeEnum, curOtherMap, mapperBean.getOnMapper());
+
+                if (otherModel != null && !otherModel.isEmpty()) {
+                    addBulkProcessor(otherModel, mapperBean.getDefaultIndex(), otherTypeEnum.getEsType());
+                }
+            }
+        }
+    }
+
     /**
      * 将ES导入任务添加到 BulkProcessor
      *
@@ -284,7 +441,7 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
      * @return
      */
     private boolean addBulkProcessor(ESBulkModel bulkMode, String index, String type) {
-        Map<String, Object> map = bulkMode.getMapData();
+        Map<String, Object> map = (bulkMode == null) ? null : bulkMode.getMapData();
         if (map == null || map.size() <= 0) {
             return false;
         }
@@ -297,7 +454,8 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
         }
         bulkProcessor.add(request);
 
-        if (type.equals(ElasticTypeEnum.DIAGNOSE.getEsType())) {  //如果是诊断， 同时导入诊断统计信息
+        //如果是诊断， 同时导入诊断统计信息
+        if (type.equals(ElasticTypeEnum.DIAGNOSE.getEsType())) {
             ESBulkModel cBulkMode = ConvertPipeline.convertToBulkModel(ElasticTypeEnum.DIAGNOSE_Statistics,
                     bulkMode.getMapData(), mapperBean.getOnMapper());
 
@@ -309,7 +467,9 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
                 request.parent(cBulkMode.getParent());
             }
             bulkProcessor.add(cRequest);
-        } else if (type.equals(ElasticTypeEnum.ORDITEM.getEsType())) { //如果是医嘱，同时导入药物信息
+        }
+        //如果是医嘱，同时导入药物信息
+        else if (type.equals(ElasticTypeEnum.ORDITEM.getEsType())) {
             ESBulkModel cBulkMode = ConvertPipeline.convertToBulkModel(ElasticTypeEnum.Medicine,
                     bulkMode.getMapData(), mapperBean.getOnMapper());
 
@@ -322,7 +482,6 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
             }
             bulkProcessor.add(cRequest);
         }
-
         return true;
     }
 
@@ -342,7 +501,7 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
      * @return
      */
     private ElasticTypeEnum getInstanceByTheme(String theme) {
-        if (theme == null || theme.equals("")) {
+        if (theme == null || "".equals(theme)) {
             return null;
         }
         ElasticTypeEnum typeEnum = enumMapForTm.get(theme);
@@ -363,7 +522,7 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
      * @return
      */
     private ElasticTypeEnum getInstanceByEsType(String type) {
-        if (type == null || type.equals("")) {
+        if (type == null || "".equals(type)) {
             return null;
         }
         ElasticTypeEnum typeEnum = enumMapForEs.get(type);
@@ -386,6 +545,7 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
             case "病案首页":
                 theme = "basy";
                 break;
+            default:break;
         }
 
         if (theme == null) {

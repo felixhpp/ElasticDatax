@@ -202,6 +202,11 @@ final public class CommonXmlAnaly {
         return reference == null ? null : reference.attributeValue("value");
     }
 
+    /**
+     *  获取valueQuantity 节点值和单位
+     * @param valueQuantityEl
+     * @return
+     */
     public static String getvalueQuantity(Element valueQuantityEl) {
         if (valueQuantityEl == null) {
             return null;
@@ -214,6 +219,15 @@ final public class CommonXmlAnaly {
         return lengthValue + unitValue;
     }
 
+    public static String getChildValueQuantity(Element element){
+        if (element == null) {
+            return null;
+        }
+        Element valueQuantityEl = element.element("valueQuantity");
+
+        return getvalueQuantity(valueQuantityEl);
+    }
+
     public static String getFunctionDisplay(Element function) {
         return getCodingDisplay(function);
     }
@@ -224,10 +238,10 @@ final public class CommonXmlAnaly {
      * @param actor
      * @return
      */
-    public static String getActorDisplay(Element actor) {
-        if (actor == null) return null;
-
-        Element displayEl = actor.element("display");
-        return displayEl == null ? null : displayEl.attributeValue("value");
-    }
+//    public static String getActorDisplay(Element actor) {
+//        if (actor == null) return null;
+//
+//        Element displayEl = actor.element("display");
+//        return displayEl == null ? null : displayEl.attributeValue("value");
+//    }
 }

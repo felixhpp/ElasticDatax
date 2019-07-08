@@ -1,61 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE elasticMapper SYSTEM "elasticmapping.dtd">
 <elasticMapper name="medicalrecord" desc="导入就诊信息数据">
-    <property sourceName="mr_admid"  targetName="MR_AdmID" valueType="String" idField="true" desc="就诊号">
-    </property>
-    <property sourceName="mr_regno" targetName="MR_RegNo" valueType="String" routingField="true" parentField="true" desc="登记号">
-    </property>
-    <!--就诊时年龄， 需要通过生日字段mr_birthday计算-->
-    <property sourceName="mr_birthday" targetName="MR_AdmAge"  valueType="String"  desc="就诊时年龄">
-        <calculateConvertor methodName="differentYears">
-            <startDateParameter value="mr_birthday"></startDateParameter>
-            <endDateParameter value="mr_admdate"></endDateParameter>
-        </calculateConvertor>
-    </property>
-    <property sourceName="mr_admhospital_code" targetName="MR_AdmHospital" valueType="String">
-        <dicConvertor methodName="getByCode" dicType="Hospital">
-            <parameter>mr_admhospital_code</parameter>
-        </dicConvertor>
-    </property>
-    <property sourceName="mr_admtype_code" targetName="MR_AdmType" valueType="String">
-        <dicConvertor methodName="getByCode" dicType="AdmType">
-            <parameter></parameter>
-        </dicConvertor>
-    </property>
-    <!--就诊日期时间-->
-    <property sourceName="mr_admdate" targetName="MR_AdmTime" valueType="String">
-        <dateConcatConvertor methodName="concatDatetime">
-            <dateParameter value="mr_admdate"></dateParameter>
-            <timeParameter value="mr_admtime"></timeParameter>
-        </dateConcatConvertor>
-    </property>
-    <property sourceName="mr_admdept_code" targetName="MR_AdmDept" valueType="String">
-        <dicConvertor methodName="getByCode" dicType="Deptartment">
-            <parameter></parameter>
-        </dicConvertor>
-    </property>
-    <property sourceName="mr_admdept_code" targetName="MR_GenericDeptCode" valueType="String">
-    </property>
-    <property sourceName="mr_dischdate" targetName="MR_DischTime" valueType="String">
-        <dateConcatConvertor methodName="concatDatetime">
-            <dateParameter value="mr_dischdate"></dateParameter>
-            <timeParameter value="mr_dischtime"></timeParameter>
-        </dateConcatConvertor>
-    </property>
-    <property sourceName="mr_dischdept_code" targetName="MR_DischDept" valueType="String">
-        <dicConvertor methodName="getByCode" dicType="Deptartment">
-            <parameter></parameter>
-        </dicConvertor>
-    </property>
-    <!--住院天数-->
-    <property sourceName="mr_inpatientdays" targetName="MR_InpatientDays" valueType="String">
-    </property>
-    <!--就诊状态-->
-    <property sourceName="mr_visitstatus_code" targetName="MR_Visitstatus" valueType="String">
-        <dicConvertor methodName="getByCode" dicType="AdmStatus">
-            <parameter></parameter>
-        </dicConvertor>
-    </property>
+    <propertys>
+        <property sourceName="mr_admid"  targetName="MR_AdmID" valueType="String" idField="true" desc="就诊号">
+        </property>
+        <property sourceName="mr_regno" targetName="MR_RegNo" valueType="String" routingField="true" parentField="true" desc="登记号">
+        </property>
+        <!--就诊时年龄， 需要通过生日字段mr_birthday计算-->
+        <property sourceName="mr_birthday" targetName="MR_AdmAge"  valueType="String"  desc="就诊时年龄">
+            <calculateConvertor methodName="differentYears">
+                <startDateParameter value="mr_birthday"></startDateParameter>
+                <endDateParameter value="mr_admdate"></endDateParameter>
+            </calculateConvertor>
+        </property>
+        <property sourceName="mr_admhospital_code" targetName="MR_AdmHospital" valueType="String">
+            <dicConvertor methodName="getByCode" dicType="Hospital">
+                <parameter>mr_admhospital_code</parameter>
+            </dicConvertor>
+        </property>
+        <property sourceName="mr_admtype_code" targetName="MR_AdmType" valueType="String">
+            <dicConvertor methodName="getByCode" dicType="AdmType">
+                <parameter></parameter>
+            </dicConvertor>
+        </property>
+        <!--就诊日期时间-->
+        <property sourceName="mr_admdate" targetName="MR_AdmTime" valueType="String">
+            <dateConcatConvertor methodName="concatDatetime">
+                <dateParameter value="mr_admdate"></dateParameter>
+                <timeParameter value="mr_admtime"></timeParameter>
+            </dateConcatConvertor>
+        </property>
+        <property sourceName="mr_admdept_code" targetName="MR_AdmDept" valueType="String">
+            <dicConvertor methodName="getByCode" dicType="Deptartment">
+                <parameter></parameter>
+            </dicConvertor>
+        </property>
+        <property sourceName="mr_admdept_code" targetName="MR_GenericDeptCode" valueType="String">
+        </property>
+        <property sourceName="mr_dischdate" targetName="MR_DischTime" valueType="String">
+            <dateConcatConvertor methodName="concatDatetime">
+                <dateParameter value="mr_dischdate"></dateParameter>
+                <timeParameter value="mr_dischtime"></timeParameter>
+            </dateConcatConvertor>
+        </property>
+        <property sourceName="mr_dischdept_code" targetName="MR_DischDept" valueType="String">
+            <dicConvertor methodName="getByCode" dicType="Deptartment">
+                <parameter></parameter>
+            </dicConvertor>
+        </property>
+        <!--住院天数-->
+        <property sourceName="mr_inpatientdays" targetName="MR_InpatientDays" valueType="String">
+        </property>
+        <!--就诊状态-->
+        <property sourceName="mr_visitstatus_code" targetName="MR_Visitstatus" valueType="String">
+            <dicConvertor methodName="getByCode" dicType="AdmStatus">
+                <parameter></parameter>
+            </dicConvertor>
+        </property>
+    </propertys>
+
     <outputs>
         <output>
             <elasticsearch index="csmsearch" type="medicalrecord"></elasticsearch>

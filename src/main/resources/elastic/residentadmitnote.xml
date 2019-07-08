@@ -1,29 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE elasticMapper SYSTEM "elasticmapping.dtd">
 <elasticMapper name="residentadmitnote" desc="导入入院记录数据">
-    <property sourceName="documentid"  targetName="RAN_Id" valueType="String" idField="true"></property>
-    <!--就诊号ID-->
-    <property sourceName="visitnumber" targetName="RAN_AdmNo" valueType="String" parentField="true"></property>
-    <!--登记号-->
-    <property sourceName="patientid" targetName="RAN_RegNo"  valueType="String" routingField="true"></property>
-    <!--主诉-->
-    <property sourceName="zhusu" targetName="RAN_Complain" valueType="String"></property>
-    <!--现病史-->
-    <property sourceName="xianbingshi" targetName="RAN_PresentIllness" valueType="String"></property>
-    <!--既往史-->
-    <property sourceName="jiwangshi" targetName="RAN_PastHistory" valueType="String"></property>
-    <!--个人史-->
-    <property sourceName="gerenshi" targetName="RAN_Sociology" valueType="String"></property>
-    <!--婚育史-->
-    <property sourceName="yjhyshi" targetName="RAN_Marriage" valueType="String"></property>
-    <!--家族史-->
-    <property sourceName="jiazushi" targetName="RAN_Family" valueType="String"></property>
-    <!--体格检查-->
-    <property sourceName="tigejiancha" targetName="RAN_PhysicalExamination" valueType="String"></property>
-    <!--专科检查-->
-    <property sourceName="zkqkjc" targetName="RAN_SpecialityExamination" valueType="String"></property>
-    <!--辅助检查-->
-    <property sourceName="fzjc" targetName="RAN_SupplementaryExamination" valueType="String"></property>
+    <propertys>
+        <property sourceName="documentid"  targetName="RAN_Id" valueType="String" idField="true"></property>
+        <!--就诊号ID-->
+        <property sourceName="visitnumber" targetName="RAN_AdmNo" valueType="String" parentField="true"></property>
+        <!--登记号-->
+        <property sourceName="patientid" targetName="RAN_RegNo"  valueType="String" routingField="true"></property>
+        <!--主诉-->
+        <property sourceName="zhusu" targetName="RAN_Complain" valueType="String"></property>
+        <!--现病史-->
+        <property sourceName="xianbingshi" targetName="RAN_PresentIllness" valueType="String"></property>
+        <!--既往史-->
+        <property sourceName="jiwangshi" targetName="RAN_PastHistory" valueType="String"></property>
+        <!--个人史-->
+        <property sourceName="gerenshi" targetName="RAN_Sociology" valueType="String"></property>
+        <!--婚育史-->
+        <property sourceName="yjhyshi" targetName="RAN_Marriage" valueType="String"></property>
+        <!--家族史-->
+        <property sourceName="jiazushi" targetName="RAN_Family" valueType="String"></property>
+        <!--体格检查-->
+        <property sourceName="tigejiancha" targetName="RAN_PhysicalExamination" valueType="String"></property>
+        <!--专科检查-->
+        <property sourceName="zkqkjc" targetName="RAN_SpecialityExamination" valueType="String"></property>
+        <!--辅助检查-->
+        <property sourceName="fzjc" targetName="RAN_SupplementaryExamination" valueType="String"></property>
+    </propertys>
 
     <outputs>
         <output>

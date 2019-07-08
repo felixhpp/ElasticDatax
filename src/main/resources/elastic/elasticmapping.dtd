@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--定义根目录节点为elasticMapper, 子节点为property， 可以有多个-->
-<!ELEMENT elasticMapper (property+,addProperty*,filters, outputs)>
+<!ELEMENT elasticMapper (propertys,addProperty*,filters, outputs)>
 <!--+ ：表示一次或者多次 ? ：表示零次或者一次  * ：表示零次或者多次 无 ：子元素只能出现一次-->
+<!ELEMENT propertys (property)>
 <!ELEMENT property (
         methodConvertor* | dicConvertor? | dateFormatConvertor? |
         dateConcatConvertor? | valueFormatConvertor? | sqlConvertor | calculateConvertor |

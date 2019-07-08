@@ -5,6 +5,7 @@ import org.dom4j.*;
 import org.springframework.util.StringUtils;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /***
@@ -30,15 +31,15 @@ public final class CaseRecordXmlAnaly {
      *
      * @param xmlStr
      * @param isBase64 是否base64编码
-     * @return
+     * @return CaseRecodrXmlBean
      * @throws UnsupportedEncodingException
      * @throws DocumentException
      */
-    public static Map<String, Object> analyCaseRecordXml(String xmlStr, boolean isBase64, ElasticTypeEnum typeEnum)
+    public static CaseRecodrXmlBean analyCaseRecordXml(String xmlStr, boolean isBase64, ElasticTypeEnum typeEnum)
             throws UnsupportedEncodingException, DocumentException {
         if (isBase64) {
             //base64解码
-            xmlStr = new String(decoder.decode(xmlStr), "UTF-8");
+            xmlStr = new String(decoder.decode(xmlStr), StandardCharsets.UTF_8);
         }
         // xmlStr 转 Document
         Document document = DocumentHelper.parseText(xmlStr);
@@ -48,11 +49,10 @@ public final class CaseRecordXmlAnaly {
     /**
      * 解析病历文档
      */
-    public static Map<String, Object> analyCaseRecordXml(Document document, ElasticTypeEnum typeEnum) {
+    public static CaseRecodrXmlBean analyCaseRecordXml(Document document, ElasticTypeEnum typeEnum) {
         if (document == null) {
             return null;
         }
-        Map<String, Object> resultMaps = new HashMap<>();
         caseRecodrXmlBean = new CaseRecodrXmlBean();
         try {
             // 获取根节点
@@ -61,17 +61,17 @@ public final class CaseRecordXmlAnaly {
             List<Element> entryElements = caseElements.elements("entry");
 
             // 执行caseRecodrXmlModel 的解析程序
-            resultMaps = analysis(caseRecodrXmlBean, entryElements);
+            analysis(caseRecodrXmlBean, entryElements);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return resultMaps;
+        return caseRecodrXmlBean;
     }
 
     // 进行解析
     public static Map<String, Object> analysis(CaseRecodrXmlBean caseRecodrXmlBean, List<Element> entryElements) {
-        if (entryElements == null && entryElements.size() == 0) {  // 获取全部entry
+        if (entryElements == null || entryElements.size() == 0) {  // 获取全部entry
             return null;
         }
         getCompositionAndResoureElement(caseRecodrXmlBean, entryElements);
@@ -87,6 +87,7 @@ public final class CaseRecordXmlAnaly {
             case MedicalRecordHomePage:  // 病案首页
                 analyResult = MedicalRHPageAnaly.analyMedicalRecordHomePage(caseRecodrXmlBean);
                 break;
+            default:break;
         }
 
         return analyResult;
@@ -114,7 +115,7 @@ public final class CaseRecordXmlAnaly {
                     Element resourceChildElement = (Element) resourceChildElementIt.next();
                     //CaseXmlEnum caseXmlEnum = CaseXmlEnum.getByNeme(resourceChildElement.getName());
                     String eName = resourceChildElement.getName();
-                    if (eName == null || eName.equals("")) {
+                    if (eName == null || "".equals(eName)) {
                         continue;
                     }
                     switch (eName) {
@@ -128,6 +129,7 @@ public final class CaseRecordXmlAnaly {
                         case "Composition":           // 目录章节
                             compositionNode = resourceChildElement;
                             break;
+                        default:break;
                     }
                 }
             }

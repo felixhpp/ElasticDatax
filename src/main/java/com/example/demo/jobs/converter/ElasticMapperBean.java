@@ -2,6 +2,9 @@ package com.example.demo.jobs.converter;
 
 import com.example.demo.core.enums.ElasticTypeEnum;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * jobs mapping bean对象
  *
@@ -16,6 +19,8 @@ public final class ElasticMapperBean {
     private FilterGroup sourceFilterBeanGroup;
     // 对目标对象过滤
     private FilterGroup targetFilterBeanGroup;
+
+    private List<Output> outputs;
 
     public ElasticMapperBean() {
 
@@ -52,5 +57,13 @@ public final class ElasticMapperBean {
 
     public void setTargetFilterBeanGroup(FilterGroup targetFilterBeanGroup) {
         this.targetFilterBeanGroup = targetFilterBeanGroup;
+    }
+
+    public List<Output> getOutputs() {
+        return outputs;
+    }
+
+    public void setOutputs(List<Output> outputs) {
+        this.outputs = outputs;
     }
 }

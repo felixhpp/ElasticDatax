@@ -25,6 +25,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * elasticsearch api
+ * @author felix
+ */
 @RequestMapping(path = "indice", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 @RestController
 @Api("Elasticsearch相关的api")
@@ -96,13 +100,11 @@ public class ElasticApiController {
      */
     @PostMapping(path = "bulk/casenote")
     public RestResult bulk(@RequestBody List<BulkCaseRequestBody> body) {
-        if(body.size() == 0) return ResultUtil.error("body is null"); ;
+        if(body.size() == 0) {
+            return ResultUtil.error("body is null");
+        }
+
         long startTime = System.currentTimeMillis();
-        // debug
-//        if (body.size() > 0) {
-//            documentType = body.get(0).getDocumentTypeDesc();
-//            System.out.println(JSON.toJSONString(body.get(0)));
-//        }
         BulkResponseBody responseBody = elasticBulkService.bulkCase(body);
         long endTime = System.currentTimeMillis();
         logger.info("=====bulk [ " + body.get(0).getDocumentTypeDesc() + " ],tool：" + (endTime - startTime) + "ms，message:" + responseBody.getResultContent());

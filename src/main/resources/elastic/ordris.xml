@@ -1,26 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE elasticMapper SYSTEM "elasticmapping.dtd">
 <elasticMapper name="ordris" desc="导入检查数据">
-    <!--id字段-->
-    <property sourceName="or_id"  targetName="OR_Id" valueType="String" idField="true"></property>
-    <!--关联就诊ID-->
-    <property sourceName="or_admno" targetName="OR_AdmNo" valueType="String" parentField="true"></property>
-    <!--关联登记号-->
-    <property sourceName="or_regno" targetName="OR_RegNo" valueType="String" routingField="true"></property>
-    <!--检查项大类-->
-    <property sourceName="or_category" targetName="OR_Category" valueType="String"></property>
-    <!--检查时间-->
-    <property sourceName="or_examtime" targetName="OR_ExamTime" valueType="String"></property>
-    <!--检查项目名称-->
-    <property sourceName="or_name" targetName="OR_Name" valueType="String"></property>
-    <!--检查项目归一后编码-->
-    <property sourceName="or_genericcode" targetName="OR_GenericCode" valueType="String"></property>
-    <!--检查项目归一后名称-->
-    <property sourceName="or_genericname" targetName="OR_GenericName" valueType="String"></property>
-    <!--检查描述-->
-    <property sourceName="or_desc" targetName="OR_Desc" valueType="String"></property>
-    <!--检查结论-->
-    <property sourceName="or_result" targetName="OR_Result" valueType="String"></property>
+    <propertys>
+        <!--id字段-->
+        <property sourceName="or_id"  targetName="OR_Id" valueType="String" idField="true"></property>
+        <!--关联就诊ID-->
+        <property sourceName="or_admno" targetName="OR_AdmNo" valueType="String" parentField="true"></property>
+        <!--关联登记号-->
+        <property sourceName="or_regno" targetName="OR_RegNo" valueType="String" routingField="true"></property>
+        <!--检查项大类-->
+        <property sourceName="or_category" targetName="OR_Category" valueType="String"></property>
+        <!--检查时间-->
+        <property sourceName="or_examtime" targetName="OR_ExamTime" valueType="String"></property>
+        <!--检查项目名称-->
+        <property sourceName="or_name" targetName="OR_Name" valueType="String"></property>
+        <!--检查项目归一后编码-->
+        <property sourceName="or_genericcode" targetName="OR_GenericCode" valueType="String"></property>
+        <!--检查项目归一后名称-->
+        <property sourceName="or_genericname" targetName="OR_GenericName" valueType="String"></property>
+        <!--检查描述-->
+        <property sourceName="or_desc" targetName="OR_Desc" valueType="String"></property>
+        <!--检查结论-->
+        <property sourceName="or_result" targetName="OR_Result" valueType="String"></property>
+    </propertys>
+
     <outputs>
         <output>
             <elasticsearch index="csmsearch" type="ordlis"></elasticsearch>

@@ -76,4 +76,37 @@ public final class ConvertPipeline {
 
         return null;
     }
+
+    /**
+     * 特殊处理病案首页手术和诊断
+     */
+//    public static ESBulkModel convertHomePageToOther(ElasticTypeEnum typeEnum, Map<String, Object> map, boolean onMapper){
+//        if (map == null || map.size() == 0 || !typeEnum.equals(ElasticTypeEnum.MedicalRecordHomePage)) {
+//            return null;
+//        }
+//        try {
+//            //Pipeline mapper = Pipeline.getInstance(typeEnum, onMapper);
+//
+//            if(typeEnum.equals(ElasticTypeEnum.MedicalRecordHomePage)){
+//                // 从病案首页中提取手术
+//                List<Map<String, Object>> operationMaps = new ArrayList<>();
+//                List<Map<String, Object>> diagMaps = new ArrayList<>();
+//                Iterator<Map.Entry<String, Object>> iterator = map.entrySet().iterator();
+//                while (iterator.hasNext()) {
+//                    Map.Entry<String, Object> entry = iterator.next();
+//                    System.out.println("key:value = " + entry.getKey() + ":" + entry.getValue());
+//                    String key = entry.getKey();
+//                    if(key.contains("OperName")){   //手术名称
+//
+//                    }
+//                }
+//            }
+//
+//            //return mapper.mapper(map);
+//        } catch (Exception e) {
+//            logger.error("model convert failed,error: [{}], object:[{}] ", e, JSON.toJSONString(map));
+//        }
+//
+//        return null;
+//    }
 }

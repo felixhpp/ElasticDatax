@@ -5,22 +5,60 @@ import org.dom4j.Element;
 
 import java.util.*;
 
-
+/**
+ * 病历xml转换bean
+ *
+ * @author felix
+ */
 public final class CaseRecodrXmlBean {
-    // 病历文档类型
+    private String uid;
+
+    /**
+     * 病历文档类型
+     */
     private ElasticTypeEnum caseDocType = null;
 
-    // 目录章节
+    /**
+     * 目录章节
+     */
     private Element composition;
 
-    // 内容章节
-    private Map<String, Element> resoureEntrys = new HashMap<>();
+    /**
+     * 内容章节
+     */
+    private Map<String, Element> resoureEntrys;
 
-    // entry 节点内容章节
-    private List<Element> entrys = new ArrayList<>();
+    /**
+     * entry 节点内容章节
+     */
+    private List<Element> entrys;
 
-    // 解析的结果
-    private Map<String, Object> analyResult = new HashMap<>();
+    /**
+     * 解析的结果
+     */
+    private Map<String, Object> analyResult;
+
+    /**
+     * 病案首页中的手术信息
+     */
+    private CaseRecordXmlOtherBean operationResult;
+
+    /**
+     * 病案首页中的诊断信息
+     */
+    private CaseRecordXmlOtherBean diagnoseResult;
+
+    public CaseRecodrXmlBean() {
+        resoureEntrys = new HashMap<>();
+        entrys = new ArrayList<>();
+        analyResult = new HashMap<>();
+        operationResult = new CaseRecordXmlOtherBean(ElasticTypeEnum.Home_Page_Operation);
+        diagnoseResult = new CaseRecordXmlOtherBean(ElasticTypeEnum.Home_Page_Diagnose);
+    }
+
+    public void addProperty(String property, Object object) {
+        this.analyResult.put(property, object);
+    }
 
     public ElasticTypeEnum getCaseDocType() {
         return caseDocType;
@@ -38,7 +76,7 @@ public final class CaseRecodrXmlBean {
         this.entrys = entrys;
     }
 
-    public void addEntry(Element element){
+    public void addEntry(Element element) {
         this.entrys.add(element);
     }
 
@@ -66,7 +104,19 @@ public final class CaseRecodrXmlBean {
         this.analyResult = analyResult;
     }
 
-    public void addProperty(String property, Object object){
-        this.analyResult.put(property, object);
+    public CaseRecordXmlOtherBean getOperationResult() {
+        return operationResult;
+    }
+
+    public CaseRecordXmlOtherBean getDiagnoseResult() {
+        return diagnoseResult;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 }

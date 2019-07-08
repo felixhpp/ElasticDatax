@@ -67,57 +67,89 @@ public final class ElasticXmlToBean {
             // 遍历迭代器，获取根节点中的信息
             while (it.hasNext()) {
                 Element element = (Element) it.next();
-                if (element.getName().equals("property")) {
-                    ElasticProperty property = new ElasticProperty();
-                    // 获取map的属性名以及 属性值
-                    List<Attribute> mapAttrs = element.attributes();
-                    // 01 设置原始属性
-                    mapAttribute(property, mapAttrs);
-                    ArrayList<Convertor> convertorList = new ArrayList<>();
-                    Iterator itt = element.elementIterator();
-                    while (itt.hasNext()) {
-                        Element childElement = (Element) itt.next();
-                        String childElementName = childElement.getName();
-                        if (childElementName.contains("Convertor")) {
-                            Convertor curConvertor = mapConvertor(property, childElement);
-                            if (curConvertor != null) {
-                                convertorList.add(curConvertor);
-                            }
-                        } else if (childElementName.equals("if")) {
-                            String test = childElement.attributeValue("test");
-                            String field = childElement.attributeValue("field");
+                String curElementName = element.getName();
+                switch (curElementName){
+                    case "propertys":
+                        List<Element> propertyEls = element.elements("property");
+                        if(propertyEls == null) {
+                            break;
+                        }
+                        for (Element propertyE : propertyEls){
+                            ElasticProperty property = new ElasticProperty();
+                            // 获取map的属性名以及 属性值
+                            List<Attribute> mapAttrs = propertyE.attributes();
+                            // 01 设置原始属性
+                            mapAttribute(property, mapAttrs);
+                            ArrayList<Convertor> convertorList = new ArrayList<>();
+                            Iterator itt = propertyE.elementIterator();
+                            while (itt.hasNext()) {
+                                Element childElement = (Element) itt.next();
+                                String childElementName = childElement.getName();
+                                if (childElementName.contains("Convertor")) {
+                                    Convertor curConvertor = mapConvertor(property, childElement);
+                                    if (curConvertor != null) {
+                                        convertorList.add(curConvertor);
+                                    }
+                                } else if ("if".equals(childElementName)) {
+                                    String test = childElement.attributeValue("test");
+                                    String field = childElement.attributeValue("field");
 
-                            if (!StringUtils.isEmpty(test) && !StringUtils.isEmpty(field)) {
-                                IfBean ifBean = new IfBean(test, field);
-                                Iterator citt = childElement.elementIterator();
-                                while (citt.hasNext()) {
-                                    Element convertElement = (Element) citt.next();
-                                    String convertElementName = convertElement.getName();
-                                    if (convertElementName.contains("Convertor")) {
-                                        Convertor curConvertor = mapConvertor(property, convertElement);
-                                        if (curConvertor != null) {
-                                            curConvertor.setIfBean(ifBean);
-                                            convertorList.add(curConvertor);
+                                    if (!StringUtils.isEmpty(test) && !StringUtils.isEmpty(field)) {
+                                        IfBean ifBean = new IfBean(test, field);
+                                        Iterator citt = childElement.elementIterator();
+                                        while (citt.hasNext()) {
+                                            Element convertElement = (Element) citt.next();
+                                            String convertElementName = convertElement.getName();
+                                            if (convertElementName.contains("Convertor")) {
+                                                Convertor curConvertor = mapConvertor(property, convertElement);
+                                                if (curConvertor != null) {
+                                                    curConvertor.setIfBean(ifBean);
+                                                    convertorList.add(curConvertor);
+                                                }
+                                            }
                                         }
                                     }
                                 }
                             }
+                            property.setConvertorArrty(convertorList.toArray(new Convertor[0]));
+                            propertys.add(property);
                         }
-                    }
-                    //property.setConvertorArrty(convertorList.toArray(new Convertor[convertorList.size()]));
-                    property.setConvertorArrty(convertorList.toArray(new Convertor[0]));
-                    propertys.add(property);
-                } else if (element.getName().equals("filters")) { // 设置过滤条件
-                    //获取原始对象过滤条件
-                    Element sourceFilterElement = element.element("sourceFilter");
-                    FilterGroup sourceFilterGroup = getFilterGroup(sourceFilterElement);
-                    elasticMapperBean.setSourceFilterBeanGroup(sourceFilterGroup);
-                    Element targetFilterElement = element.element("targetFilter");
-                    FilterGroup targetFilterGroup = getFilterGroup(targetFilterElement);
-                    elasticMapperBean.setTargetFilterBeanGroup(targetFilterGroup);
+                        break;
+                    case "filters": // 设置过滤条件
+                        //获取原始对象过滤条件
+                        Element sourceFilterElement = element.element("sourceFilter");
+                        FilterGroup sourceFilterGroup = getFilterGroup(sourceFilterElement);
+                        elasticMapperBean.setSourceFilterBeanGroup(sourceFilterGroup);
+                        Element targetFilterElement = element.element("targetFilter");
+                        FilterGroup targetFilterGroup = getFilterGroup(targetFilterElement);
+                        elasticMapperBean.setTargetFilterBeanGroup(targetFilterGroup);
+                        break;
+                    case "outputs":
+                        List<Element> outputEls = element.elements("output");
+                        if(outputEls == null) {
+                            break;
+                        }
+                        for (Element outputE : outputEls){
+                            Iterator oitt = outputE.elementIterator();
+                            while (oitt.hasNext()){
+                                Element cOut = (Element) oitt.next();
+                                String curOutName = cOut.getName();
+                                if("elasticsearch".equals(curOutName)){
+                                    String index = cOut.attributeValue("index");
+                                    String type = cOut.attributeValue("type");
+                                    //Output output = new ElasticSearchOutput(index, type);
+                                    break;
+                                }else if("mapperFile".equals(curOutName)) {
+
+                                }
+                            }
+
+
+                        }
+                        break;
+                    default:break;
                 }
             }
-            //elasticMapperBean.setPropertyArray(propertys.toArray(new ElasticProperty[propertys.size()]));
             elasticMapperBean.setPropertyArray(propertys.toArray(new ElasticProperty[0]));
         } catch (FileNotFoundException | DocumentException e) {
             throw new Exception(e.fillInStackTrace());
@@ -134,7 +166,7 @@ public final class ElasticXmlToBean {
      * @throws Exception
      */
     public static ElasticMapperBean getBeanByFileName(String fileName) throws Exception {
-        if (fileName == null || fileName.equals("")) {
+        if (fileName == null || "".equals(fileName)) {
             return null;
         }
         Cache cache = cacheManager.getCache("mapperCache");
@@ -165,7 +197,7 @@ public final class ElasticXmlToBean {
             Attribute curAttr = mapAttrs.get(i);
             String pName = curAttr.getName();
             String pValue = curAttr.getValue();
-            if (pValue == null || pValue.equals("")) {
+            if (pValue == null || "".equals(pValue)) {
                 continue;
             }
             switch (pName) {
@@ -187,6 +219,7 @@ public final class ElasticXmlToBean {
                 case "routingField":
                     property.setRoutingField(Boolean.valueOf(pValue));
                     break;
+                default:break;
             }
         }
     }
@@ -198,14 +231,14 @@ public final class ElasticXmlToBean {
 
         String methodName = convertorElement.attributeValue("methodName");
         String formatType = convertorElement.attributeValue("formatType");
-        if (methodName != null && !methodName.equals("")) {
+        if (methodName != null && !"".equals(methodName)) {
             convertor.setConvertMethodName(methodName);
         }
-        if (dicType != null && !dicType.equals("")) {
+        if (dicType != null && !"".equals(dicType)) {
             DictionaryTypeEnum typeEnum = DictionaryTypeEnum.getByName(dicType);
             convertor.setDicType(typeEnum);
         }
-        if (formatType != null && !formatType.equals("")) {
+        if (formatType != null && !"".equals(formatType)) {
             convertor.setFormatType(formatType);
         }
         Iterator itt = convertorElement.elementIterator();
@@ -215,9 +248,9 @@ public final class ElasticXmlToBean {
             switch (eName) {
                 case "parameter":
                     String pName = childProperty.getStringValue();
-                    if (pName != null && !pName.equals("")) {
+                    if (pName != null && !"".equals(pName)) {
                         convertor.addConvertParam(pName);
-                    } else if (!property.getSourceName().equals("")) {
+                    } else if (!"".equals(property.getSourceName())) {
                         //不设置默认为sourceName
                         convertor.addConvertParam(property.getSourceName());
                     }
@@ -238,6 +271,7 @@ public final class ElasticXmlToBean {
                     String eDate = childProperty.attributeValue("value");
                     convertor.setEndDateParamField(eDate);
                     break;
+                default:break;
             }
         }
 
@@ -247,7 +281,9 @@ public final class ElasticXmlToBean {
     }
 
     private static FilterGroup getFilterGroup(Element filterElement) {
-        if (filterElement == null) return null;
+        if (filterElement == null) {
+            return null;
+        }
         FilterGroup filterGroups = new FilterGroup();
         Element must = filterElement.element("must");
         if (must != null) {
@@ -265,6 +301,7 @@ public final class ElasticXmlToBean {
                         case "filterMethod":
                             filterBean.setFilterMethod(attr.getValue());
                             break;
+                        default:break;
                     }
                 }
                 if (!filterBean.isEmpty()) {
@@ -293,6 +330,7 @@ public final class ElasticXmlToBean {
                         case "filterMethod":
                             filterBean.setFilterMethod(attr.getValue());
                             break;
+                        default:break;
                     }
                 }
                 if (!filterBean.isEmpty()) {
@@ -320,6 +358,7 @@ public final class ElasticXmlToBean {
                         case "filterMethod":
                             filterBean.setFilterMethod(attr.getValue());
                             break;
+                        default:break;
                     }
                 }
                 if (!filterBean.isEmpty()) {

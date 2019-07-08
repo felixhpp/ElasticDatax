@@ -9,6 +9,7 @@ import com.example.demo.core.entity.ESBulkModel;
 import com.example.demo.core.enums.ElasticTypeEnum;
 import com.example.demo.core.utils.ResultUtil;
 import com.example.demo.jobs.ConvertPipeline;
+import com.example.demo.jobs.analysis.CaseRecodrXmlBean;
 import com.example.demo.jobs.analysis.CaseRecordXmlAnaly;
 import com.example.demo.service.DefaultDicMapService;
 import com.example.demo.service.ElasticBulkService;
@@ -130,6 +131,7 @@ public class DemoTestController {
                 curfileName = "bnsy-all.xml";
                 typeEnum = ElasticTypeEnum.MedicalRecordHomePage;
                 break;
+            default:break;
         }
         File file = new File(System.getProperty("user.dir") + "/" + curfileName);
         if (!file.exists()) {
@@ -137,11 +139,46 @@ public class DemoTestController {
         }
 
         Document document = reader.read(file);
-        Map<String, Object> maps = CaseRecordXmlAnaly.analyCaseRecordXml(document, typeEnum);
+        CaseRecodrXmlBean bean = CaseRecordXmlAnaly.analyCaseRecordXml(document, typeEnum);
+        Map<String, Object> maps = bean.getAnalyResult();
         maps.put("documentid", "11111");
         ESBulkModel bulkMode = ConvertPipeline
                 .convertToBulkModel(typeEnum, maps, true);
         //elasticBulkService.bulkCase(bodys);
+        return ResultUtil.success(bulkMode);
+    }
+
+    @GetMapping("bulk/case/{fileName}")
+    public RestResult bulkCaseRecord(@PathVariable String fileName) throws Exception {
+        // 创建SAXReader的对象reader
+        SAXReader reader = new SAXReader();
+        String curfileName = "ryjl-all.xml";
+        ElasticTypeEnum typeEnum = ElasticTypeEnum.Residentadmitnote;
+        switch (fileName){
+            case "ryjl":
+            case "ryjl.xml":
+                curfileName = "ryjl-all.xml";
+                typeEnum = ElasticTypeEnum.Residentadmitnote;
+                break;
+            case "basy":
+            case "basy.xml":
+                curfileName = "bnsy-all.xml";
+                typeEnum = ElasticTypeEnum.MedicalRecordHomePage;
+                break;
+            default:break;
+        }
+        File file = new File(System.getProperty("user.dir") + "/" + curfileName);
+        if (!file.exists()) {
+            file = new File(ResourceUtils.getURL("classpath:" + fileName).getPath());
+        }
+
+        Document document = reader.read(file);
+        CaseRecodrXmlBean bean = CaseRecordXmlAnaly.analyCaseRecordXml(document, typeEnum);
+        Map<String, Object> maps = bean.getAnalyResult();
+        maps.put("documentid", "11111");
+        ESBulkModel bulkMode = ConvertPipeline
+                .convertToBulkModel(typeEnum, maps, true);
+        elasticBulkService.bulkCaseTest(bean, typeEnum);
         return ResultUtil.success(bulkMode);
     }
 
@@ -238,7 +275,7 @@ public class DemoTestController {
     private List<Map<String, Object>> buildOrdItemData() {
         int total = TOTAL;
         List<Map<String, Object>> maps = new ArrayList<>();
-        String[] ord_name = {"010101010100003", "010101010100005", "010101010200001",
+        String[] ordName = {"010101010100003", "010101010100005", "010101010200001",
                 "010101010500001", "010101020105001", "010702020000001"};
         String[] ord_type = {"S", "OUT", "NORM"};
         String[] ord_status = {"V", "U", "H", "D", "P"};
@@ -253,14 +290,14 @@ public class DemoTestController {
             Map<String, Object> object = new HashMap<>();
             object.put("ord_id", "123" + i);
             object.put("ord_admno", "1234" + i);
-            object.put("ord_regno", "1234" + i);
+            object.put("ord_regno", "121234" + i);
             object.put("ord_startdate", "2010-01-01 00:00:00");
             object.put("ord_starttime", "10:20:60");
             object.put("ord_enddate", "2010-11-01 00:00:00");
             object.put("ord_endtime", "10:21:60");
             object.put("ord_doseqty", "1");
             if (!isDev) {
-                object.put("ord_code", getRandom(ord_name));
+                object.put("ord_code", getRandom(ordName));
                 object.put("ord_type_code", getRandom(ord_type));
                 object.put("ord_status_code", getRandom(ord_status));
                 object.put("ord_cate_code", getRandom(ord_cate));

@@ -1,65 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE elasticMapper SYSTEM "elasticmapping.dtd">
 <elasticMapper name="medicine" desc="导入药物数据">
-    <!--id字段-->
-    <property sourceName="Ord_Id"  targetName="Med_Id" valueType="String" idField="true"></property>
-    <!--关联就诊ID-->
-    <property sourceName="Ord_AdmNo" targetName="Med_AdmNo" valueType="String" parentField="true"></property>
-    <!--关联登记号-->
-    <property sourceName="Ord_RegNo" targetName="Med_RegNo" valueType="String" routingField="true"></property>
-    <!--用药时段-->
-    <property sourceName="Ord_ExecDate" targetName="Med_TimeInterval" valueType="String"></property>
-    <!--用药 - 医嘱名称-->
-    <property sourceName="Ord_MedDicName" targetName="Med_OrdName" valueType="String"></property>
-    <!--用药商品名称-->
-    <property sourceName="Ord_MedDicCode" targetName="Med_BisName" valueType="String">
-        <dicConvertor methodName="getByCode" dicType="PHCGoods">
-            <parameter></parameter>
-        </dicConvertor>
-    </property>
-    <!--用药通用名称-->
-    <property sourceName="Ord_MedDicCode" targetName="Med_GenName" valueType="String">
-        <dicConvertor methodName="getByCode" dicType="PHCGeneric">
-            <parameter></parameter>
-        </dicConvertor>
-    </property>
-    <!--药物名称（用于统计， 不分词）-->
-    <property sourceName="Ord_MedDicCode" targetName="Med_GenDesc" valueType="String">
-        <dicConvertor methodName="getByCode" dicType="PHCGeneric">
-            <parameter></parameter>
-        </dicConvertor>
-    </property>
-    <!--药品类别-->
-    <property sourceName="Ord_Category" targetName="Med_Category" valueType="String">
-    </property>
-    <!--单次剂量-->
-    <property sourceName="Ord_DoseQty" targetName="Med_SingleDose" valueType="String"></property>
-    <!--总剂量-->
-    <!--<property sourceName="" targetName="Med_TotalDose" valueType="String"></property>-->
-    <!--医嘱数量-->
-    <property sourceName="Ord_OrderQty" targetName="Med_OrderQty" valueType="String"></property>
-    <!--用药频率-->
-    <property sourceName="Ord_Freq" targetName="Med_Frequency" valueType="String"></property>
-    <!--给药开始时间-->
-    <property sourceName="Ord_StartTime" targetName="Med_StartTime" valueType="String"></property>
-    <!--给药结束时间-->
-    <property sourceName="Ord_EndTime" targetName="Med_StopTime" valueType="String"></property>
-    <!--用药时长,需要计算-->
-    <!--<property sourceName="Ord_StartTime" targetName="Med_Days" valueType="String"></property>-->
-    <!--药理学子分类-->
-    <!--<property sourceName="ord_code" targetName="Med_PhcSubCat" valueType="String">-->
+    <propertys>
+        <!--id字段-->
+        <property sourceName="Ord_Id"  targetName="Med_Id" valueType="String" idField="true"></property>
+        <!--关联就诊ID-->
+        <property sourceName="Ord_AdmNo" targetName="Med_AdmNo" valueType="String" parentField="true"></property>
+        <!--关联登记号-->
+        <property sourceName="Ord_RegNo" targetName="Med_RegNo" valueType="String" routingField="true"></property>
+        <!--用药时段-->
+        <property sourceName="Ord_ExecDate" targetName="Med_TimeInterval" valueType="String"></property>
+        <!--用药 - 医嘱名称-->
+        <property sourceName="Ord_MedDicName" targetName="Med_OrdName" valueType="String"></property>
+        <!--用药商品名称-->
+        <property sourceName="Ord_MedDicCode" targetName="Med_BisName" valueType="String">
+            <dicConvertor methodName="getByCode" dicType="PHCGoods">
+                <parameter></parameter>
+            </dicConvertor>
+        </property>
+        <!--用药通用名称-->
+        <property sourceName="Ord_MedDicCode" targetName="Med_GenName" valueType="String">
+            <dicConvertor methodName="getByCode" dicType="PHCGeneric">
+                <parameter></parameter>
+            </dicConvertor>
+        </property>
+        <!--药物名称（用于统计， 不分词）-->
+        <property sourceName="Ord_MedDicCode" targetName="Med_GenDesc" valueType="String">
+            <dicConvertor methodName="getByCode" dicType="PHCGeneric">
+                <parameter></parameter>
+            </dicConvertor>
+        </property>
+        <!--药品类别-->
+        <property sourceName="Ord_Category" targetName="Med_Category" valueType="String">
+        </property>
+        <!--单次剂量-->
+        <property sourceName="Ord_DoseQty" targetName="Med_SingleDose" valueType="String"></property>
+        <!--总剂量-->
+        <!--<property sourceName="" targetName="Med_TotalDose" valueType="String"></property>-->
+        <!--医嘱数量-->
+        <property sourceName="Ord_OrderQty" targetName="Med_OrderQty" valueType="String"></property>
+        <!--用药频率-->
+        <property sourceName="Ord_Freq" targetName="Med_Frequency" valueType="String"></property>
+        <!--给药开始时间-->
+        <property sourceName="Ord_StartTime" targetName="Med_StartTime" valueType="String"></property>
+        <!--给药结束时间-->
+        <property sourceName="Ord_EndTime" targetName="Med_StopTime" valueType="String"></property>
+        <!--用药时长,需要计算-->
+        <!--<property sourceName="Ord_StartTime" targetName="Med_Days" valueType="String"></property>-->
+        <!--药理学子分类-->
+        <!--<property sourceName="ord_code" targetName="Med_PhcSubCat" valueType="String">-->
         <!--<dicConvertor methodName="getByCode" dicType="">-->
-            <!--<parameter></parameter>-->
+        <!--<parameter></parameter>-->
         <!--</dicConvertor>-->
-    <!--</property>-->
-    <!--药理学大分类-->
-    <!--<property sourceName="ord_code" targetName="Med_PhcCat" valueType="String">-->
+        <!--</property>-->
+        <!--药理学大分类-->
+        <!--<property sourceName="ord_code" targetName="Med_PhcCat" valueType="String">-->
         <!--<dicConvertor methodName="getByCode" dicType="">-->
-            <!--<parameter></parameter>-->
+        <!--<parameter></parameter>-->
         <!--</dicConvertor>-->
-    <!--</property>-->
-    <!--医嘱大分类-->
-    <property sourceName="Ord_Category" targetName="Med_OrdCat" valueType="String"></property>
+        <!--</property>-->
+        <!--医嘱大分类-->
+        <property sourceName="Ord_Category" targetName="Med_OrdCat" valueType="String"></property>
+    </propertys>
+
     <outputs>
         <output>
             <elasticsearch index="csmsearch" type="medicine"></elasticsearch>
