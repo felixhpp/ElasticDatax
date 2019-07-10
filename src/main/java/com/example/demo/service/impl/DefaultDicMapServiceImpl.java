@@ -1,6 +1,6 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.core.bean.ConvertConfigBean;
+import com.example.demo.bean.ConvertConfigBean;
 import com.example.demo.core.entity.ESBulkModel;
 import com.example.demo.core.enums.DictionaryTypeEnum;
 import com.example.demo.core.enums.ElasticTypeEnum;
@@ -38,6 +38,7 @@ public class DefaultDicMapServiceImpl implements DefaultDicMapService {
     private static final Logger log = LoggerFactory.getLogger(DefaultDicMapServiceImpl.class);
 
     private static ConcurrentHashMap<String, Cache> cacheMap = new ConcurrentHashMap<>();
+
     @Autowired
     private ConvertConfigBean mapperBean;
     /**
@@ -46,8 +47,9 @@ public class DefaultDicMapServiceImpl implements DefaultDicMapService {
      * @return
      * @throws Exception
      */
+    @Override
     public String getDicNnameByCode(String code, DictionaryTypeEnum typeEnum) throws Exception {
-        if(code == null || code == ""){
+        if(code == null || "".equals(code)){
             return "";
         }
 
@@ -70,96 +72,99 @@ public class DefaultDicMapServiceImpl implements DefaultDicMapService {
         }
 
         String key = typeEnum.getCachePrefix() + code;
-        Element value = cache != null ? cache.get(key): null;
+        Element value = cache.get(key);
 
         if(value != null){
             Object o = value.getObjectValue();
             name = o != null ? o.toString() : "";
         }else {
-            log.error("*******" + typeEnum.getCacheName() + "缓存里没有"+key+", 从数据库拿数据");
-            String newCode = DicBusinessFieldcode + "_" + code;
-
-            switch (typeEnum){
-                case DIAGNOSE_NAME:
-                    dictionaryMap = dictionaryMapMapper.getDiagnoseByCode(newCode);
-                    break;
-                case DEPARTMENT:
-                    dictionaryMap = dictionaryMapMapper.getDeptByCode(newCode);
-                    break;
-                case SEX:
-                    dictionaryMap = dictionaryMapMapper.getSexByCode(newCode);
-                    break;
-                case MARITAL:
-                    dictionaryMap = dictionaryMapMapper.getMaritalByCode(newCode);
-                    break;
-                case NATIONAL:
-                    dictionaryMap = dictionaryMapMapper.getNationByCode(newCode);
-                    break;
-                case HOSPITAL:
-                    dictionaryMap = dictionaryMapMapper.getHospitalByCode(newCode);
-                    break;
-                case DIAGNOSE_TYPE:
-                    dictionaryMap = dictionaryMapMapper.getDiagnoseTypeByCode(newCode);
-                    break;
-                case ADM_TYPE:
-                    dictionaryMap = dictionaryMapMapper.getAdmTypeByCode(newCode);
-                    break;
-                case AdmStatus:
-                    dictionaryMap = dictionaryMapMapper.getAdmStatusByCode(newCode);
-                    break;
-                case LisItem:
-                    dictionaryMap = dictionaryMapMapper.getLisItemByCode(newCode);
-                    break;
-                case ORDSER_ITEM:           //医嘱相关字典， 使用dicOrderItemMappper
-                    dictionaryMap = dicOrderItemMappper.getOrdItemNameByCode(newCode);
-                    break;
-                case ORDER_CATEAGE:     //医嘱大分类
-                    dictionaryMap = dicOrderItemMappper.getOrdCategoryByCode(newCode);
-                    break;
-                case ORDER_TYPE:
-                    dictionaryMap = dicOrderItemMappper.getPriorityByCode(newCode);
-                    break;
-                case ORDER_STATUS:
-                    dictionaryMap = dicOrderItemMappper.getOrderStatusByCode(newCode);
-                    break;
-                case DURATION:
-                    dictionaryMap = dicOrderItemMappper.getDurationByCode(newCode);
-                    break;
-                case FREQ:
-                    dictionaryMap = dicOrderItemMappper.getFreqByCode(newCode);
-                    break;
-                case PHDrgMaterial:         // 药学项
-                    dictionaryMap = dicOrderItemMappper.getPHDrgMaterialItmByCode(newCode);
-                    break;
-                case InstrUsage:            // 用药途径
-                    dictionaryMap = dicOrderItemMappper.getInstrByCode(newCode);
-                    break;
-                case OrdChildCategory:
-                    dictionaryMap = dicOrderItemMappper.getChildCategoryByCode(newCode);
-                    break;
-                case PHCGeneric:        // 药品通用名
-                    // 通用名需要把域名去掉
-                    dictionaryMap = dicOrderItemMappper.getPHCGenericByCode(code);
-                    break;
-                case PHCGoods:          // 药品商品名
-                    // 商品名需要把域名去掉
-                    dictionaryMap = dicOrderItemMappper.getPHCGoodsByCode(code);
-                    break;
-            }
-            if(dictionaryMap != null){
-
-                String curDicName = dictionaryMap.getDicName();
-                if(curDicName.startsWith(DicBusinessFieldcode)){
-                    curDicName = curDicName.replace(DicBusinessFieldcode, "");
-                }
-
-                cache.put(new Element(key, curDicName));
-                name = curDicName;
-            }else { // 防止字典表没有时重复查询问题
-                cache.put(new Element(key, ""));
-                name = "";
-            }
-            cache.flush();
+            return "";
+//            log.error("*******" + typeEnum.getCacheName() + "缓存里没有"+key+", 从数据库拿数据");
+//            String newCode = DicBusinessFieldcode + "_" + code;
+//
+//            switch (typeEnum){
+//                case DIAGNOSE_NAME:
+//                    dictionaryMap = dictionaryMapMapper.getDiagnoseByCode(newCode);
+//                    break;
+//                case DEPARTMENT:
+//                    dictionaryMap = dictionaryMapMapper.getDeptByCode(newCode);
+//                    break;
+//                case SEX:
+//                    dictionaryMap = dictionaryMapMapper.getSexByCode(newCode);
+//                    break;
+//                case MARITAL:
+//                    dictionaryMap = dictionaryMapMapper.getMaritalByCode(newCode);
+//                    break;
+//                case NATIONAL:
+//                    dictionaryMap = dictionaryMapMapper.getNationByCode(newCode);
+//                    break;
+//                case HOSPITAL:
+//                    dictionaryMap = dictionaryMapMapper.getHospitalByCode(newCode);
+//                    break;
+//                case DIAGNOSE_TYPE:
+//                    dictionaryMap = dictionaryMapMapper.getDiagnoseTypeByCode(newCode);
+//                    break;
+//                case ADM_TYPE:
+//                    dictionaryMap = dictionaryMapMapper.getAdmTypeByCode(newCode);
+//                    break;
+//                case AdmStatus:
+//                    dictionaryMap = dictionaryMapMapper.getAdmStatusByCode(newCode);
+//                    break;
+//                case LisItem:
+//                    dictionaryMap = dictionaryMapMapper.getLisItemByCode(newCode);
+//                    break;
+//                case ORDSER_ITEM:           //医嘱相关字典， 使用dicOrderItemMappper
+//                    dictionaryMap = dicOrderItemMappper.getOrdItemNameByCode(newCode);
+//                    break;
+//                case ORDER_CATEAGE:     //医嘱大分类
+//                    dictionaryMap = dicOrderItemMappper.getOrdCategoryByCode(newCode);
+//                    break;
+//                case ORDER_TYPE:
+//                    dictionaryMap = dicOrderItemMappper.getPriorityByCode(newCode);
+//                    break;
+//                case ORDER_STATUS:
+//                    dictionaryMap = dicOrderItemMappper.getOrderStatusByCode(newCode);
+//                    break;
+//                case DURATION:
+//                    dictionaryMap = dicOrderItemMappper.getDurationByCode(newCode);
+//                    break;
+//                case FREQ:
+//                    dictionaryMap = dicOrderItemMappper.getFreqByCode(newCode);
+//                    break;
+//                case PHDrgMaterial:         // 药学项
+//                    dictionaryMap = dicOrderItemMappper.getPHDrgMaterialItmByCode(newCode);
+//                    break;
+//                case InstrUsage:            // 用药途径
+//                    dictionaryMap = dicOrderItemMappper.getInstrByCode(newCode);
+//                    break;
+//                case OrdChildCategory:
+//                    dictionaryMap = dicOrderItemMappper.getChildCategoryByCode(newCode);
+//                    break;
+//                case PHCGeneric:        // 药品通用名
+//                    // 通用名需要把域名去掉
+//                    dictionaryMap = dicOrderItemMappper.getPHCGenericByCode(code);
+//                    break;
+//                case PHCGoods:          // 药品商品名
+//                    // 商品名需要把域名去掉
+//                    dictionaryMap = dicOrderItemMappper.getPHCGoodsByCode(code);
+//                    break;
+//                default:
+//                    break;
+//            }
+//            if(dictionaryMap != null){
+//
+//                String curDicName = dictionaryMap.getDicName();
+//                if(curDicName.startsWith(DicBusinessFieldcode)){
+//                    curDicName = curDicName.replace(DicBusinessFieldcode, "");
+//                }
+//
+//                cache.put(new Element(key, curDicName));
+//                name = curDicName;
+//            }else { // 防止字典表没有时重复查询问题
+//                cache.put(new Element(key, ""));
+//                name = "";
+//            }
+//            cache.flush();
         }
 
         return name;
@@ -169,6 +174,7 @@ public class DefaultDicMapServiceImpl implements DefaultDicMapService {
      * 获取全部性别字段
      * @return
      */
+    @Override
     public List<DictionaryMap> getAllDicMap(DictionaryTypeEnum typeEnum){
         List<DictionaryMap> dictionaryMaps = null;
         switch (typeEnum){
@@ -235,11 +241,13 @@ public class DefaultDicMapServiceImpl implements DefaultDicMapService {
             case PHCGoods:  // 商品名
                 dictionaryMaps = dicOrderItemMappper.getAllPHCGoods();
                 break;
+            default:break;
         }
 
         return dictionaryMaps;
     }
 
+    @Override
     public List<ESBulkModel> test(List<Map<String, Object>> maps, ElasticTypeEnum elasticTypeEnum) throws Exception {
         List<ESBulkModel> newObj = ConvertPipeline.convertToBulkModels(elasticTypeEnum, maps,
                 mapperBean.getOnMapper());

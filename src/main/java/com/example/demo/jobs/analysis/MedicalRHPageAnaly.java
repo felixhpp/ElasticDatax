@@ -11,6 +11,7 @@ import java.util.*;
  */
 public class MedicalRHPageAnaly {
 
+    @SuppressWarnings("unchecked")
     public static Map<String, Object> analyMedicalRecordHomePage(CaseRecodrXmlBean caseRecodrXmlBean) {
         Element compositonElement = caseRecodrXmlBean.getComposition();
         Map<String, Element> resoureEntrys = caseRecodrXmlBean.getResoureEntrys();
@@ -54,7 +55,7 @@ public class MedicalRHPageAnaly {
     /**
      * 解析患者相关信息
      *
-     * @param caseRecodrXmlBean
+     * @param caseRecodrXmlBean 病历结构bean
      */
     private static void analyPatient(CaseRecodrXmlBean caseRecodrXmlBean, Element patientElement) {
         Element referenceElement = patientElement.element("reference");
@@ -192,9 +193,10 @@ public class MedicalRHPageAnaly {
     /**
      * 解析就诊相关信息
      *
-     * @param caseRecodrXmlBean
+     * @param caseRecodrXmlBean 病历结构bean
      * @param encounterElement encounter element对象
      */
+    @SuppressWarnings("unchecked")
     private static void analyEncounter(CaseRecodrXmlBean caseRecodrXmlBean, Element encounterElement) {
         Element referenceElement = encounterElement.element("reference");
         String referenceValue = referenceElement != null ? referenceElement.attributeValue("value") : null;
@@ -324,9 +326,10 @@ public class MedicalRHPageAnaly {
     /**
      * 解析section章节
      *
-     * @param caseRecodrXmlBean
-     * @param sectionElement
+     * @param caseRecodrXmlBean 病历结构bean
+     * @param sectionElement section element
      */
+    @SuppressWarnings("unchecked")
     private static void analySection(CaseRecodrXmlBean caseRecodrXmlBean, Element sectionElement) {
         if (sectionElement == null) {
             return;
@@ -379,8 +382,8 @@ public class MedicalRHPageAnaly {
     /**
      * 解析章节内容中 Observation 类型节点
      *
-     * @param caseRecodrXmlBean
-     * @param observation
+     * @param caseRecodrXmlBean 病历结构bean
+     * @param observation observation element
      */
     private static void analyObservation(CaseRecodrXmlBean caseRecodrXmlBean, Element observation) {
         if (observation == null) {
@@ -421,8 +424,8 @@ public class MedicalRHPageAnaly {
     /**
      * 解析章节内容PCarePlan节点
      *
-     * @param caseRecodrXmlBean
-     * @param careplane
+     * @param caseRecodrXmlBean 病历结构bean
+     * @param careplane careplane element
      */
     private static void analyCarePlan(CaseRecodrXmlBean caseRecodrXmlBean, Element careplane) {
         if (careplane == null) {
@@ -451,9 +454,10 @@ public class MedicalRHPageAnaly {
     /**
      * 解析章节内容Procedure节点
      *
-     * @param caseRecodrXmlBean
-     * @param procedure
+     * @param caseRecodrXmlBean 病历结构bean
+     * @param procedure procedure element
      */
+    @SuppressWarnings("unchecked")
     private static void analyProcedure(CaseRecodrXmlBean caseRecodrXmlBean, Element procedure) {
         if (procedure == null) {
             return;
@@ -559,9 +563,10 @@ public class MedicalRHPageAnaly {
     /**
      * 解析 病案首页 Condition 类型节点
      *
-     * @param caseRecodrXmlBean
-     * @param conditionElement
+     * @param caseRecodrXmlBean 病历结构bean
+     * @param conditionElement condition element
      */
+    @SuppressWarnings("unchecked")
     private static void analyConditionElement(CaseRecodrXmlBean caseRecodrXmlBean, Element conditionElement) {
         if (conditionElement == null) {
             return;
@@ -659,8 +664,8 @@ public class MedicalRHPageAnaly {
     /**
      * 获取extension节点下valueQuantity 的值和单位组合
      *
-     * @param extensionEls
-     * @param name
+     * @param extensionEls extension element列表
+     * @param name 名称
      * @return
      */
     private static String getExtensionValueQuantity(List<Element> extensionEls, String name) {

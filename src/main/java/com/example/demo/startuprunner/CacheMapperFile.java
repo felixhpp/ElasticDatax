@@ -1,8 +1,6 @@
-package com.example.demo.core.cache;
+package com.example.demo.startuprunner;
 
 import com.alibaba.fastjson.JSON;
-import com.example.demo.core.exception.LogicException;
-import com.example.demo.core.utils.SpringUtils;
 import com.example.demo.jobs.converter.ElasticMapperBean;
 import com.example.demo.jobs.analysis.ElasticXmlToBean;
 import net.sf.ehcache.Cache;
@@ -11,19 +9,17 @@ import net.sf.ehcache.Element;
 import org.apache.logging.log4j.core.config.Order;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.NullValueInNestedPathException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ResourceUtils;
 
-import java.util.concurrent.ConcurrentHashMap;
+import java.io.File;
 
 /**
  * application启动后执行 缓存全部convert mapper 文件
@@ -33,8 +29,8 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Component
 @Order(value = 9)
-public class ConvertMapperCache implements CommandLineRunner {
-    private static final Logger logger = LoggerFactory.getLogger(ConvertMapperCache.class);
+public class CacheMapperFile implements CommandLineRunner {
+    private static final Logger logger = LoggerFactory.getLogger(CacheMapperFile.class);
     private static final String CONVERT_MAPPER_BEAN = "convertMapper";
 
     @Autowired
@@ -52,14 +48,23 @@ public class ConvertMapperCache implements CommandLineRunner {
 
             cacheManager.clearAllStartingWith("mapperCache");
             Cache cache = cacheManager.getCache("mapperCache");
-            //
-            ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-            Resource[] resources = resolver.getResources("classpath*:elastic/*.xml");
 
-            for (Resource r : resources) {
-                String fileName = r.getFilename();
-                doCache(cache, fileName);
+            String path = System.getProperty("user.dir") + File.separator + "elastic";
+            File file = new File(path);
+
+            File[] filelist = file.listFiles();
+            if(filelist == null){
+                file = new File(ResourceUtils.getURL("classpath:" + "elastic").getPath());
+                filelist = file.listFiles();
             }
+
+            for(File f : filelist){
+                String filename = f.getName();
+                if(filename.endsWith("xml")){
+                    doCache(cache, filename);
+                }
+            }
+
             cache.flush();
             logger.info("****** init cache convert mapper finish.");
         } catch (Exception e) {

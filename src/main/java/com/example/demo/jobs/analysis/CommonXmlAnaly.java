@@ -95,7 +95,7 @@ final public class CommonXmlAnaly {
      * @return
      */
     public static String getChildValueByElement(Element extension, String elementName) {
-        if (extension == null || elementName == null || elementName.equals("")) {
+        if (extension == null || elementName == null || "".equals(elementName)) {
             return null;
         }
         Element text = extension.element(elementName);
@@ -231,17 +231,4 @@ final public class CommonXmlAnaly {
     public static String getFunctionDisplay(Element function) {
         return getCodingDisplay(function);
     }
-
-    /**
-     * 获取actor节点display
-     *
-     * @param actor
-     * @return
-     */
-//    public static String getActorDisplay(Element actor) {
-//        if (actor == null) return null;
-//
-//        Element displayEl = actor.element("display");
-//        return displayEl == null ? null : displayEl.attributeValue("value");
-//    }
 }

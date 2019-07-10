@@ -1,6 +1,7 @@
 package com.example.demo.jobs.converter;
 
 import com.example.demo.core.enums.ElasticTypeEnum;
+import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,60 +11,48 @@ import java.util.List;
  *
  * @author felix
  */
+@Data
 public final class ElasticMapperBean {
+    /**
+     * xml文件名称
+     */
     private String fileName;
+    /**
+     * id字段在目标对象中的名称，
+     */
+    private String idField = null;
 
-    // 用Array存储字段信息
+    /**
+     * parent字段在目标对象中的名称
+     */
+    private String parentField = null;
+
+    /**
+     * routing字段在目标对象中的名称
+     */
+    private String routingField = null;
+
+    /**
+     * rowKey字段在目标对象中的名称,一般就诊号作为rowkey, 基本信息中rowkey为null
+     */
+    private String rowKey = null;
+
+    /**
+     * 用Array存储字段信息
+     */
     private ElasticProperty[] propertyArray;
-    // 对原始对象过滤
+    /**
+     * 对原始对象过滤
+     */
     private FilterGroup sourceFilterBeanGroup;
-    // 对目标对象过滤
+    /**
+     * 对目标对象过滤
+     */
     private FilterGroup targetFilterBeanGroup;
 
     private List<Output> outputs;
 
     public ElasticMapperBean() {
 
-    }
-
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public ElasticProperty[] getPropertyArray() {
-        return propertyArray;
-    }
-
-    public void setPropertyArray(ElasticProperty[] propertyArray) {
-        this.propertyArray = propertyArray;
-    }
-
-    public FilterGroup getSourceFilterBeanGroup() {
-        return sourceFilterBeanGroup;
-    }
-
-    public void setSourceFilterBeanGroup(FilterGroup sourceFilterBeanGroup) {
-        this.sourceFilterBeanGroup = sourceFilterBeanGroup;
-    }
-
-    public FilterGroup getTargetFilterBeanGroup() {
-        return targetFilterBeanGroup;
-    }
-
-    public void setTargetFilterBeanGroup(FilterGroup targetFilterBeanGroup) {
-        this.targetFilterBeanGroup = targetFilterBeanGroup;
-    }
-
-    public List<Output> getOutputs() {
-        return outputs;
-    }
-
-    public void setOutputs(List<Output> outputs) {
-        this.outputs = outputs;
     }
 }

@@ -3,7 +3,7 @@
 <elasticMapper name="diagnose" desc="导入诊断数据">
     <propertys>
         <property sourceName="diag_id"  targetName="Diag_Id" valueType="String" idField="true"></property>
-        <property sourceName="diag_admid" targetName="Diag_AdmId" valueType="String" parentField="true"></property>
+        <property sourceName="diag_admid" targetName="Diag_AdmId" valueType="String" rowKey="true" parentField="true"></property>
         <property sourceName="diag_regno" targetName="Diag_RegNo"  valueType="String" routingField="true"></property>
         <property sourceName="diag_date" targetName="Diag_Time" valueType="String">
             <dateConcatConvertor methodName="concatDatetime">

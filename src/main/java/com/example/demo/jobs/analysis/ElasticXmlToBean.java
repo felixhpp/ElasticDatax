@@ -1,6 +1,7 @@
 package com.example.demo.jobs.analysis;
 
 import com.alibaba.fastjson.JSON;
+import com.example.demo.core.enums.ConvertMethodEnum;
 import com.example.demo.core.enums.DictionaryTypeEnum;
 import com.example.demo.core.utils.SpringUtils;
 import com.example.demo.jobs.converter.*;
@@ -41,6 +42,7 @@ public final class ElasticXmlToBean {
      * @return
      * @throws Exception
      */
+    @SuppressWarnings("unchecked")
     public static ElasticMapperBean toBean(String fileName) throws Exception {
         // 创建SAXReader的对象reader
         //在读取文件时，去掉dtd的验证，可以缩短运行时间
@@ -49,12 +51,12 @@ public final class ElasticXmlToBean {
         reader.setFeature(Constants.XERCES_FEATURE_PREFIX + Constants.LOAD_EXTERNAL_DTD_FEATURE, false);
         ElasticMapperBean elasticMapperBean = new ElasticMapperBean();
         elasticMapperBean.setFileName(fileName);
-        String filePath = "elastic/" + fileName;
+        String filePath = "elastic" + File.separator + fileName;
 
         try {
-            File file = new File(System.getProperty("user.dir") + "/" + filePath);
+            File file = new File(System.getProperty("user.dir") + File.separator + filePath);
             if (!file.exists()) {
-                file = new File(ResourceUtils.getURL("classpath:" + filePath).getPath());
+                file = new File(ResourceUtils.getURL("classpath:").getPath() + filePath);
             }
 
             logger.info("****** start reading file：" + file.getPath());
@@ -80,15 +82,15 @@ public final class ElasticXmlToBean {
                             List<Attribute> mapAttrs = propertyE.attributes();
                             // 01 设置原始属性
                             mapAttribute(property, mapAttrs);
-                            ArrayList<Convertor> convertorList = new ArrayList<>();
+                            ArrayList<Converter> converterList = new ArrayList<>();
                             Iterator itt = propertyE.elementIterator();
                             while (itt.hasNext()) {
                                 Element childElement = (Element) itt.next();
                                 String childElementName = childElement.getName();
                                 if (childElementName.contains("Convertor")) {
-                                    Convertor curConvertor = mapConvertor(property, childElement);
-                                    if (curConvertor != null) {
-                                        convertorList.add(curConvertor);
+                                    Converter curConverter = mapConvertor(property, childElement);
+                                    if (curConverter != null) {
+                                        converterList.add(curConverter);
                                     }
                                 } else if ("if".equals(childElementName)) {
                                     String test = childElement.attributeValue("test");
@@ -101,17 +103,17 @@ public final class ElasticXmlToBean {
                                             Element convertElement = (Element) citt.next();
                                             String convertElementName = convertElement.getName();
                                             if (convertElementName.contains("Convertor")) {
-                                                Convertor curConvertor = mapConvertor(property, convertElement);
-                                                if (curConvertor != null) {
-                                                    curConvertor.setIfBean(ifBean);
-                                                    convertorList.add(curConvertor);
+                                                Converter curConverter = mapConvertor(property, convertElement);
+                                                if (curConverter != null) {
+                                                    curConverter.setIfBean(ifBean);
+                                                    converterList.add(curConverter);
                                                 }
                                             }
                                         }
                                     }
                                 }
                             }
-                            property.setConvertorArrty(convertorList.toArray(new Convertor[0]));
+                            property.setConverterArrty(converterList.toArray(new Converter[0]));
                             propertys.add(property);
                         }
                         break;
@@ -148,6 +150,23 @@ public final class ElasticXmlToBean {
                         }
                         break;
                     default:break;
+                }
+            }
+
+            // 循环propertys， 获取idfield， parentField等
+            for(ElasticProperty p : propertys){
+                String pName = p.getTargetName();
+                if(p.isIdField()){
+                    elasticMapperBean.setIdField(pName);
+                }
+                if(p.isParentField()){
+                    elasticMapperBean.setParentField(pName);
+                }
+                if(p.isRoutingField()){
+                    elasticMapperBean.setRoutingField(pName);
+                }
+                if(p.isRowKey()){
+                    elasticMapperBean.setRowKey(pName);
                 }
             }
             elasticMapperBean.setPropertyArray(propertys.toArray(new ElasticProperty[0]));
@@ -219,27 +238,31 @@ public final class ElasticXmlToBean {
                 case "routingField":
                     property.setRoutingField(Boolean.valueOf(pValue));
                     break;
+                case "rowKey":
+                    property.setRowKey(Boolean.valueOf(pValue));
+                    break;
                 default:break;
             }
         }
     }
 
-    private static Convertor mapConvertor(ElasticProperty property, Element convertorElement) {
+    private static Converter mapConvertor(ElasticProperty property, Element convertorElement) {
         String elementName = convertorElement.getName();
-        Convertor convertor = new Convertor();
+        Converter converter = new Converter();
         String dicType = convertorElement.attributeValue("dicType");
 
         String methodName = convertorElement.attributeValue("methodName");
         String formatType = convertorElement.attributeValue("formatType");
         if (methodName != null && !"".equals(methodName)) {
-            convertor.setConvertMethodName(methodName);
+            ConvertMethodEnum methodEnum = ConvertMethodEnum.getByName(methodName);
+            converter.setConvertMethodName(methodEnum);
         }
         if (dicType != null && !"".equals(dicType)) {
             DictionaryTypeEnum typeEnum = DictionaryTypeEnum.getByName(dicType);
-            convertor.setDicType(typeEnum);
+            converter.setDicType(typeEnum);
         }
         if (formatType != null && !"".equals(formatType)) {
-            convertor.setFormatType(formatType);
+            converter.setFormatType(formatType);
         }
         Iterator itt = convertorElement.elementIterator();
         while (itt.hasNext()) {
@@ -249,37 +272,38 @@ public final class ElasticXmlToBean {
                 case "parameter":
                     String pName = childProperty.getStringValue();
                     if (pName != null && !"".equals(pName)) {
-                        convertor.addConvertParam(pName);
+                        converter.addConvertParam(pName);
                     } else if (!"".equals(property.getSourceName())) {
                         //不设置默认为sourceName
-                        convertor.addConvertParam(property.getSourceName());
+                        converter.addConvertParam(property.getSourceName());
                     }
                     break;
                 case "dateParameter":
                     String dateValue = childProperty.attributeValue("value");
-                    convertor.setDateParamField(dateValue);
+                    converter.setDateParamField(dateValue);
                     break;
                 case "timeParameter":
                     String timeValue = childProperty.attributeValue("value");
-                    convertor.setTimeParamField(timeValue);
+                    converter.setTimeParamField(timeValue);
                     break;
                 case "startDateParameter":
                     String sDate = childProperty.attributeValue("value");
-                    convertor.setStartDateParamField(sDate);
+                    converter.setStartDateParamField(sDate);
                     break;
                 case "endDateParameter":
                     String eDate = childProperty.attributeValue("value");
-                    convertor.setEndDateParamField(eDate);
+                    converter.setEndDateParamField(eDate);
                     break;
                 default:break;
             }
         }
 
-        convertor.setConvertType(elementName);
+        converter.setConvertType(elementName);
 
-        return convertor;
+        return converter;
     }
 
+    @SuppressWarnings("unchecked")
     private static FilterGroup getFilterGroup(Element filterElement) {
         if (filterElement == null) {
             return null;
@@ -309,7 +333,6 @@ public final class ElasticXmlToBean {
                 }
             }
             if (filterList.size() > 0) {
-                //filterGroups.setMust(filterList.toArray(new FilterBean[filterList.size()]));
                 filterGroups.setMust(filterList.toArray(new FilterBean[0]));
             }
         }
@@ -338,7 +361,6 @@ public final class ElasticXmlToBean {
                 }
             }
             if (filterList.size() > 0) {
-                //filterGroups.setShould(filterList.toArray(new FilterBean[filterList.size()]));
                 filterGroups.setShould(filterList.toArray(new FilterBean[0]));
             }
         }
@@ -366,7 +388,6 @@ public final class ElasticXmlToBean {
                 }
             }
             if (filterList.size() > 0) {
-                //filterGroups.setNot(filterList.toArray(new FilterBean[filterList.size()]));
                 filterGroups.setNot(filterList.toArray(new FilterBean[0]));
             }
         }

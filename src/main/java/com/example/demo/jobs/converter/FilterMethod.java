@@ -17,7 +17,9 @@ public final class FilterMethod {
      * @return 若返回true, 满足过滤， 不满足过滤
      */
     public static boolean isNotEmpty(Map<String, Object> sourceObject, String filterSourceName){
-        if(sourceObject == null || filterSourceName == null || filterSourceName.equals("")) return false;
+        if(sourceObject == null || filterSourceName == null || "".equals(filterSourceName)) {
+            return false;
+        }
 
         Object sourceValue = sourceObject.get(filterSourceName);
 
@@ -25,7 +27,9 @@ public final class FilterMethod {
     }
 
     public static boolean isEmpty(Map<String, Object> sourceObject, String filterSourceName){
-        if(sourceObject == null || filterSourceName == null || filterSourceName.equals("")) return true;
+        if(sourceObject == null || filterSourceName == null || "".equals(filterSourceName)) {
+            return true;
+        }
 
         Object sourceValue = sourceObject.get(filterSourceName);
 
@@ -33,8 +37,6 @@ public final class FilterMethod {
     }
 
     public static boolean equert(Map<String, Object> sourceObject, String filterSourceName){
-        if(sourceObject == null || filterSourceName == null || filterSourceName.equals("")) return false;
-
-        return true;
+        return sourceObject != null && filterSourceName != null && !"".equals(filterSourceName);
     }
 }

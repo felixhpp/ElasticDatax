@@ -4,7 +4,7 @@
     <!--doc id 通过病案首页ID + 手术时间 +  手术编码-->
     <propertys>
         <property sourceName="documentid" targetName="Oper_id" desc="手术ID" idField="true"></property>
-        <property sourceName="patientid" targetName="Oper_AdmNo" desc="就诊ID" parentField="true"></property>
+        <property sourceName="patientid" targetName="Oper_AdmNo" desc="就诊ID" rowKey="true" parentField="true"></property>
         <property sourceName="visitnumber" targetName="Oper_RegNo" desc="登记号" routingField="true"></property>
         <property sourceName="OperName" targetName="Oper_Name" desc="手术名称"></property>
         <property sourceName="OperDate" targetName="Oper_StartTime" desc="手术开始时间"></property>

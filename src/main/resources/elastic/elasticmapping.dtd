@@ -52,6 +52,7 @@
 <!ATTLIST property idField (true|false) #IMPLED>
 <!-- property parentField属性是可选的，只能选择true|false -->
 <!ATTLIST property parentField (true|false) #IMPLED>
+<!ATTLIST property rowKey (true|false) #IMPLED>
 <!-- property routingField属性是可选的，只能选择true|false -->
 <!ATTLIST property routingField (true|false) #IMPLED>
 <!--文字描述，可选-->

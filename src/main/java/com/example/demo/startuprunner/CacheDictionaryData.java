@@ -1,4 +1,4 @@
-package com.example.demo.core.cache;
+package com.example.demo.startuprunner;
 
 import com.example.demo.core.enums.DictionaryTypeEnum;
 import com.example.demo.entity.DictionaryMap;
@@ -19,15 +19,14 @@ import java.util.List;
 
 /**
  * application启动后执行 缓存全部字典类数据
- * 如果存在多个实现CommandLineRunner的接口，会按照设置的顺序执行
  *
  * @author felix
  */
 @Component
 @Order(value = 8)
-public class DictionaryCache implements CommandLineRunner {
+public class CacheDictionaryData implements CommandLineRunner {
 
-    private static final Logger logger = LoggerFactory.getLogger(ConvertMapperCache.class);
+    private static final Logger logger = LoggerFactory.getLogger(CacheMapperFile.class);
     private static final String DicBusinessFieldcode = "00001_";
 
     @Autowired

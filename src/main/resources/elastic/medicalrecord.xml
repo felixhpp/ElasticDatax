@@ -2,7 +2,7 @@
 <!DOCTYPE elasticMapper SYSTEM "elasticmapping.dtd">
 <elasticMapper name="medicalrecord" desc="导入就诊信息数据">
     <propertys>
-        <property sourceName="mr_admid"  targetName="MR_AdmID" valueType="String" idField="true" desc="就诊号">
+        <property sourceName="mr_admid"  targetName="MR_AdmID" valueType="String" rowKey="true" idField="true" desc="就诊号">
         </property>
         <property sourceName="mr_regno" targetName="MR_RegNo" valueType="String" routingField="true" parentField="true" desc="登记号">
         </property>

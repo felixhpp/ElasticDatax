@@ -1,6 +1,8 @@
 package com.example.demo.jobs;
 
+import com.alibaba.fastjson.JSON;
 import com.example.demo.core.entity.ESBulkModel;
+import com.example.demo.core.enums.ConvertMethodEnum;
 import com.example.demo.core.enums.DictionaryTypeEnum;
 import com.example.demo.core.enums.ElasticTypeEnum;
 import com.example.demo.core.utils.*;
@@ -28,28 +30,45 @@ public final class Pipeline {
     private static ConcurrentHashMap<String, Pipeline> baseMap = new ConcurrentHashMap<>();
     // 是否启用mapper, 默认否
     private boolean onMapper = false;
-
+    private String theme;
+    private String idField = null;
+    private String parentField = null;
+    private String routingField = null;
+    private String rowKey = null;
 
     private Pipeline(ElasticTypeEnum typeEnum, boolean onMapper) {
         this.onMapper = onMapper;
+        this.theme = typeEnum.getEsType();
+
         String fileName = typeEnum.getFileName();
         try {
             this.elasticMapperBean = mapperBeanMaps.get(fileName);
             if (this.elasticMapperBean == null) {
                 elasticMapperBean = ElasticXmlToBean.getBeanByFileName(fileName);
+                if (elasticMapperBean != null) {
+                    mapperBeanMaps.put(fileName, elasticMapperBean);
+                }
             }
         } catch (Exception e) {
             log.error("get bean error, ", e);
         }
+
+        if (null == elasticMapperBean) {
+            throw new NullPointerException("elasticMapperBean is null");
+        }
+        this.idField = elasticMapperBean.getIdField();
+        this.parentField = elasticMapperBean.getParentField();
+        this.routingField = elasticMapperBean.getRoutingField();
+        this.rowKey = elasticMapperBean.getRowKey();
     }
 
     public static Pipeline getInstance(ElasticTypeEnum typeEnum, boolean onMapper) {
         String curTypeName = typeEnum.getEsType();
         Pipeline pipeline = baseMap.get(curTypeName);
-        if (pipeline == null) {
+        if (null == pipeline) {
             // 多线程同步
             synchronized (Pipeline.class) {
-                if (pipeline == null) {
+                if (null == pipeline) {
                     pipeline = new Pipeline(typeEnum, onMapper);
                     baseMap.put(curTypeName, pipeline);
                 }
@@ -63,20 +82,22 @@ public final class Pipeline {
         if (sourceData == null || sourceData.size() == 0) {
             return null;
         }
+        if(onMapper && null == elasticMapperBean){
+            return null;
+        }
         Map<String, Object> targetObject = new HashMap<>();
 
-        String idValue = null;
-        String parentValue = null;
-        String routingValue = null;
         // 是否满足过滤条件
         boolean isFilter = true;
+        ESBulkModel model = null;
         //是否启用mapper开关, 关闭时直接copy 整个数组
         if (!onMapper) {
-            // 深拷贝 HasMap.putAll();
             sourceData.putAll(targetObject);
-        } else if (elasticMapperBean == null) {
-            return null;
-        } else {
+            model = new ESBulkModel();
+            model.setMapData(sourceData);
+        }
+        // 进行mapper转换
+        else {
             // 数据处理step
             //step1: 对原始对象进行过滤
             FilterGroup sourceFilterGroup = elasticMapperBean.getSourceFilterBeanGroup();
@@ -89,47 +110,52 @@ public final class Pipeline {
             if (properties == null) {
                 return null;
             }
-            int length = properties.length;
-            for (int i = 0; i < length; i++) {
-                // 属性处理步骤  step1: 设置id, parent routing； step2: 转换数据
-                ElasticProperty property = properties[i];
+
+            for (ElasticProperty property : properties) {
                 String sourceName = property.getSourceName();
                 String targetName = property.getTargetName();
                 Object curSourceObj = sourceData.get(sourceName);
-                String curSourceVal = curSourceObj == null ? null : curSourceObj.toString();
-                //step1: 设置id, parent routing
-                idValue = (property.isIdField() && idValue == null) ? curSourceVal : idValue;
-                routingValue = (property.isRoutingField() && routingValue == null) ? curSourceVal : routingValue;
-                parentValue = (property.isParentField() && parentValue == null) ? curSourceVal : parentValue;
-
-                //step2: 转换数据
-                Convertor[] convertors = property.getConvertorArrty();
-                if (convertors == null || convertors.length == 0) {
+                Converter[] converters = property.getConverterArrty();
+                if (null == converters || converters.length == 0) {
                     targetObject.put(targetName, curSourceObj);
                 } else {
-                    for (Convertor convertor : convertors) {
-                        Object newObject = convertProperty(convertor, sourceData, sourceName);
+                    for (Converter converter : converters) {
+                        Object newObject = convertProperty(converter, sourceData, sourceName);
                         targetObject.put(targetName, newObject);
                     }
                 }
-
-                // 其他step
             }
+
+            // step3: 对目标对象进行过滤
             FilterGroup targetFilterGroup = elasticMapperBean.getTargetFilterBeanGroup();
             isFilter = exeFilter(targetFilterGroup, targetObject);
             if (!isFilter) {
                 return null;
             }
 
-        }
-
-        ESBulkModel model = null;
-        if (isFilter) {
+            Object idValue = StringUtils.isEmpty(idField) ? "" : targetObject.get(idField);
+            Object parentValue = StringUtils.isEmpty(parentField) ? "" : targetObject.get(parentField);
+            Object routingValue = StringUtils.isEmpty(routingField) ? "" : targetObject.get(routingField);
+            Object rowKeyValue = StringUtils.isEmpty(rowKey) ? "" : targetObject.get(rowKey);
             model = new ESBulkModel();
-            model.setId(idValue);
-            model.setRouting(routingValue);
-            model.setParent(parentValue);
+            if(idValue != null){
+                model.setId(idValue.toString());
+                model.setDocId(idValue.toString());
+            }
+            if(routingValue != null){
+                model.setRouting(routingValue.toString());
+            }
+            if(parentValue != null){
+                model.setParent(parentValue.toString());
+            }
+            if(rowKeyValue != null){
+                model.setAdmId(rowKeyValue.toString());
+            }
+
             model.setMapData(targetObject);
+            model.setTheme(theme);
+
+
         }
 
         return model;
@@ -138,24 +164,24 @@ public final class Pipeline {
     /**
      * 属性转换
      *
-     * @param convertor
+     * @param converter
      * @param sourceMap
      * @param sourceName
      * @return
      * @throws Exception
      */
-    private Object convertProperty(Convertor convertor, Map<String, Object> sourceMap, String sourceName) throws Exception {
-        String curConvertType = convertor.getConvertType();
+    private Object convertProperty(Converter converter, Map<String, Object> sourceMap, String sourceName) throws Exception {
+        String curConvertType = converter.getConvertType();
         Object result = null;
         if (curConvertType != null && !"".equals(curConvertType)) {
             // 判断是否有条件
-            IfBean ifBean = convertor.getIfBean();
+            IfBean ifBean = converter.getIfBean();
             boolean flag = true;
             if (ifBean != null) {
                 flag = doIfMethod(ifBean, sourceMap);
             }
 
-            result = flag ? doMethod(convertor, sourceMap, sourceName) : sourceMap.get(sourceName);
+            result = flag ? doMethod(converter, sourceMap, sourceName) : sourceMap.get(sourceName);
         }
         return result;
     }
@@ -178,15 +204,10 @@ public final class Pipeline {
         // 通过对象获取SQL
         String sqlTemp = addFields.getSql();
         String sql = MessageTemplateUtil.processTemplate(sqlTemp, params);
-        System.out.println(sql);
-
+        //System.out.println(sql);
         List<LinkedHashMap<String, Object>> result = ExecuteSql.exeSelect(sql);
 
-        if (result == null || result.size() == 0) {
-            return null;
-        } else {
-            return result.get(0);
-        }
+        return (result == null || result.size() == 0) ? null : result.get(0);
     }
 
     /**
@@ -194,8 +215,8 @@ public final class Pipeline {
      *
      * @return
      */
-    private LinkedHashMap<String, Object> doSql(Convertor convert,
-                                                Map sourceMap, Map targetMap, String sourceName, String targetName) throws Exception {
+    private LinkedHashMap<String, Object> doSql(Converter convert,
+            Map sourceMap, Map targetMap, String sourceName, String targetName) {
         String sql = convert.getSql();
         if (StringUtils.isEmpty(sql)) {
             return null;
@@ -203,8 +224,7 @@ public final class Pipeline {
         List<String> args = convert.getConvertParamFieldNames();
         Map<String, Object> params = new HashMap<>();
         for (String paramName : args) {
-            Object value = sourceMap.get(paramName);
-            params.put(paramName, value);
+            params.put(paramName, sourceMap.get(paramName));
         }
         params.put("sourceName", sourceName);
         params.put("targetName", targetName);
@@ -213,11 +233,7 @@ public final class Pipeline {
         System.out.println(exeSql);
         List<LinkedHashMap<String, Object>> result = ExecuteSql.exeSelect(sql);
 
-        if (result == null || result.size() == 0) {
-            return null;
-        } else {
-            return result.get(0);
-        }
+        return (result == null || result.size() == 0) ? null : result.get(0);
     }
 
     /**
@@ -234,6 +250,10 @@ public final class Pipeline {
             case "isnotempty":
                 isFilter = FilterMethod.isNotEmpty(map, filterBean.getFilterFieldName());
                 break;
+            case "isempty":
+                // do some thing
+
+                break;
             default:break;
         }
         return isFilter;
@@ -242,9 +262,9 @@ public final class Pipeline {
     /**
      * 执行if 方法
      *
-     * @param ifBean
-     * @param map
-     * @return
+     * @param ifBean ifBean
+     * @param map 转换的map对象
+     * @return 如果满足条件，则返回true,否则返回false
      */
     private boolean doIfMethod(IfBean ifBean, Map<String, Object> map) {
         boolean isFilter = true;
@@ -264,91 +284,81 @@ public final class Pipeline {
     /**
      * 执行方法
      *
-     * @param convert
+     * @param convert Convertor类型对象
      * @param sourceMap 原对象
      */
-    private Object doMethod(@NotNull Convertor convert, Map<String, Object> sourceMap, String sourceName) throws Exception {
-        String method = convert.getConvertMethodName();
-        if (StringUtils.isEmpty(method)) {
+    private Object doMethod(@NotNull Converter convert, Map<String, Object> sourceMap, String sourceName) throws Exception {
+        ConvertMethodEnum method = convert.getConvertMethodName();
+        List<String> args = convert.getConvertParamFieldNames();
+        int parameterLength = args.size();
+        if(null == method){
             return null;
         }
-        List<String> args = convert.getConvertParamFieldNames();
-        DictionaryTypeEnum dictionaryType = convert.getDicType();
-        int parameterLength = args.size();
         Object resultObject = null;
-        method = method.toLowerCase().trim();
         switch (method) {
-            case "getbycode":
-                if (dictionaryType == null || parameterLength < 1) {
+            case GetByCode:
+                DictionaryTypeEnum dictionaryType = convert.getDicType();
+                if (null == dictionaryType || parameterLength < 1) {
                     break;
                 }
                 String paramtetField = args.get(0);
                 // 元数据中参数值
                 Object paramv = sourceMap.get(paramtetField);
 
-                if (StringUtils.isEmpty(paramv)) {
-                    break;
-                } else {
+                if (!StringUtils.isEmpty(paramv)) {
                     resultObject = ConvertMethod.getDicByCode(paramv.toString().trim(), dictionaryType);
                 }
                 break;
             //格式化日期为 yyyy-MM-dd格式
-            case "formatdate":
+            case FormatDate:
                 if (parameterLength < 1) {
                     break;
                 }
                 //获取参数值
                 String cParamtetField = args.get(0);
                 Object cparamv = sourceMap.get(cParamtetField);
-                if (StringUtils.isEmpty(cparamv)) {
-                    break;
+                if (!StringUtils.isEmpty(cparamv)) {
+                    String cParamterValue = cparamv.toString();
+                    String pattern = convert.getPattern();
+                    resultObject = ConvertMethod.formatDate(cParamterValue, pattern);
                 }
-                String cParamterValue = cparamv.toString();
-                String pattern = convert.getPattern();
-                resultObject = ConvertMethod.formatDate(cParamterValue, pattern);
                 break;
-            case "differentyears":
+            case DifferentYears:
                 String sDateStr = convert.getStartDateParamField();
                 String eDateStr = convert.getEndDateParamField();
-                Object sParamV = sourceMap.get(sDateStr);
-                Object eParamV = sourceMap.get(eDateStr);
-                if (!StringUtils.isEmpty(sParamV) && !StringUtils.isEmpty(eParamV)) {
-                    resultObject = ConvertMethod.differentYears(sParamV.toString(), eParamV.toString());
+                Object sparamv = sourceMap.get(sDateStr);
+                Object eparamv = sourceMap.get(eDateStr);
+                if (!StringUtils.isEmpty(sparamv) && !StringUtils.isEmpty(eparamv)) {
+                    resultObject = ConvertMethod.differentYears(sparamv.toString(), eparamv.toString());
                 }
                 break;
-            case "differentdays":
+            case DifferentDays:
                 String startDateStr = convert.getStartDateParamField();
                 String endDateStr = convert.getEndDateParamField();
-                Object startParamV = sourceMap.get(startDateStr);
-                Object endParamV = sourceMap.get(endDateStr);
-                if (!StringUtils.isEmpty(startParamV) && !StringUtils.isEmpty(endParamV)) {
-                    resultObject = ConvertMethod.differentDays(startParamV.toString(), endParamV.toString());
+                Object starters = sourceMap.get(startDateStr);
+                Object endears = sourceMap.get(endDateStr);
+                if (!StringUtils.isEmpty(starters) && !StringUtils.isEmpty(endears)) {
+                    resultObject = ConvertMethod.differentDays(starters.toString(), endears.toString());
                 }
                 break;
-            case "concatdatetime":
+            case ConcatDatetime:
                 String dateParamField = convert.getDateParamField();
                 String timeParamField = convert.getTimeParamField();
                 if (StringUtils.isEmpty(dateParamField) || StringUtils.isEmpty(timeParamField)) {
                     break;
                 }
-                Object dateParamV = sourceMap.get(dateParamField);
-                Object timeParamV = sourceMap.get(timeParamField);
-                if (!StringUtils.isEmpty(dateParamV) && !StringUtils.isEmpty(timeParamV)) {
-                    resultObject = ConvertMethod.concatDatatime(dateParamV.toString(), timeParamV.toString());
+                Object dateparamv = sourceMap.get(dateParamField);
+                Object timeparamv = sourceMap.get(timeParamField);
+                if (!StringUtils.isEmpty(dateparamv) && !StringUtils.isEmpty(timeparamv)) {
+                    resultObject = ConvertMethod.concatDatatime(dateparamv.toString(), timeparamv.toString());
                 }
-                break;
-            //拼接多个字段
-            case "concat":
                 break;
             //格式化值类型字符串
-            case "formatvalue":
-                if (parameterLength != 1) {
-                    break;
-                }
-                String vParamField = args.get(0);
-                Object vparamv = sourceMap.get(vParamField);
-                if (!StringUtils.isEmpty(vparamv)) {
-                    resultObject = ConvertMethod.formatValue(vparamv.toString());
+            case FormatValue:
+                if (parameterLength == 1) {
+                    String vParamField = args.get(0);
+                    Object vparamv = sourceMap.get(vParamField);
+                    resultObject = ConvertMethod.formatValue(vparamv);
                 }
                 break;
             default:break;
@@ -398,7 +408,8 @@ public final class Pipeline {
 
             // not 排除
             FilterBean[] not = filterGroup.getNot();
-            boolean isNot = false;  //是否排除
+            // 是否排除
+            boolean isNot = false;
             if (not != null) {
                 for (FilterBean fb : not) {
                     isNot = doFilterMethod(fb, map);

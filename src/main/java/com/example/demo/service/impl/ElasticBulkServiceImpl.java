@@ -1,8 +1,7 @@
 package com.example.demo.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import com.example.demo.core.bean.ConvertConfigBean;
+import com.example.demo.bean.ConvertConfigBean;
 import com.example.demo.core.entity.BulkCaseRequestBody;
 import com.example.demo.core.entity.BulkResponseBody;
 import com.example.demo.core.entity.ESBulkModel;
@@ -63,11 +62,12 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
     /**
      * 批量导入
      *
-     * @param theme
-     * @param dataJsonStr
-     * @return BulkResponseBody
+     * @param theme 主题名称
+     * @param dataJsonStr   数据json字符串
+   * @return BulkResponseBody
      */
     @Override
+    @SuppressWarnings("unchecked")
     public BulkResponseBody bulk(String theme, String dataJsonStr) {
         BulkResponseBody result = new BulkResponseBody();
         try {
@@ -110,10 +110,6 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
             return result;
         }
         int size = dataArray.size();
-        if (size > 0) {
-            // 记录一个批次的第一条数据
-            logger.info("bulk [" + typeName + "] get 1 is :[" + JSON.toJSONString(dataArray.get(0)) + "]");
-        }
 
         //生成一个集合
         List<ESBulkModel> models = ConvertPipeline.convertToBulkModels(typeEnum,
@@ -147,7 +143,7 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
             String typeName = typeEnum.getEsType();
             result = this.bulk(indexName, typeName, dataList);
         } catch (Exception e) {
-            logger.error("bulk [" + theme + "]error: ", e);
+            logger.error("bulk [" + theme + "] error: ", e);
             result.setResultCode("-1");
             result.setResultContent("请求异常，错误信息:" + e.getMessage());
         }
@@ -158,7 +154,7 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
     /**
      * 批量导入病历
      *
-     * @param caseRequestBodies
+     * @param caseRequestBodies 批量提交的病历
      * @return BulkResponseBody
      */
     @Override
@@ -223,7 +219,7 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
     /**
      * 病历导入测试
      * @param bean
-     * @return
+     * @return BulkResponseBody
      */
     @Override
     public BulkResponseBody bulkCaseTest(CaseRecodrXmlBean bean, ElasticTypeEnum typeEnum){
@@ -311,7 +307,7 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
     /**
      * 批量向ES导入自动补全数据
      *
-     * @return
+     * @return BulkResponseBody
      */
     @Override
     public BulkResponseBody bulkSuggestion() {
@@ -361,8 +357,8 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
     /**
      * 通过登记号获取患者信息
      *
-     * @param regNo
-     * @return
+     * @param regNo 登记号
+     * @return String
      * @throws IOException
      */
     @Override
@@ -435,13 +431,13 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
     /**
      * 将ES导入任务添加到 BulkProcessor
      *
-     * @param bulkMode
-     * @param index
-     * @param type
-     * @return
+     * @param bulkMode bulkMode
+     * @param index 索引名称
+     * @param type 索引类型
+     * @return 提交成功，返回true,否则返回false
      */
     private boolean addBulkProcessor(ESBulkModel bulkMode, String index, String type) {
-        Map<String, Object> map = (bulkMode == null) ? null : bulkMode.getMapData();
+        Map<String, Object> map = (bulkMode == null || bulkMode.isEmpty()) ? null : bulkMode.getMapData();
         if (map == null || map.size() <= 0) {
             return false;
         }
@@ -458,7 +454,9 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
         if (type.equals(ElasticTypeEnum.DIAGNOSE.getEsType())) {
             ESBulkModel cBulkMode = ConvertPipeline.convertToBulkModel(ElasticTypeEnum.DIAGNOSE_Statistics,
                     bulkMode.getMapData(), mapperBean.getOnMapper());
-
+            if(cBulkMode == null || cBulkMode.isEmpty()){
+                return true;
+            }
             IndexRequest cRequest = new IndexRequest(index, ElasticTypeEnum.DIAGNOSE_Statistics.getEsType(),
                     cBulkMode.getId())
                     .source(cBulkMode.getMapData())
@@ -472,7 +470,9 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
         else if (type.equals(ElasticTypeEnum.ORDITEM.getEsType())) {
             ESBulkModel cBulkMode = ConvertPipeline.convertToBulkModel(ElasticTypeEnum.Medicine,
                     bulkMode.getMapData(), mapperBean.getOnMapper());
-
+            if(cBulkMode == null || cBulkMode.isEmpty()){
+                return true;
+            }
             IndexRequest cRequest = new IndexRequest(index, ElasticTypeEnum.Medicine.getEsType(),
                     cBulkMode.getId())
                     .source(cBulkMode.getMapData())
@@ -485,7 +485,19 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
         return true;
     }
 
+    /**
+     * 将ES导入任务添加到 BulkProcessor
+     * @param index 索引名称
+     * @param type 类型名称
+     * @param id id
+     * @param map 数据
+     * @return 提交成功，返回true,否则返回false
+     */
     private boolean addBulkProcessor(String index, String type, String id, Map<String, Object> map){
+        if(map == null || map.size() == 0){
+            return false;
+        }
+
         IndexRequest request = new IndexRequest(index, type, id)
                 .source(map);
 
@@ -497,8 +509,8 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
     /**
      * 通过theme获取ElasticsearchTypeEnum 实例
      *
-     * @param theme
-     * @return
+     * @param theme 主题名称
+     * @return ElasticTypeEnum
      */
     private ElasticTypeEnum getInstanceByTheme(String theme) {
         if (theme == null || "".equals(theme)) {
@@ -518,8 +530,8 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
     /**
      * 通过type获取ElasticsearchTypeEnum
      *
-     * @param type
-     * @return
+     * @param type elasticsearch type名称
+     * @return ElasticTypeEnum
      */
     private ElasticTypeEnum getInstanceByEsType(String type) {
         if (type == null || "".equals(type)) {
@@ -536,6 +548,11 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
         return typeEnum;
     }
 
+    /**
+     * 通过desc获取病历主题名称
+     * @param desc 病历类型描述
+     * @return String
+     */
     private String getCaseTheme(String desc) {
         String theme = null;
         switch (desc) {

@@ -3,7 +3,7 @@
 <elasticMapper name="diagnose" desc="导入医嘱数据">
     <propertys>
         <property sourceName="ord_id"  targetName="Ord_Id" valueType="String" idField="true"></property>
-        <property sourceName="ord_admno" targetName="Ord_AdmNo" valueType="String" parentField="true"></property>
+        <property sourceName="ord_admno" targetName="Ord_AdmNo" valueType="String" rowKey="true" parentField="true"></property>
         <property sourceName="ord_regno" targetName="Ord_RegNo" valueType="String" routingField="true"></property>
         <!--医嘱代码-->
         <property sourceName="ord_code" targetName="Ord_DicCode"  valueType="String"></property>

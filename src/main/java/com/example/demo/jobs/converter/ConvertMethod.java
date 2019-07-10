@@ -72,8 +72,11 @@ public final class ConvertMethod {
      *
      * @return
      */
-    public static String formatValue(String valueStr) {
-        return valueFormat.ToFormat(valueStr);
+    public static String formatValue(Object value) {
+        if (!StringUtils.isEmpty(value)) {
+            return null;
+        }
+        return valueFormat.ToFormat(value.toString());
     }
 
     /**

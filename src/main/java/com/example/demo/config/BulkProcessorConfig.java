@@ -1,6 +1,6 @@
-package com.example.demo.core.config;
+package com.example.demo.config;
 
-import com.example.demo.core.bean.BulkDbProcessor;
+import com.example.demo.bean.BulkDbProcessor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

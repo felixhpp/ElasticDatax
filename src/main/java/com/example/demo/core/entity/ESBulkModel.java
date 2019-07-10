@@ -1,10 +1,14 @@
 package com.example.demo.core.entity;
 
+import com.alibaba.fastjson.JSON;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 import java.util.Map;
 
 public final class ESBulkModel {
+    private static final Logger log = LoggerFactory.getLogger(ESBulkModel.class);
     private String index;
 
     private String type;
@@ -14,6 +18,21 @@ public final class ESBulkModel {
     private String parent;
 
     private String routing;
+
+    /**
+     * 关联就诊号，如果病人表则没有
+     */
+    private String admId;
+
+    /**
+     * 表名
+     */
+    private String theme;
+
+    /**
+     * 文档id
+     */
+    private String docId;
 
     private Map<String, Object> mapData;
 
@@ -65,13 +84,50 @@ public final class ESBulkModel {
         this.mapData = mapData;
     }
 
+    public String getAdmId() {
+        return admId;
+    }
+
+    public void setAdmId(String admId) {
+        this.admId = admId;
+    }
+
+    public String getTheme() {
+        return theme;
+    }
+
+    public void setTheme(String theme) {
+        this.theme = theme;
+    }
+
+    public String getDocId() {
+        return docId;
+    }
+
+    public void setDocId(String docId) {
+        this.docId = docId;
+    }
+
     public boolean isEmpty() {
-        if (id == null || "".equals(id)) {
+        if(mapData == null || mapData.size() == 0){
             return true;
         }
-        if (routing == null || "".equals(routing)) {
-            return true;
+
+        return !valid();
+    }
+
+    /**
+     * 验证， id 和routing必须存在，不存在则记录日志
+     */
+    private boolean valid(){
+        if(StringUtils.isEmpty(this.id)){
+            log.error("mapper error, idField not found. data[{}].", JSON.toJSONString(this.mapData));
+            return false;
+        }else if(StringUtils.isEmpty(this.routing)) {
+            log.error("mapper error, idField not found. data[{}].", JSON.toJSONString(this.mapData));
+            return false;
         }
-        return mapData == null || mapData.size() == 0;
+
+        return true;
     }
 }

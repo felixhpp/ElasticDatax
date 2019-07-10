@@ -5,7 +5,7 @@
         <!--id字段-->
         <property sourceName="or_id"  targetName="OR_Id" valueType="String" idField="true"></property>
         <!--关联就诊ID-->
-        <property sourceName="or_admno" targetName="OR_AdmNo" valueType="String" parentField="true"></property>
+        <property sourceName="or_admno" targetName="OR_AdmNo" valueType="String" rowKey="true" parentField="true"></property>
         <!--关联登记号-->
         <property sourceName="or_regno" targetName="OR_RegNo" valueType="String" routingField="true"></property>
         <!--检查项大类-->

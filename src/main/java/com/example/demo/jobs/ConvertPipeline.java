@@ -19,10 +19,10 @@ public final class ConvertPipeline {
     /**
      * 转换为支持ES导入的model列表
      *
-     * @param typeEnum
-     * @param maps
-     * @param onMapper
-     * @return
+     * @param typeEnum ES 类型枚举
+     * @param maps  map对象列表
+     * @param onMapper 是否进行映射
+     * @return List<ESBulkModel>
      * @throws Exception
      */
     public static List<ESBulkModel> convertToBulkModels(
@@ -45,7 +45,7 @@ public final class ConvertPipeline {
 
             return bulkModels;
         } catch (Exception e) {
-            logger.error("model convert failed,error: [{}] ", e);
+            logger.error("model convert failed,error: [{}] ,object:[{}]", e.getMessage(), JSON.toJSONString(maps.get(0)));
         }
         return null;
     }
@@ -53,10 +53,10 @@ public final class ConvertPipeline {
     /**
      * 转换单个对象为bulkmodel类型对象
      *
-     * @param typeEnum
-     * @param map
-     * @param onMapper
-     * @return
+     * @param typeEnum ES 类型
+     * @param map   map对象
+     * @param onMapper 是否进行转换
+     * @return ESBulkModel
      * @throws Exception
      */
     public static ESBulkModel convertToBulkModel(
@@ -71,42 +71,10 @@ public final class ConvertPipeline {
 
             return mapper.mapper(map);
         } catch (Exception e) {
-            logger.error("model convert failed,error: [{}], object:[{}] ", e, JSON.toJSONString(map));
+            logger.error("model convert failed,error: [{}], object:[{}] ", e.getMessage(), JSON.toJSONString(map));
         }
 
         return null;
     }
 
-    /**
-     * 特殊处理病案首页手术和诊断
-     */
-//    public static ESBulkModel convertHomePageToOther(ElasticTypeEnum typeEnum, Map<String, Object> map, boolean onMapper){
-//        if (map == null || map.size() == 0 || !typeEnum.equals(ElasticTypeEnum.MedicalRecordHomePage)) {
-//            return null;
-//        }
-//        try {
-//            //Pipeline mapper = Pipeline.getInstance(typeEnum, onMapper);
-//
-//            if(typeEnum.equals(ElasticTypeEnum.MedicalRecordHomePage)){
-//                // 从病案首页中提取手术
-//                List<Map<String, Object>> operationMaps = new ArrayList<>();
-//                List<Map<String, Object>> diagMaps = new ArrayList<>();
-//                Iterator<Map.Entry<String, Object>> iterator = map.entrySet().iterator();
-//                while (iterator.hasNext()) {
-//                    Map.Entry<String, Object> entry = iterator.next();
-//                    System.out.println("key:value = " + entry.getKey() + ":" + entry.getValue());
-//                    String key = entry.getKey();
-//                    if(key.contains("OperName")){   //手术名称
-//
-//                    }
-//                }
-//            }
-//
-//            //return mapper.mapper(map);
-//        } catch (Exception e) {
-//            logger.error("model convert failed,error: [{}], object:[{}] ", e, JSON.toJSONString(map));
-//        }
-//
-//        return null;
-//    }
 }

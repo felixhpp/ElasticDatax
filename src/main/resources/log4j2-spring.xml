@@ -64,6 +64,17 @@
             <Filters>
                 <ThresholdFilter level="WARN" onMatch="DENY" onMismatch="NEUTRAL" />
                 <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY" />
+            </Filters>
+        </RollingFile>
+        <RollingFile name="RollingFileErrorES" fileName="${basePath}/es-error.log"
+                     filePattern="${basePath}/es-error-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="${log_pattern}" />
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="${every_file_size}"/>
+            </Policies>
+            <!-- 匹配INFO级别 -->
+            <Filters>
                 <ThresholdFilter level="FATAL" onMatch="DENY" onMismatch="NEUTRAL" />
                 <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY" />
             </Filters>
@@ -92,6 +103,7 @@
         </root>
         <logger name="elasticsearch-server" level="DEBUG" additivity="false">
             <appender-ref ref="RollingFileInfoES"/>
+            <appender-ref ref="RollingFileErrorES"/>
         </logger>
     </loggers>
 

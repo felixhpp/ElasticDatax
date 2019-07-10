@@ -44,8 +44,8 @@ public class ResidentAdmitNoteAnaly {
     /**
      * 获取内容章节
      *
-     * @param resourceElement
-     * @return
+     * @param resourceElement resource element
+     * @return String
      */
     private static String getNoteForResource(Element resourceElement) {
         String text = "";
@@ -59,6 +59,7 @@ public class ResidentAdmitNoteAnaly {
         return text;
     }
 
+    @SuppressWarnings("unchecked")
     private static Map<String, Object> analySession(Element session, Map<String, Element> map) {
         Map<String, Object> resultMap = new HashMap<>();
         String referenceUrl = "";
@@ -80,6 +81,8 @@ public class ResidentAdmitNoteAnaly {
                 case ENTRY:
                     Element referenceElement = sectionChildElement.element("reference");
                     referenceUrl = referenceElement != null ? referenceElement.attributeValue("value") : "";
+                    break;
+                default:
                     break;
             }
 

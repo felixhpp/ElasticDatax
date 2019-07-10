@@ -1,4 +1,4 @@
-package com.example.demo.core.bean;
+package com.example.demo.bean;
 
 import org.elasticsearch.action.bulk.BackoffPolicy;
 import org.elasticsearch.common.unit.ByteSizeUnit;

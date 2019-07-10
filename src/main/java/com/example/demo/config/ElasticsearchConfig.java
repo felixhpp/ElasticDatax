@@ -1,9 +1,7 @@
-package com.example.demo.core.config;
+package com.example.demo.config;
 
-import org.elasticsearch.action.bulk.BackoffPolicy;
-import org.elasticsearch.action.bulk.BulkProcessor;
-import org.elasticsearch.action.bulk.BulkRequest;
-import org.elasticsearch.action.bulk.BulkResponse;
+import org.elasticsearch.action.ActionRequest;
+import org.elasticsearch.action.bulk.*;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
@@ -18,6 +16,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.List;
 
 /**
  * elasticsearch配置信息
@@ -90,19 +89,56 @@ public class ElasticsearchConfig {
             public void afterBulk(long l, BulkRequest bulkRequest, BulkResponse bulkResponse) {
                 System.out.println(bulkRequest.numberOfActions() + "data bulk finish");
                 logger.info("[ {} ] data bulk finish. in {} milliseconds", bulkRequest.numberOfActions(), bulkResponse.getTook().getMillis());
+                if(bulkResponse.hasFailures()){
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("failure in bulk execution:");
+                    int length = bulkResponse.getItems().length;
+                    int curFlg = 0;
+                    for(int i = 0; i < length; ++i) {
+                        BulkItemResponse response = bulkResponse.getItems()[i];
+                        if (response.isFailed()) {
+                            curFlg++;
+                            if(curFlg == 1){
+                                sb.append("\n[").append(i)
+                                        .append("]: index [")
+                                        .append(response.getIndex()).append("], type [")
+                                        .append(response.getType()).append("], id [").append(response.getId())
+                                        .append("], message [").append(response.getFailureMessage())
+                                        .append("].");
+                            }
+                        }
+                    }
+                    sb.append("[ failed total: ").append(curFlg).append("]");
+                    logger.error(sb.toString());
+                }
             }
 
             @Override
             public void afterBulk(long l, BulkRequest bulkRequest, Throwable throwable) {
-                System.out.println(bulkRequest.numberOfActions() + "data bulk failed, reason :" + throwable.getMessage());
-                logger.error("{} data bulk failed,reason :{}", bulkRequest.numberOfActions(), throwable);
+                System.out.println(bulkRequest.numberOfActions() + "data bulk failed, reason :" + throwable);
+                logger.error("[{}] data bulk failed,reason :{}", bulkRequest.numberOfActions(), throwable);
+                List<ActionRequest> requests = bulkRequest.requests();
+                StringBuilder sb = new StringBuilder();
+                sb.append("failure in bulk execution:");
+                for (int i = 0; i<requests.size();i++){
+                    // 日志记录失败的第一条，便于查找原因
+                    ActionRequest actionRequest = requests.get(i);
+                    sb.append(actionRequest.toString());
+                    if(i == 1){
+                        break;
+                    }
+                }
+                logger.error(sb.toString());
             }
 
-        }).setBulkActions(20000)
-                .setBulkSize(new ByteSizeValue(200, ByteSizeUnit.MB))
-                .setFlushInterval(TimeValue.timeValueSeconds(5))
-                .setConcurrentRequests(1)
-                .setBackoffPolicy(BackoffPolicy.exponentialBackoff(TimeValue.timeValueMillis(100), 3))
+        }).setBulkActions(10000)
+                .setBulkSize(new ByteSizeValue(100, ByteSizeUnit.MB))
+                // 每60s提交一次
+                .setFlushInterval(TimeValue.timeValueSeconds(60))
+                // 异步执行
+                .setConcurrentRequests(4)
+                // 设置退避, 100ms后执行, 最大请求3次
+                .setBackoffPolicy(BackoffPolicy.exponentialBackoff(TimeValue.timeValueMillis(100), 1))
                 .build();
     }
 }

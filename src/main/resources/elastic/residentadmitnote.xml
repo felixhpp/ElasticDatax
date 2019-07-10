@@ -4,7 +4,7 @@
     <propertys>
         <property sourceName="documentid"  targetName="RAN_Id" valueType="String" idField="true"></property>
         <!--就诊号ID-->
-        <property sourceName="visitnumber" targetName="RAN_AdmNo" valueType="String" parentField="true"></property>
+        <property sourceName="visitnumber" targetName="RAN_AdmNo" valueType="String" rowKey="true" parentField="true"></property>
         <!--登记号-->
         <property sourceName="patientid" targetName="RAN_RegNo"  valueType="String" routingField="true"></property>
         <!--主诉-->

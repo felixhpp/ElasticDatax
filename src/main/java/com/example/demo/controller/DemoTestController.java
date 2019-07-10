@@ -30,7 +30,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/test")
 public class DemoTestController {
-    private int TOTAL = 5000;
+    private int TOTAL = 2000;
     private boolean isDev = false;
 
     @Autowired
@@ -167,7 +167,7 @@ public class DemoTestController {
                 break;
             default:break;
         }
-        File file = new File(System.getProperty("user.dir") + "/" + curfileName);
+        File file = new File(System.getProperty("user.dir") + File.separator + curfileName);
         if (!file.exists()) {
             file = new File(ResourceUtils.getURL("classpath:" + fileName).getPath());
         }
@@ -251,6 +251,7 @@ public class DemoTestController {
             Map<String, Object> object = new HashMap<>();
             object.put("mr_admid", "1234" + i);
             object.put("mr_regno", "12314" + i);
+
             object.put("mr_admage", "测试姓名" + i);
             object.put("mr_admdate", "2010-01-01 00:00:00");
             object.put("mr_admtime", "10:20:20");
@@ -275,8 +276,8 @@ public class DemoTestController {
     private List<Map<String, Object>> buildOrdItemData() {
         int total = TOTAL;
         List<Map<String, Object>> maps = new ArrayList<>();
-        String[] ordName = {"010101010100003", "010101010100005", "010101010200001",
-                "010101010500001", "010101020105001", "010702020000001"};
+        String[] ordName = {"JZ015", "010101011400001", "11020000117",
+                "11020000118", "030205010007", "010702020000001"};
         String[] ord_type = {"S", "OUT", "NORM"};
         String[] ord_status = {"V", "U", "H", "D", "P"};
         String[] ord_cate = {"01", "02", "03", "04"};

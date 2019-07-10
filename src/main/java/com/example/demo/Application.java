@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure;
+import com.example.demo.config.HBaseConfig;
 import org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -16,6 +17,7 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.AnnotationBeanNameGenerator;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.EnableLoadTimeWeaving;
+import org.springframework.data.hadoop.hbase.HbaseTemplate;
 import org.springframework.util.StringUtils;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 

@@ -13,9 +13,13 @@ import java.util.*;
  * @author felix
  */
 public final class CaseRecordXmlAnaly {
-    // 文件名称
+    /**
+     * 文件名称
+     */
     private static final String fielName = "";
-    // 病历文档模型
+    /**
+     * 病历文档模型
+     */
     private static CaseRecodrXmlBean caseRecodrXmlBean;
 
     private static Base64.Decoder decoder = Base64.getDecoder();
@@ -49,6 +53,7 @@ public final class CaseRecordXmlAnaly {
     /**
      * 解析病历文档
      */
+    @SuppressWarnings("unchecked")
     public static CaseRecodrXmlBean analyCaseRecordXml(Document document, ElasticTypeEnum typeEnum) {
         if (document == null) {
             return null;

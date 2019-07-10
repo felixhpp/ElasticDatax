@@ -4,7 +4,7 @@
     <!--doc id 通过病案首页ID + 诊断编码 + 类型-->
     <propertys>
         <property sourceName="documentid" targetName="Hpd_id" desc="ID" idField="true"></property>
-        <property sourceName="patientid" targetName="Hpd_AdmNo" desc="就诊ID" parentField="true"></property>
+        <property sourceName="patientid" targetName="Hpd_AdmNo" desc="就诊ID" rowKey="true" parentField="true"></property>
         <property sourceName="visitnumber" targetName="Hpd_RegNo" desc="登记号" routingField="true"></property>
         <property sourceName="DiagName" targetName="Hpd_DiagName" desc="诊断名称"></property>
         <property sourceName="DiagCode" targetName="Hpd_DiagCode" desc="诊断编码"></property>

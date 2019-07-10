@@ -128,6 +128,7 @@ spring:
       password: changeme
       read-timeout: 20000 #读取超时
       connection-timeout: 20000 #连接超时
+
   path:
     logs: /logs
     uploadPath: /upload   #文件上次目录
@@ -140,6 +141,27 @@ spring:
 elastic-mapper:
   onMapper: true
   onCache: true  # 系统启动时预先缓存字典类型
+## HBase 配置
+hbase:
+  batchSize: 50000
+  config:
+    # 指定 HBase 的 zk 地址
+#    hbase.zookeeper.quorum: 127.0.0.1,127.0.0.2,127.0.0.3
+#    hbase.zookeeper.property.clientPort: 2181
+#    fs.defaultFS: hdfs://cc-11:8020
+#    fs.trash.interval: 1
+    hbase:
+      zookeeper:
+        quorum: 127.0.0.1,127.0.0.2,127.0.0.3
+        property:
+          clientPort: 2181
+      fs:
+        defaultFS: hdfs://cc-11:8020
+        trash:
+          interval: 1
+      client:
+        keyvalue:
+          maxsiz: 20971520
 management:
     health:
       elasticsearch:

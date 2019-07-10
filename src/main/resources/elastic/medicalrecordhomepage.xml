@@ -4,7 +4,7 @@
     <propertys>
         <property sourceName="documentid"  targetName="MRHP_Id" valueType="String" idField="true"></property>
         <!--就诊号ID-->
-        <property sourceName="visitnumber" targetName="MRHP_AdmNo" valueType="String" parentField="true"></property>
+        <property sourceName="visitnumber" targetName="MRHP_AdmNo" valueType="String" rowKey="true" parentField="true"></property>
         <!--登记号-->
         <property sourceName="patientid" targetName="MRHP_RegNo"  valueType="String" routingField="true"></property>
         <property sourceName="patientNationality" targetName="MRHP_Nationality" valueType="String" desc="国籍"></property>

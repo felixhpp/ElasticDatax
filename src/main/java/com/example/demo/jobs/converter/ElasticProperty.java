@@ -16,11 +16,10 @@ public final class ElasticProperty {
     private boolean idField;
     private boolean parentField;
     private boolean routingField;
+    private boolean rowKey;
 
     private boolean hasConvertor;
 
     // 转换器列表
-    private Convertor[] convertorArrty;
-
-
+    private Converter[] converterArrty;
 }
