@@ -51,13 +51,14 @@ public class CacheMapperFile implements CommandLineRunner {
 
             String path = System.getProperty("user.dir") + File.separator + "elastic";
             File file = new File(path);
+            if(!file.exists()){
+                file = new File(ResourceUtils.getURL("classpath:" + "elastic").getPath());
+            }
 
             File[] filelist = file.listFiles();
             if(filelist == null){
-                file = new File(ResourceUtils.getURL("classpath:" + "elastic").getPath());
-                filelist = file.listFiles();
+                return;
             }
-
             for(File f : filelist){
                 String filename = f.getName();
                 if(filename.endsWith("xml")){

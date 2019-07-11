@@ -8,19 +8,19 @@
         <!--登记号-->
         <property sourceName="patientid" targetName="RAN_RegNo"  valueType="String" routingField="true"></property>
         <!--主诉-->
-        <property sourceName="zhusu" targetName="RAN_Complain" valueType="String"></property>
+        <property sourceName="zs" targetName="RAN_Complain" valueType="String"></property>
         <!--现病史-->
-        <property sourceName="xianbingshi" targetName="RAN_PresentIllness" valueType="String"></property>
+        <property sourceName="xbs" targetName="RAN_PresentIllness" valueType="String"></property>
         <!--既往史-->
-        <property sourceName="jiwangshi" targetName="RAN_PastHistory" valueType="String"></property>
+        <property sourceName="jws" targetName="RAN_PastHistory" valueType="String"></property>
         <!--个人史-->
-        <property sourceName="gerenshi" targetName="RAN_Sociology" valueType="String"></property>
+        <property sourceName="grs" targetName="RAN_Sociology" valueType="String"></property>
         <!--婚育史-->
-        <property sourceName="yjhyshi" targetName="RAN_Marriage" valueType="String"></property>
+        <property sourceName="yjhys" targetName="RAN_Marriage" valueType="String"></property>
         <!--家族史-->
-        <property sourceName="jiazushi" targetName="RAN_Family" valueType="String"></property>
+        <property sourceName="jzs" targetName="RAN_Family" valueType="String"></property>
         <!--体格检查-->
-        <property sourceName="tigejiancha" targetName="RAN_PhysicalExamination" valueType="String"></property>
+        <property sourceName="tgjc" targetName="RAN_PhysicalExamination" valueType="String"></property>
         <!--专科检查-->
         <property sourceName="zkqkjc" targetName="RAN_SpecialityExamination" valueType="String"></property>
         <!--辅助检查-->

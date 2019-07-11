@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8160
   tomcat:
     max-http-post-size: 100MB
   # 下面是配置undertow作为服务器的参数
@@ -143,6 +143,8 @@ elastic-mapper:
   onCache: true  # 系统启动时预先缓存字典类型
 ## HBase 配置
 hbase:
+  # 是否使用华为配置，如果是， 以下config中配置失效
+  huaweiConfig: true
   batchSize: 50000
   config:
     # 指定 HBase 的 zk 地址

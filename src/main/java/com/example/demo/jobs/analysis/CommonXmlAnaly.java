@@ -1,6 +1,7 @@
 package com.example.demo.jobs.analysis;
 
 import org.dom4j.Element;
+import org.springframework.util.StringUtils;
 
 /**
  * 病历xml文档解析通用方法
@@ -216,7 +217,11 @@ final public class CommonXmlAnaly {
         String lengthValue = valueE == null ? null : valueE.attributeValue("value");
         String unitValue = unitE == null ? null : unitE.attributeValue("value");
 
-        return lengthValue + unitValue;
+        if(!StringUtils.isEmpty(lengthValue) && !StringUtils.isEmpty(unitValue)){
+            return lengthValue + unitValue;
+        }
+
+        return null;
     }
 
     public static String getChildValueQuantity(Element element){

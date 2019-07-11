@@ -304,6 +304,9 @@ public class MedicalRHPageAnaly {
                     String physicalType = CommonXmlAnaly.getLocationPhysicalType(childElement);
                     Element locationElement = childElement.element("location");
                     String display = CommonXmlAnaly.getDisplayValue(locationElement);
+                    if(StringUtils.isEmpty(physicalType)){
+                        break;
+                    }
                     switch (physicalType) {
                         case "入院科室":
                             caseRecodrXmlBean.addProperty("admDept", display);
@@ -391,15 +394,16 @@ public class MedicalRHPageAnaly {
         }
 
         String code = CommonXmlAnaly.getCodeCode(observation);
+        Element valueQuanEl = observation.element("valueQuantity");
         if (StringUtils.isEmpty(code)) {
             return;
         }
         switch (code) {
             case "NBAdmissionWeight":   // 新生儿入院体重
-                caseRecodrXmlBean.addProperty("NBAdmissionWeight", CommonXmlAnaly.getvalueQuantity(observation));
+                caseRecodrXmlBean.addProperty("NBAdmissionWeight", CommonXmlAnaly.getvalueQuantity(valueQuanEl));
                 break;
             case "NBBirthWeight":   //新生儿出生体重
-                caseRecodrXmlBean.addProperty("NBBirthWeight", CommonXmlAnaly.getvalueQuantity(observation));
+                caseRecodrXmlBean.addProperty("NBBirthWeight", CommonXmlAnaly.getvalueQuantity(valueQuanEl));
                 break;
             case "DE04.50.001.00":  //ABO血型
                 caseRecodrXmlBean.addProperty("LIABOBlood",
@@ -437,6 +441,9 @@ public class MedicalRHPageAnaly {
         Element goalEl = careplane.element("goal");
         Element goaldisplayEl = goalEl == null ? null : careplane.element("display");
         String goalValue = goaldisplayEl == null ? null : goaldisplayEl.attributeValue("value");
+        if(StringUtils.isEmpty(cateCode)){
+            return;
+        }
         switch (cateCode) {
             case "returnSurgPlan"://重返手术室手术计划
                 String isReturnPlan = (goalValue == null || "".equals(goalValue)) ? "无" : "有";
@@ -448,6 +455,7 @@ public class MedicalRHPageAnaly {
                 caseRecodrXmlBean.addProperty("Plan", isPlan);
                 caseRecodrXmlBean.addProperty("Goal", goalValue);
                 break;
+            default:break;
         }
     }
 
@@ -578,6 +586,9 @@ public class MedicalRHPageAnaly {
         String codeDisplay = CommonXmlAnaly.getCodeDisplay(conditionElement);
         String diagType = null;
         String diagTypeCode = null;
+        if(cateCode == null){
+            return;
+        }
         switch (cateCode) {
             case "InjuryANDPois":   //住院患者损伤和中毒
                 caseRecodrXmlBean.addProperty("outerReason", codeDisplay);

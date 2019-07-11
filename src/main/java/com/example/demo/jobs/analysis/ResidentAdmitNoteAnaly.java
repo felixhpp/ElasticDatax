@@ -106,7 +106,7 @@ public class ResidentAdmitNoteAnaly {
                     if (!StringUtils.isEmpty(referenceUrl)) {
                         Element reElement = map.get(referenceUrl);
                         String curText = getNoteForResource(reElement);
-                        text.append(curText);
+                        text.append(curText).append("。");
                     }
                 }
 

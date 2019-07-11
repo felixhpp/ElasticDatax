@@ -128,7 +128,13 @@ public class DemoTestController {
                 break;
             case "basy":
             case "basy.xml":
-                curfileName = "bnsy-all.xml";
+            case "basy1":
+                curfileName = "bnsy1.xml";
+                typeEnum = ElasticTypeEnum.MedicalRecordHomePage;
+                break;
+            case "basy2":
+            case "basy2.xml":
+                curfileName = "bnsy2.xml";
                 typeEnum = ElasticTypeEnum.MedicalRecordHomePage;
                 break;
             default:break;
@@ -162,7 +168,13 @@ public class DemoTestController {
                 break;
             case "basy":
             case "basy.xml":
-                curfileName = "bnsy-all.xml";
+            case "basy1":
+                curfileName = "bnsy1.xml";
+                typeEnum = ElasticTypeEnum.MedicalRecordHomePage;
+                break;
+            case "basy2":
+            case "basy2.xml":
+                curfileName = "bnsy2.xml";
                 typeEnum = ElasticTypeEnum.MedicalRecordHomePage;
                 break;
             default:break;

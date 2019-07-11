@@ -17,7 +17,6 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.AnnotationBeanNameGenerator;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.EnableLoadTimeWeaving;
-import org.springframework.data.hadoop.hbase.HbaseTemplate;
 import org.springframework.util.StringUtils;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
