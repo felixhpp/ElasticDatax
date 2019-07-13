@@ -30,7 +30,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/test")
 public class DemoTestController {
-    private int TOTAL = 2000;
+    private int TOTAL = 10;
     private boolean isDev = false;
 
     @Autowired
@@ -234,14 +234,18 @@ public class DemoTestController {
             object.put("pat_regno", "1234" + i);
             object.put("pat_recordno", "12314" + i);
             object.put("pat_name", "测试姓名" + i);
+//            object.put("pat_idcard", "");
             object.put("pat_idcard", "141122199309090101" + i);
             if (!isDev) {
-                object.put("pat_gender_code", getRandom(sexCode));
-                object.put("pat_nation_code", getRandom(nationCode));
+                //object.put("pat_gender_code", getRandom(sexCode));
+                object.put("pat_gender_code", "");
+//                object.put("pat_nation_code", getRandom(nationCode));
+                object.put("pat_nation_code", null);
                 object.put("pat_marital_code", getRandom(maritalCode));
             }
 
             object.put("pat_birthday", getRandom(birthday));
+//            object.put("pat_birthday", null);
 
             maps.add(object);
         }

@@ -154,8 +154,6 @@ public final class Pipeline {
 
             model.setMapData(targetObject);
             model.setTheme(theme);
-
-
         }
 
         return model;

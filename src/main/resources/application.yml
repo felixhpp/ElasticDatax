@@ -148,10 +148,6 @@ hbase:
   batchSize: 50000
   config:
     # 指定 HBase 的 zk 地址
-#    hbase.zookeeper.quorum: 127.0.0.1,127.0.0.2,127.0.0.3
-#    hbase.zookeeper.property.clientPort: 2181
-#    fs.defaultFS: hdfs://cc-11:8020
-#    fs.trash.interval: 1
     hbase:
       zookeeper:
         quorum: 127.0.0.1,127.0.0.2,127.0.0.3
