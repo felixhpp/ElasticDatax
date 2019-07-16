@@ -8,6 +8,6 @@ public class ElasticMonitorController {
 
     @GetMapping(path = "monitor")
     public String indices() {
-        return "/web/monitor/clusters";
+        return "web/monitor/clusters";
     }
 }

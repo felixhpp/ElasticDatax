@@ -5,20 +5,25 @@
 <!ELEMENT propertys (property)>
 <!ELEMENT property (
         methodConvertor* | dicConvertor? | dateFormatConvertor? |
-        dateConcatConvertor? | valueFormatConvertor? | sqlConvertor | calculateConvertor |
+        dateConcatConvertor? | valueFormatConvertor? | sqlConvertor | calculateConvertor | concatValueConvertor |
+        dateConcat2Convertor |
         if
         )>
 <!ELEMENT if (
         methodConvertor* | dicConvertor? | dateFormatConvertor? |
-        dateConcatConvertor? | valueFormatConvertor? | sqlConvertor | calculateConvertor
+        dateConcatConvertor? | valueFormatConvertor? | sqlConvertor | calculateConvertor | concatValueConvertor
+        | dateConcat2Convertor
         )>
 <!ELEMENT methodConvertor (parameter+)>
 <!ELEMENT dateFormatConvertor (parameter)>
 <!ELEMENT dicConvertor (parameter)>
+<!-- 连接多个字段值 -->
+<!ELEMENT concatValueConvertor (parameter+)>
 <!--通过某一个字段计算-->
 <!ELEMENT calculateConvertor (startDateParameter,endDateParameter)>
 <!ELEMENT sqlConvertor (#PCDATA)>
 <!ELEMENT dateConcatConvertor (dateParameter, timeParameter)>
+<!ELEMENT dateConcat2Convertor (dateParameter, timeParameter)>
 <!ELEMENT valueFormatConvertor (parameter)>
 <!ELEMENT dateParameter (#PCDATA)>
 <!ELEMENT timeParameter (#PCDATA)>
@@ -55,6 +60,7 @@
 <!ATTLIST property rowKey (true|false) #IMPLED>
 <!-- property routingField属性是可选的，只能选择true|false -->
 <!ATTLIST property routingField (true|false) #IMPLED>
+
 <!--文字描述，可选-->
 <!ATTLIST property desc CDATA #IMPLED>
 <!-- property valueType属性是可选的，只能选择true|false -->
@@ -81,6 +87,9 @@
         test |
         )  #REQUIRED>
 
+<!ATTLIST concatValueConvertor methodName (
+        concatValue |
+        )>
 <!ATTLIST parameter type (
         String | string |
         Integer | int |
@@ -104,7 +113,7 @@
 <!ATTLIST dateFormatConvertor methodName (
         formatDate |
         ) #REQUIRED "formatDate">
-<!--format 日期的类型 shortDate : yyy-mm-dd; longDate: yyyy-mm-dd hh:mm:ss; time: hh:mm:ss-->
+<!--format 日期的类型 shortDate : yyy-mm-dd; longDate: yyyy-mm-dd hh:mm:ss; time: hh:mm:ss -->
 <!ATTLIST dateFormatConvertor formatType (
         shortDate | longDate | time |
         ) #REQUIRED "shortDate">
@@ -112,13 +121,21 @@
 <!ATTLIST dateConcatConvertor methodName (
         concatDatetime |
         ) #REQUIRED "concatDatetime">
-
+<!ATTLIST dateConcat2Convertor methodName(
+        concat2Datetime |
+        ) #REQUIRED "concat2Datetime">
 <!ATTLIST valueFormatConvertor methodName (
         formatValue |
         ) #REQUIRED "formatValue">
 
-<!ATTLIST dateParameter value CDATA #REQUIRED>
+<!ATTLIST dateParameter value CDATA  #REQUIRED>
+<!ATTLIST dateParameter format (
+        shortDate | longDate | yyyymmdd
+        ) #REQUIRED>
 <!ATTLIST timeParameter value CDATA #REQUIRED>
+<!ATTLIST timeParameter format (
+        time | hhmmss
+        ) #REQUIRED>
 <!ATTLIST startDateParameter value CDATA #REQUIRED>
 <!ATTLIST endDateParameter value CDATA #REQUIRED>
 <!ATTLIST const targetName CDATA #REQUIRED>

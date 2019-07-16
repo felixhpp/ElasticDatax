@@ -11,6 +11,7 @@ import com.example.demo.core.utils.ResultUtil;
 import com.example.demo.jobs.ConvertPipeline;
 import com.example.demo.jobs.analysis.CaseRecodrXmlBean;
 import com.example.demo.jobs.analysis.CaseRecordXmlAnaly;
+import com.example.demo.jobs.hbase.HBaseBulkProcessor;
 import com.example.demo.service.DefaultDicMapService;
 import com.example.demo.service.ElasticBulkService;
 import org.dom4j.Document;
@@ -30,7 +31,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/test")
 public class DemoTestController {
-    private int TOTAL = 10;
+    private int TOTAL = 10000;
     private boolean isDev = false;
 
     @Autowired
@@ -38,6 +39,9 @@ public class DemoTestController {
 
     @Autowired
     private ElasticBulkService elasticBulkService;
+
+//    @Autowired
+//    private HBaseBulkProcessor hBaseBulkProcessor;
 
     @GetMapping("bulk/patient")
     public RestResult bulkPatient() throws Exception {
@@ -112,6 +116,28 @@ public class DemoTestController {
 
         BulkResponseBody responseBody = exeBulk(maps, ElasticTypeEnum.ORDITEM);
         return ResultUtil.success(responseBody);
+    }
+
+    @GetMapping("convert/lisitem")
+    public RestResult convertLisItem() throws Exception {
+        List<Map<String, Object>> maps = buildLisitemData();
+        List<Object> reList = exeConvert(maps, ElasticTypeEnum.Lisitem);
+        return ResultUtil.success(reList);
+    }
+
+    @GetMapping("bulk/lisitem")
+    public RestResult bulkLisItem() throws Exception {
+        List<Map<String, Object>> maps = buildLisitemData();
+        List<Object> reList = exeConvert(maps, ElasticTypeEnum.Lisitem);
+        exeBulk(maps, ElasticTypeEnum.Lisitem);
+        return ResultUtil.success(reList);
+    }
+
+    @GetMapping("convert/ordris")
+    public RestResult convertOrdRis() throws Exception {
+        List<Map<String, Object>> maps = buildOrdRisData();
+        List<Object> reList = exeConvert(maps, ElasticTypeEnum.OrdRis);
+        return ResultUtil.success(reList);
     }
 
     @GetMapping("convert/case/{fileName}")
@@ -234,7 +260,6 @@ public class DemoTestController {
             object.put("pat_regno", "1234" + i);
             object.put("pat_recordno", "12314" + i);
             object.put("pat_name", "测试姓名" + i);
-//            object.put("pat_idcard", "");
             object.put("pat_idcard", "141122199309090101" + i);
             if (!isDev) {
                 //object.put("pat_gender_code", getRandom(sexCode));
@@ -331,6 +356,58 @@ public class DemoTestController {
         return maps;
     }
 
+    private List<Map<String, Object>> buildLisitemData() {
+        int total = TOTAL;
+        List<Map<String, Object>> maps = new ArrayList<>();
+        String[] ordName = {"JZ015", "010101011400001", "11020000117",
+                "11020000118", "030205010007", "010702020000001"};
+        String[] lisdate = {"20180514", "20180514", "20180514",
+                "20180608", "20180618", "20180617"};
+        String[] listime = {"021257", "092310", "092309",
+                "092310", "092310", "092317"};
+        String[] lisValue = {"未见", "查见", "2+","4.8",
+                "11.50", "0-3", "-"};
+        for (int i = 0; i < total; i++) {
+            Map<String, Object> object = new HashMap<>();
+            object.put("inspection_id", "123"+ i);
+            object.put("test_item_id", "a");
+            object.put("lis_id", "123" + i);
+            object.put("lis_admno", "1234" + i);
+            object.put("lis_regno", "121234" + i);
+            object.put("lis_name", "性激素基础水平测定" + i);
+            object.put("lis_value", getRandom(lisValue));
+            object.put("lis_result", "");
+            object.put("lis_code", "abc");
+            object.put("lis_date", getRandom(lisdate));
+            object.put("lis_time", getRandom(listime));
+            object.put("lis_ordcode", getRandom(ordName));
+            maps.add(object);
+        }
+
+        return maps;
+    }
+
+    private List<Map<String, Object>> buildOrdRisData() {
+        int total = TOTAL;
+        List<Map<String, Object>> maps = new ArrayList<>();
+        String[] ordName = {"JZ015", "010101011400001", "11020000117",
+                "11020000118", "030205010007", "010702020000001"};
+        for (int i = 0; i < total; i++) {
+            Map<String, Object> object = new HashMap<>();
+            object.put("or_id", "123" + i);
+            object.put("or_admno", "1234" + i);
+            object.put("or_regno", "121234" + i);
+            object.put("check_date", "2018-01-01 10:12:23");
+            object.put("or_name", "测试11" + i);
+            object.put("or_ordcode", getRandom(ordName));
+            object.put("or_desc", "abc");
+            object.put("or_result", "sdadadxxxxx");
+            maps.add(object);
+        }
+
+        return maps;
+    }
+
     private List<Map<String, Object>> strToMap(String dataJsonStr) {
         long startTime = System.currentTimeMillis();   //获取开始时间
         JSONReader reader = new JSONReader(new StringReader(dataJsonStr));//已流的方式处理，这里很快
@@ -373,12 +450,18 @@ public class DemoTestController {
         long startTime = System.currentTimeMillis();   //获取开始时间
         List<ESBulkModel> bulkModels = defaultDicMapService.test(maps, typeEnum);
 
+        long start = System.currentTimeMillis();
+        // 进行hbase测试
+//        for (ESBulkModel m : bulkModels){
+//            hBaseBulkProcessor.add(m);
+//        }
+
+        long end = System.currentTimeMillis();
         if (bulkModels.size() > 10) {
             reList.addAll(bulkModels.subList(0, 10));
         } else {
             reList.addAll(bulkModels.subList(0, bulkModels.size()));
         }
-
 
         if (typeEnum.equals(ElasticTypeEnum.ORDITEM)) {
             int i = 0;

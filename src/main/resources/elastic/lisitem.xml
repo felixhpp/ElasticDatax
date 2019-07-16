@@ -3,33 +3,44 @@
 <elasticMapper name="lisitem" desc="导入检验数据">
     <propertys>
         <!--检验ID-->
-        <property sourceName="lis_id" targetName="Lis_Id" valueType="String" idField="true" ></property>
+        <property sourceName="inspection_id" targetName="Lis_Id" valueType="String" idField="true" >
+            <concatValueConvertor methodName="concatValue">
+                <parameter>inspection_id</parameter>
+                <parameter>test_item_id</parameter>
+            </concatValueConvertor>
+        </property>
         <property sourceName="lis_admno" targetName="Lis_AdmNo" valueType="String" parentField="true"></property>
         <property sourceName="lis_regno" targetName="Lis_RegNo" valueType="String" routingField="true"></property>
         <!--检验名称-->
-        <property sourceName="lis_name_code" targetName="Lis_Name" valueType="String">
-            <dicConvertor methodName="getByCode" dicType="LisItem">
-                <parameter></parameter>
-            </dicConvertor>
+        <property sourceName="lis_name" targetName="Lis_Name" valueType="String">
         </property>
         <!--检验值-->
         <property sourceName="lis_value" targetName="Lis_Value" valueType="String"></property>
         <property sourceName="lis_result" targetName="Lis_Result" valueType="String"></property>
-        <property sourceName="lis_name_code" targetName="Lis_GenericCode"  valueType="String"></property>
+        <property sourceName="lis_code" targetName="Lis_GenericCode"  valueType="String"></property>
         <!--格式化后的检验值,为了方便比较-->
         <property sourceName="lis_value" targetName="Lis_FormatVaue" valueType="String">
             <valueFormatConvertor methodName="formatValue">
-                <parameter></parameter>
+                <parameter>lis_value</parameter>
             </valueFormatConvertor>
         </property>
         <!--检验时间-->
         <property sourceName="lis_date" targetName="Lis_DateTime" valueType="String">
-            <dateFormatConvertor methodName="formatDate" formatType="longDate">
-                <parameter></parameter>
-            </dateFormatConvertor>
+            <dateConcat2Convertor methodName="concat2Datetime">
+                <dateParameter value="lis_date" format="yyyymmdd"></dateParameter>
+                <timeParameter value="lis_time" format="hhmmss"></timeParameter>
+            </dateConcat2Convertor>
         </property>
         <!--距离手术天数-->
         <property sourceName="lis_operationdays" targetName="Lis_OperationDays" valueType="String"></property>
+        <!--       检验医嘱名称 -->
+        <property sourceName="lis_ordcode" targetName="Lis_OrdName">
+            <dicConvertor methodName="getByCode" dicType="OrderItem">
+                <parameter>lis_ordcode</parameter>
+            </dicConvertor>
+        </property>
+        <!--       检验医嘱代码 -->
+        <property sourceName="lis_ordcode" targetName="Lis_OrdCode"></property>
     </propertys>
 
     <outputs>

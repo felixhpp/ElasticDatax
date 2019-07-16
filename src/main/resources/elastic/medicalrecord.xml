@@ -26,8 +26,8 @@
         <!--就诊日期时间-->
         <property sourceName="mr_admdate" targetName="MR_AdmTime" valueType="String">
             <dateConcatConvertor methodName="concatDatetime">
-                <dateParameter value="mr_admdate"></dateParameter>
-                <timeParameter value="mr_admtime"></timeParameter>
+                <dateParameter value="mr_admdate" format="shortDate"></dateParameter>
+                <timeParameter value="mr_admtime" format="time"></timeParameter>
             </dateConcatConvertor>
         </property>
         <property sourceName="mr_admdept_code" targetName="MR_AdmDept" valueType="String">
@@ -39,8 +39,8 @@
         </property>
         <property sourceName="mr_dischdate" targetName="MR_DischTime" valueType="String">
             <dateConcatConvertor methodName="concatDatetime">
-                <dateParameter value="mr_dischdate"></dateParameter>
-                <timeParameter value="mr_dischtime"></timeParameter>
+                <dateParameter value="mr_dischdate" format="shortDate"></dateParameter>
+                <timeParameter value="mr_dischtime" format="time"></timeParameter>
             </dateConcatConvertor>
         </property>
         <property sourceName="mr_dischdept_code" targetName="MR_DischDept" valueType="String">

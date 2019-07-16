@@ -123,7 +123,7 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
                 }
             }
         }
-        ;
+
         result.setResultCode("0");
         result.setResultContent("成功" + size + "条");
         return result;
@@ -200,10 +200,10 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
                 }
 
                 //是否有附带的信息
-                bulkOtherCaseResult(recordBean.getOperationResult(), body.getDocumentId(),
-                        body.getPatientId(), body.getVisitNumber());
-                bulkOtherCaseResult(recordBean.getDiagnoseResult(), body.getDocumentId(),
-                        body.getPatientId(), body.getVisitNumber());
+//                bulkOtherCaseResult(recordBean.getOperationResult(), body.getDocumentId(),
+//                        body.getPatientId(), body.getVisitNumber());
+//                bulkOtherCaseResult(recordBean.getDiagnoseResult(), body.getDocumentId(),
+//                        body.getPatientId(), body.getVisitNumber());
             }
             result.setResultCode("0");
             result.setResultContent("成功" + size + "条");
@@ -240,7 +240,7 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
             boolean add = addBulkProcessor(bulkMode, mapperBean.getDefaultIndex(), typeName);
         }
         //是否有附加的信息
-        CaseRecordXmlOtherBean operationBean = bean.getOperationResult();
+        CaseRecordXmlOtherBean operationBean = null; //bean.getOperationResult(); //注释掉， 不从病案首页中导入其他信息
         if(operationBean != null){
             ElasticTypeEnum otherTypeEnum = operationBean.getTypeEnum();
             List<Map<String, Object>> maps = operationBean.getMaps();
@@ -272,7 +272,7 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
                 }
             }
         }
-        CaseRecordXmlOtherBean otherDiagBean = bean.getDiagnoseResult();
+        CaseRecordXmlOtherBean otherDiagBean = null; //bean.getDiagnoseResult();  //注释掉， 不从病案首页中导入其他信息
         if(otherDiagBean != null){
             ElasticTypeEnum otherTypeEnum = otherDiagBean.getTypeEnum();
             List<Map<String, Object>> maps = otherDiagBean.getMaps();

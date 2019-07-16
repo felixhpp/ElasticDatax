@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -43,11 +44,10 @@ public final class ConvertMethod {
      * @return 拼接的日期时间字符串
      */
     public static String concatDatatime(String dateString, String timeString) {
-        String datatime = null;
-
         try {
             String dataStr = null;
             String timeStr = null;
+            StringBuilder sb = new StringBuilder();
             Date date = DateFormatUtil.parseDateString(dateString, "yyyy-MM-dd");
             Date time = DateFormatUtil.parseDateString(timeString, "HH:mm:ss");
             if (date != null) {
@@ -57,7 +57,24 @@ public final class ConvertMethod {
                 timeStr = DateFormatUtil.getTimeString(time);
             }
             if (!StringUtils.isEmpty(dataStr) && !StringUtils.isEmpty(timeStr)) {
-                datatime = dataStr + " " + timeStr;
+                sb.append(dataStr).append(" ").append(timeStr);
+            }
+            return sb.toString();
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+        return null;
+    }
+
+    public static String concatDatatime2(String dateString, String timeString) {
+        String datatime = null;
+
+        try {
+            if (!StringUtils.isEmpty(dateString) && !StringUtils.isEmpty(timeString)) {
+                String dataStr = dateString + timeString;
+                Date dateD = DateFormatUtil.parseDateString(dataStr, "yyyyMMddHHmmss");
+                datatime = DateFormatUtil.getDatetimeString(dateD);
             }
             return datatime;
         } catch (Exception e) {
@@ -66,14 +83,13 @@ public final class ConvertMethod {
 
         return null;
     }
-
     /**
      * 格式化数字类型的字符串值, 方便做> < 比较
      *
      * @return
      */
     public static String formatValue(Object value) {
-        if (!StringUtils.isEmpty(value)) {
+        if (StringUtils.isEmpty(value)) {
             return null;
         }
         return valueFormat.ToFormat(value.toString());
@@ -146,6 +162,35 @@ public final class ConvertMethod {
             return DateFormatUtil.differentYears(sDate, eDate);
         } catch (Exception e) {
             return -1;
+        }
+    }
+
+    /**
+     * 连接多个字段值
+     * @param values 多个值
+     * @param pattern 连接符， 为空则 不使用连接符
+     * @return
+     */
+    public static String concatValue(ArrayList<String> values, String pattern){
+        if(values.size() == 0){
+            return null;
+        }
+        try {
+            if(StringUtils.isEmpty(pattern)){
+                pattern = "";
+            }
+            StringBuilder sb = new StringBuilder();
+            int i = 0;
+            for (String v : values){
+                if(i > 0){
+                    sb.append(pattern);
+                }
+                sb.append(v);
+                i++;
+            }
+            return sb.toString();
+        } catch (Exception e){
+            return "";
         }
     }
 }

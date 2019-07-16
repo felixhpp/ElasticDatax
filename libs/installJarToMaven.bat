@@ -23,5 +23,6 @@ call mvn install:install-file -DgroupId=org.apache.hbase -DartifactId=hbase-serv
 call mvn install:install-file -DgroupId=org.apache.hbase -DartifactId=hbaseFileStream -Dversion=1.0 -Dpackaging=jar -Dfile=hbaseFileStream-1.0.jar
 call mvn install:install-file -DgroupId=com.huawei.hadoop -DartifactId=dynalogger -Dversion=1.0.0 -Dpackaging=jar -Dfile=dynalogger-V100R002C30.jar
 call mvn install:install-file -DgroupId=com.huawei.zookeeper -DartifactId=zookeeper -Dversion=3.5.1 -Dpackaging=jar -Dfile=zookeeper-3.5.1.jar
+call mvn install:install-file -DgroupId=org.apache.commons -DartifactId=commons-configuration -Dversion=1.6 -Dpackaging=jar -Dfile=commons-configuration-1.6.jar
 
 pause

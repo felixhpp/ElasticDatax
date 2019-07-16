@@ -49,6 +49,7 @@ public class ElasticApiController {
     @ApiImplicitParam(name = "content", value = "请求json字符串", paramType = "String", required = true, dataType = "String")
     @PostMapping(path = "bulk")
     public RestResult bulk(String content) {
+        //logger.info(content);
         long startTime = System.currentTimeMillis();
         BulkRequestBody requetsBody = JSONObject.parseObject(content, BulkRequestBody.class);
         String dataStr = requetsBody.getData();

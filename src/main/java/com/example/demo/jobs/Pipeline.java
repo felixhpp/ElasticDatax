@@ -117,11 +117,15 @@ public final class Pipeline {
                 Object curSourceObj = sourceData.get(sourceName);
                 Converter[] converters = property.getConverterArrty();
                 if (null == converters || converters.length == 0) {
-                    targetObject.put(targetName, curSourceObj);
+                    if(!StringUtils.isEmpty(curSourceObj)){
+                        targetObject.put(targetName, curSourceObj);
+                    }
                 } else {
                     for (Converter converter : converters) {
                         Object newObject = convertProperty(converter, sourceData, sourceName);
-                        targetObject.put(targetName, newObject);
+                        if(!StringUtils.isEmpty(newObject)){
+                            targetObject.put(targetName, newObject);
+                        }
                     }
                 }
             }
@@ -357,6 +361,29 @@ public final class Pipeline {
                     String vParamField = args.get(0);
                     Object vparamv = sourceMap.get(vParamField);
                     resultObject = ConvertMethod.formatValue(vparamv);
+                }
+                break;
+            case ConcatValue:
+                ArrayList<String> values = new ArrayList<>();
+                for (String p : args){
+                    String vParamField = p;
+                    Object vparamv = sourceMap.get(vParamField);
+                    if(vparamv != null){
+                        values.add(vparamv.toString());
+                    }
+                    resultObject = ConvertMethod.concatValue(values, null);
+                }
+                break;
+            case ConcatDatatime2:
+                String dateParamField2 = convert.getDateParamField();
+                String timeParamField2 = convert.getTimeParamField();
+                if (StringUtils.isEmpty(dateParamField2) || StringUtils.isEmpty(timeParamField2)) {
+                    break;
+                }
+                Object dateparamv2 = sourceMap.get(dateParamField2);
+                Object timeparamv2 = sourceMap.get(timeParamField2);
+                if (!StringUtils.isEmpty(dateparamv2) && !StringUtils.isEmpty(timeparamv2)) {
+                    resultObject = ConvertMethod.concatDatatime2(dateparamv2.toString(), timeparamv2.toString());
                 }
                 break;
             default:break;

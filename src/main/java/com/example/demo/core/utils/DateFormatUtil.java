@@ -3,8 +3,11 @@ package com.example.demo.core.utils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
 import org.apache.lucene.analysis.ngram.EdgeNGramFilterFactory;
+import org.elasticsearch.search.aggregations.support.format.ValueFormatter;
+import org.joda.time.DateTime;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
@@ -20,8 +23,19 @@ public final class DateFormatUtil {
     private static final String SHORT_DATE_FORMAT = "yyyy-MM-dd";
     private static final String TIME_DATE_FORMAT = "HH:mm:ss";
 
-    public static void main(String[] args){
-
+    public static void main(String[] args) throws ParseException {
+        String date = "20180701"+"153551";
+        Date date1 = new SimpleDateFormat("yyyyMMddHHmmss").parse(date);//先按照原格式转换为时间
+        //DateTime dateTime = DateTime.parse();
+        String s = String.format("{0:yyyy-MM-dd hh:mm:ss}", date1);
+        Date dateD = parseDateString(date, "yyyyMMddHHmmss");
+        String dataStr = DateFormatUtil.getDatetimeString(dateD);
+        String time = "";
+        Date teme11 = parseDateString(date, "hhmmss");
+        String timeStr = DateFormatUtil.getTimeString(teme11);
+        //1、定义转换格式
+        SimpleDateFormat formatter  = new SimpleDateFormat("yyyy-MM-dd");
+        Date date2 = formatter.parse(date);
     }
 
     
@@ -41,6 +55,7 @@ public final class DateFormatUtil {
         try {
             return FastDateFormat.getInstance(pattern).parse(timeString);
         } catch (ParseException e) {
+
             e.printStackTrace();
         }
         return null;

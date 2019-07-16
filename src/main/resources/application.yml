@@ -141,26 +141,9 @@ spring:
 elastic-mapper:
   onMapper: true
   onCache: true  # 系统启动时预先缓存字典类型
-## HBase 配置
-hbase:
-  # 是否使用华为配置，如果是， 以下config中配置失效
-  huaweiConfig: true
-  batchSize: 50000
-  config:
-    # 指定 HBase 的 zk 地址
-    hbase:
-      zookeeper:
-        quorum: 127.0.0.1,127.0.0.2,127.0.0.3
-        property:
-          clientPort: 2181
-      fs:
-        defaultFS: hdfs://cc-11:8020
-        trash:
-          interval: 1
-      client:
-        keyvalue:
-          maxsiz: 20971520
+
 management:
     health:
       elasticsearch:
         enabled: false
+

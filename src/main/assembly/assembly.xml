@@ -25,7 +25,22 @@
             </includes>
             <fileMode>0775</fileMode>
         </fileSet>
-        <!-- 指定输出target/classes中的配置文件到config目录中 -->
+        <fileSet>
+            <!--
+                0755->即用户具有读/写/执行权限，组用户和其它用户具有读写权限；
+                0644->即用户具有读写权限，组用户和其它用户具有只读权限；
+            -->
+            <!--脚本所在的文件夹，以及打包后将脚本输出到哪个文件夹中 -->
+            <directory>${basedir}/src/bin</directory>
+            <outputDirectory>${file.separator}logs</outputDirectory>
+            <directoryMode>0775</directoryMode>
+            <!-- 哪些文件会被提取 -->
+            <includes>
+                <include>**.log</include>
+            </includes>
+            <fileMode>0775</fileMode>
+        </fileSet>
+        <!-- 指定输出target/classes中的配置文件到conf目录中 -->
         <fileSet>
             <directory>${basedir}/target/classes</directory>
             <includes>
@@ -35,7 +50,7 @@
             </includes>
             <filtered>true</filtered>
             <fileMode>0644</fileMode>
-            <outputDirectory>${file.separator}config</outputDirectory>
+            <outputDirectory>${file.separator}conf</outputDirectory>
         </fileSet>
         <fileSet>
             <directory>${basedir}/target/classes</directory>
@@ -46,25 +61,26 @@
             <fileMode>0644</fileMode>
             <outputDirectory>${file.separator}</outputDirectory>
         </fileSet>
-        <fileSet>
-            <directory>${basedir}/target/classes</directory>
-            <includes>
-                <include>static/**</include>
-                <include>templates/**</include>
-            </includes>
-            <filtered>true</filtered>
-            <fileMode>0644</fileMode>
-            <outputDirectory>${file.separator}static</outputDirectory>
-        </fileSet>
-        <fileSet>
-            <directory>${basedir}/target/classes</directory>
-            <includes>
-                <include>huaweiconf/**</include>
-            </includes>
-            <filtered>true</filtered>
-            <fileMode>0644</fileMode>
-            <outputDirectory>${file.separator}</outputDirectory>
-        </fileSet>
+<!--        static-->
+<!--        <fileSet>-->
+<!--            <directory>${basedir}/target/classes</directory>-->
+<!--            <includes>-->
+<!--                <include>static/**</include>-->
+<!--                <include>templates/**</include>-->
+<!--            </includes>-->
+<!--            <filtered>true</filtered>-->
+<!--            <fileMode>0644</fileMode>-->
+<!--            <outputDirectory>${file.separator}</outputDirectory>-->
+<!--        </fileSet>-->
+<!--        <fileSet>-->
+<!--            <directory>${basedir}/target/classes</directory>-->
+<!--            <includes>-->
+<!--                <include>conf/**</include>-->
+<!--            </includes>-->
+<!--            <filtered>true</filtered>-->
+<!--            <fileMode>0644</fileMode>-->
+<!--            <outputDirectory>${file.separator}</outputDirectory>-->
+<!--        </fileSet>-->
         <!-- 将第三方依赖打包到lib目录中 -->
         <fileSet>
             <directory>${basedir}/target/lib</directory>

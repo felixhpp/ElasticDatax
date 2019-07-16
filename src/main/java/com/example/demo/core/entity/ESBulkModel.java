@@ -121,10 +121,10 @@ public final class ESBulkModel {
      */
     private boolean valid(){
         if(StringUtils.isEmpty(this.id)){
-            log.error("mapper error, idField not found. data[{}].", JSON.toJSONString(this.mapData));
+            log.error("mapper error, idField not found. type[{}], data[{}].", this.theme,  this.id);
             return false;
         }else if(StringUtils.isEmpty(this.routing)) {
-            log.error("mapper error, idField not found. data[{}].", JSON.toJSONString(this.mapData));
+            log.error("mapper error, routing not found. type[{}], data id: [{}].", this.theme,  this.id);
             return false;
         }
 

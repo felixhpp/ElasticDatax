@@ -32,6 +32,12 @@ public enum ConvertMethodEnum {
      * 处理数值型字符串，便于比较
      */
     FormatValue(6, "formatvalue", 1),
+    /**
+     * 连接多个字段值
+     */
+    ConcatValue(7, "concatvalue", 5),
+
+    ConcatDatatime2(8, "concat2datetime", 6)
     ;
     /**
     * type

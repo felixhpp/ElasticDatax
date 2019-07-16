@@ -12,7 +12,9 @@ import javax.security.auth.login.AppConfigurationEntry.LoginModuleControlFlag;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.security.UserGroupInformation;
 import org.apache.hadoop.security.authentication.util.KerberosUtil;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class LoginUtil
 {
@@ -33,7 +35,7 @@ public class LoginUtil
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(LoginUtil.class);
+    private static final Logger LOG = LoggerFactory.getLogger(LoginUtil.class);
 
     /**
      * line operator string
@@ -64,6 +66,7 @@ public class LoginUtil
 
     private static final String ZOOKEEPER_SERVER_PRINCIPAL_KEY = "zookeeper.server.principal";
 
+    //keytab文件与用户不匹配，可以在客户端服务器上用kinit -k -t keytab用户进行检查
     private static final String LOGIN_FAILED_CAUSE_PASSWORD_WRONG =
             "(wrong password) keytab file and user not match, you can kinit -k -t keytab user in client server to check";
 
@@ -417,6 +420,7 @@ public class LoginUtil
         }
         catch (IOException e)
         {
+            LOG.error(e.getMessage());
             LOG.error("login failed with " + principal + " and " + keytabFile + ".");
             LOG.error("perhaps cause 1 is " + LOGIN_FAILED_CAUSE_PASSWORD_WRONG + ".");
             LOG.error("perhaps cause 2 is " + LOGIN_FAILED_CAUSE_TIME_WRONG + ".");

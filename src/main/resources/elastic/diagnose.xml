@@ -7,8 +7,8 @@
         <property sourceName="diag_regno" targetName="Diag_RegNo"  valueType="String" routingField="true"></property>
         <property sourceName="diag_date" targetName="Diag_Time" valueType="String">
             <dateConcatConvertor methodName="concatDatetime">
-                <dateParameter value="diag_date"></dateParameter>
-                <timeParameter value="diag_time"></timeParameter>
+                <dateParameter value="diag_date" format="shortDate"></dateParameter>
+                <timeParameter value="diag_time" format="time"></timeParameter>
             </dateConcatConvertor>
         </property>
         <property sourceName="diag_type_code" targetName="Diag_Type" valueType="String">

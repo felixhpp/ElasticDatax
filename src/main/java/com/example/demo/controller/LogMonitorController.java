@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class LogMonitorController {
     @GetMapping(value = "log/monitor")
     public String home() {
-        return "/web/monitor/logmonitor";
+        return "web/monitor/logmonitor";
     }
 }
