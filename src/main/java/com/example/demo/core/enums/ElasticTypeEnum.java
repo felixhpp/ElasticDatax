@@ -34,7 +34,14 @@ public enum ElasticTypeEnum {
     //病案首页 - 诊断
     Home_Page_Diagnose(11, "basy_diagnose", "homepagediagnose", "homepagediagnose.xml"),
     // 检查
-    OrdRis(12, "pa_ordris", "ordris", "ordris.xml")
+    OrdRis(12, "pa_ordris", "ordris", "ordris.xml"),
+
+    // 病案首页一页 使用mr+就诊号
+    MedicalRecordHomePage_1(13, "basy1", "medicalrecordhomepage", "medicalrecordhomepage.xml"),
+
+    // 病案首页二页 使用mr+就诊号
+    MedicalRecordHomePage_2(14, "basy2", "medicalrecordhomepage", "medicalrecordhomepage.xml"),
+
     ;
     private static Logger logger = LoggerFactory.getLogger(ElasticTypeEnum.class);
     private int type;

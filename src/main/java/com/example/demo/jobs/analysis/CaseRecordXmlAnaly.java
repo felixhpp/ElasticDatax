@@ -17,18 +17,9 @@ public final class CaseRecordXmlAnaly {
      * 文件名称
      */
     private static final String fielName = "";
-    /**
-     * 病历文档模型
-     */
-    private static CaseRecodrXmlBean caseRecodrXmlBean;
 
     private static Base64.Decoder decoder = Base64.getDecoder();
     private static Base64.Encoder encoder = Base64.getEncoder();
-
-    public interface CaseRecordType {
-        String residentAdmitNote = "admissionrecord";   // 入院记录
-        String medicalRecordHomePage = "MedRecHomepage1";   // 病案首页
-    }
 
     /**
      * 获取xml document对象
@@ -58,7 +49,9 @@ public final class CaseRecordXmlAnaly {
         if (document == null) {
             return null;
         }
-        caseRecodrXmlBean = new CaseRecodrXmlBean();
+        // 方法内对象，线程安全
+        CaseRecodrXmlBean caseRecodrXmlBean = new CaseRecodrXmlBean();
+
         try {
             // 获取根节点
             Element caseElements = document.getRootElement();   // Bundle节点

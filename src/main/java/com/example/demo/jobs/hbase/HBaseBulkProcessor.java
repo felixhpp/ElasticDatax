@@ -3,6 +3,7 @@ package com.example.demo.jobs.hbase;
 import com.alibaba.fastjson.JSON;
 import com.example.demo.bean.HBaseTableProperties;
 import com.example.demo.core.entity.ESBulkModel;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.Cell;
 import org.apache.hadoop.hbase.CellUtil;
@@ -17,6 +18,10 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static java.util.concurrent.Executors.*;
+import static javax.swing.text.html.HTML.Tag.OL;
 
 /**
  * 批量导入HBase工具
@@ -25,13 +30,12 @@ import java.util.concurrent.*;
  */
 public final class HBaseBulkProcessor {
     private static Logger logger = LoggerFactory.getLogger(HBaseBulkProcessor.class);
-    private final static int batchSize = 1000;
+    private final static int batchSize = 10000;
     private final static int poolSize = 2;
-    private final static long totalFreeTime = 3*60*1000; // 3分钟
+    private final static long totalFreeTime = 5*60*1000; // 5分钟
     private static HBaseBulkProcessor processor;
     private Connection conn;
-
-    private int activeThreadCount = 0;
+    public static AtomicInteger activeThreadCount = new AtomicInteger(0);
     private static final String FAMILYNAME="F";
     private static final String ROWSPRATOR="$$";
     private static final String TABLENAME="CSMCDR";
@@ -39,7 +43,7 @@ public final class HBaseBulkProcessor {
     /**
      * 初始化队列
      */
-    private static BlockingQueue<ESBulkModel> blockingQueue = new LinkedBlockingQueue<>(batchSize * (poolSize+1));
+    private static BlockingQueue<HBaseBulkModel> blockingQueue = new LinkedBlockingQueue<>(batchSize * (poolSize+1));
 
     /**
      * 可重用固定个数的线程池
@@ -50,7 +54,13 @@ public final class HBaseBulkProcessor {
         System.out.println("HBaseBulkProcessor: " + conf.get("hbase.security.authentication"));
         System.out.println("HBaseBulkProcessor: " + JSON.toJSONString(conf));
         this.conn = ConnectionFactory.createConnection(conf);
-        fixedThreadPool  = Executors.newFixedThreadPool(poolSize);
+        fixedThreadPool  = newFixedThreadPool(poolSize);
+//        ThreadFactory nameThreadFactory = new ThreadFactoryBuilder()
+//                .setNameFormat("hbasebulk-pool-%d").build();
+//        fixedThreadPool = new ThreadPoolExecutor(poolSize, 200, OL,
+//                TimeUnit.MILLISECONDS,
+//                new LinkedBlockingQueue<>(100), nameThreadFactory,
+//                new ThreadPoolExecutor.AbortPolicy(), new RejectedExecutionHandler);
     }
     
     public static void main(String[] args){
@@ -83,7 +93,7 @@ public final class HBaseBulkProcessor {
      * 同步执行add
      * @param model
      */
-    public synchronized void add(ESBulkModel model){
+    public synchronized void add(HBaseBulkModel model){
         try {
             // 将指定元素插入此队列中，将等待可用的空间.当>maxSize 时候，阻塞，直到能够有空间插入元素
             blockingQueue.put(model);
@@ -110,18 +120,24 @@ public final class HBaseBulkProcessor {
      * 线程池执行
      */
     private void execute() {
-        if(blockingQueue.size() >= batchSize){
-            int freeThreadCount = poolSize - activeThreadCount;
+        // 获取当前活动的线程数
+        int curActiveCount = activeThreadCount.get();
+        if(curActiveCount ==0){
+            ExecuteClass executeClass = new ExecuteClass();
+            fixedThreadPool.submit(executeClass);
+            activeThreadCount.incrementAndGet();
+        }else if(blockingQueue.size() >= batchSize) {
+            int freeThreadCount = poolSize - curActiveCount;
             if(freeThreadCount >= 1){
                 ExecuteClass executeClass = new ExecuteClass();
                 fixedThreadPool.submit(executeClass);
-                activeThreadCount++;
+                activeThreadCount.incrementAndGet();
             }
         }
     }
 
     /**
-     * 批量处理hbase model
+     * 批量处理hbase model(增量)
      * @param models
      */
     private void putHBaseModels(List<ESBulkModel> models) throws IOException {
@@ -208,11 +224,75 @@ public final class HBaseBulkProcessor {
         }
     }
 
+    /**
+     * 批量处理hbase model(历史， 不存在更新), 同一个批次必须同一个表数据
+     * @param models
+     */
+    private void putHistoryModels(List<HBaseBulkModel> models) throws IOException {
+        if(models == null || models.size() == 0){
+            return;
+        }
+        int modelSize = models.size();
+        byte[] familyBt = Bytes.toBytes(FAMILYNAME);
+
+        List<Put> puts = new ArrayList<>();
+        for (int i = 0; i< modelSize; i++){
+            HBaseBulkModel model = models.get(i);
+            String tableName = model.getTable();
+            String column = HBaseTableProperties.getValueByKey(tableName);
+            if(StringUtils.isEmpty(column)){
+                logger.error("not found [{}] column name", tableName);
+                continue;
+            }
+            String key = model.getRowKey();
+            List<ESBulkModel> modelList = model.getModels();
+            String str = ModelMapperUtil.constractData(modelList);
+            if(!StringUtils.isEmpty(str)){
+                Put put = new Put(Bytes.toBytes(key));
+                put.addColumn(familyBt, Bytes.toBytes(column), Bytes.toBytes(str));
+                puts.add(put);
+                //System.out.println(str);
+            }
+        }
+
+        if(puts.size() > 0){
+            Table table = this.conn.getTable(TableName.valueOf(TABLENAME));
+            table.put(puts);
+        }
+    }
+
+    /**
+     *  按就诊id对ESBulkMode 进行分组(用于不存在更新的时候)
+     * @param models
+     */
+    private Map<String, List<ESBulkModel>> getGroupByAdmId(List<ESBulkModel> models){
+        if(models == null || models.size() == 0){
+            return null;
+        }
+        Map<String, List<ESBulkModel>> map = new HashMap<>();
+        String key;
+        List<ESBulkModel> listTmp;
+        for (ESBulkModel model : models) {
+            key = model.getAdmId();//按这个属性分组，map的Key
+            if(null == key){
+                continue;
+            }
+            listTmp = map.get(key);
+            if (null == listTmp) {
+                listTmp = new ArrayList<ESBulkModel>();
+                map.put(key, listTmp);
+            }
+            listTmp.add(model);
+        }
+
+        return map;
+    }
+
     class ExecuteClass implements Callable<Integer> {
 
         @Override
         public Integer call() throws Exception {
-            System.out.println("开启-" + Thread.currentThread().getName());
+            logger.info("start -" + Thread.currentThread().getName());
             long freeTime = 0;
             long curTotalFreeTime = 0;
             long sleep = 100;
@@ -222,15 +302,15 @@ public final class HBaseBulkProcessor {
                     long curThreadStartTime = System.currentTimeMillis();
                     freeTime =0;
                     curTotalFreeTime = 0;
-                    List<ESBulkModel> models = new ArrayList<>();
+                    List<HBaseBulkModel> models = new ArrayList<>();
                     blockingQueue.drainTo(models, batchSize);
                     if(models.size() == 0){
-                        System.out.println(MessageFormat.format("currentThread {0} had no data ",Thread.currentThread().getName()));
+                        logger.info(MessageFormat.format("currentThread {0} had no data ",Thread.currentThread().getName()));
                     }else{
-                        Thread.sleep(500);
-                        putHBaseModels(models);
+                        //putHBaseModels(models);
+                        putHistoryModels(models);
                         long curThreadEndTime = System.currentTimeMillis();
-                        System.out.println(Thread.currentThread().getName() + "-执行" + models.size() + "条,tool:"
+                        logger.info(Thread.currentThread().getName() + "- execute[" + models.size() + "] count, time  tool:"
                                 + (curThreadEndTime-curThreadStartTime) + "ms.");
                     }
                 }else {
@@ -239,22 +319,24 @@ public final class HBaseBulkProcessor {
                     freeTime = freeTime + sleep;
                     curTotalFreeTime = curTotalFreeTime + sleep;
                     // 如果30s内没有数据传入，自动插入一次
-                    if (freeTime >= 10000) {
+                    if (freeTime >= 30000) {
                         long curThreadStartTime = System.currentTimeMillis();
                         freeTime = 0;
                         if(blockingQueue.size() > 0){
-                            List<ESBulkModel> models = new ArrayList<>();
+                            List<HBaseBulkModel> models = new ArrayList<>();
                             blockingQueue.drainTo(models);
-                            putHBaseModels(models);
+                            //putHBaseModels(models);
+                            putHistoryModels(models);
                             long curThreadEndTime = System.currentTimeMillis();
                             //执行操作
-                            System.out.println(Thread.currentThread().getName() + "-执行" + models.size() + "条,tool:"
+                            logger.info(Thread.currentThread().getName() + "- execute[" + models.size() + "]count, time tool:"
                                     + (curThreadEndTime-curThreadStartTime) + "ms.");
                         }
                     }
-                    // 如果总空闲时间超过3分钟， 结束线程
+                    // 如果总空闲时间超过totalFreeTime， 结束线程
                     if(curTotalFreeTime >= totalFreeTime){
-                        System.out.println("结束-" + Thread.currentThread().getName());
+                        logger.info("stop Thread-" + Thread.currentThread().getName());
+                        activeThreadCount.decrementAndGet();
                         break;
                     }
                 }
@@ -262,6 +344,4 @@ public final class HBaseBulkProcessor {
             return null;
         }
     }
-
-
 }

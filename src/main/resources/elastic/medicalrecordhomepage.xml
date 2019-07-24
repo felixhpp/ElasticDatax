@@ -215,6 +215,9 @@
         <property sourceName="DiseaseCode6" targetName="MRHP_DiseaseCode6" desc="出院其他诊断编码6"></property>
         <property sourceName="DischDiagOther7" targetName="MRHP_DischDiagOther7" desc="出院其他诊断7"></property>
         <property sourceName="DiseaseCode7" targetName="MRHP_DiseaseCode7" desc="出院其他诊断编码7"></property>
+
+        <property sourceName="OperNames" targetName="MRHP_OperNames" desc="手术名称拼接"></property>
+        <property sourceName="DiagNames" targetName="MRHP_DiagNames" desc="诊断名称拼接"></property>
     </propertys>
 
     <outputs>

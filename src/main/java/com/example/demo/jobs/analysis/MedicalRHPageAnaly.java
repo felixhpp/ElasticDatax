@@ -49,7 +49,20 @@ public class MedicalRHPageAnaly {
                 default:break;
             }
         }
-        return caseRecodrXmlBean.getAnalyResult();
+
+        //解析完之后需要把病案首页中诊断和手术合并起来
+        CaseRecordXmlOtherBean otherOperBean = caseRecodrXmlBean.getOperationResult();
+        Map<String, Object> result = caseRecodrXmlBean.getAnalyResult();
+        if(otherOperBean != null){
+            result.put("OperNames", otherOperBean.getNames());
+        }
+        CaseRecordXmlOtherBean otherDiagBean = caseRecodrXmlBean.getDiagnoseResult();
+        if(otherDiagBean != null){
+            result.put("DiagNames", otherDiagBean.getNames());
+        }
+        caseRecodrXmlBean.setAnalyResult(result);
+
+        return result;
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.example.demo.jobs.analysis;
 
 import com.example.demo.core.enums.ElasticTypeEnum;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,13 +17,38 @@ public class CaseRecordXmlOtherBean {
 
     private List<Map<String, Object>> maps;
 
+    private String names;
+
     public CaseRecordXmlOtherBean(ElasticTypeEnum typeEnum){
         this.count = 0;
         this.typeEnum = typeEnum;
         this.maps = new ArrayList<>();
+        this.names = "";
     }
 
     public void addMap(Map<String, Object> map, boolean isAddCount){
+        // 获取名称
+        Object operName = map.get("OperName");
+        Object diagName = map.get("DiagName");
+
+        if(!StringUtils.isEmpty(operName)){
+            StringBuilder sb = new StringBuilder();
+            if("".equals(names)){
+                sb.append(operName);
+            }else {
+                sb.append(names).append(",").append(operName);
+            }
+            this.names = sb.toString();
+        }else if(!StringUtils.isEmpty(diagName)){
+            StringBuilder sb = new StringBuilder();
+            if("".equals(names)){
+                sb.append(diagName);
+            }else {
+                sb.append(names).append(",").append(diagName);
+            }
+            this.names = sb.toString();
+        }
+
         if(isAddCount){
             this.maps.add(map);
             this.count++;
@@ -49,6 +75,14 @@ public class CaseRecordXmlOtherBean {
 
     public int getCount() {
         return count;
+    }
+
+    public String getNames() {
+        return names;
+    }
+
+    public void setNames(String names) {
+        this.names = names;
     }
 
     public void addCount(){

@@ -136,7 +136,7 @@ public class ElasticsearchConfig {
                 // 每60s提交一次
                 .setFlushInterval(TimeValue.timeValueSeconds(60))
                 // 异步执行
-                .setConcurrentRequests(4)
+                .setConcurrentRequests(6)
                 // 设置退避, 100ms后执行, 最大请求3次
                 .setBackoffPolicy(BackoffPolicy.exponentialBackoff(TimeValue.timeValueMillis(100), 1))
                 .build();

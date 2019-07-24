@@ -72,15 +72,15 @@
 <!--            <fileMode>0644</fileMode>-->
 <!--            <outputDirectory>${file.separator}</outputDirectory>-->
 <!--        </fileSet>-->
-<!--        <fileSet>-->
-<!--            <directory>${basedir}/target/classes</directory>-->
-<!--            <includes>-->
-<!--                <include>conf/**</include>-->
-<!--            </includes>-->
-<!--            <filtered>true</filtered>-->
-<!--            <fileMode>0644</fileMode>-->
-<!--            <outputDirectory>${file.separator}</outputDirectory>-->
-<!--        </fileSet>-->
+        <fileSet>
+            <directory>${basedir}/target/classes</directory>
+            <includes>
+                <include>conf/**</include>
+            </includes>
+            <filtered>true</filtered>
+            <fileMode>0644</fileMode>
+            <outputDirectory>${file.separator}</outputDirectory>
+        </fileSet>
         <!-- 将第三方依赖打包到lib目录中 -->
         <fileSet>
             <directory>${basedir}/target/lib</directory>

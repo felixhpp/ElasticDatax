@@ -11,10 +11,10 @@ import org.springframework.web.socket.server.standard.ServerEndpointExporter;
  * @author felix
  */
 
-@Configuration
+//@Configuration
 public class WebSocketConfig {
 
-    @Bean
+//    @Bean
     public ServerEndpointExporter serverEndpointExporter() {
         return new ServerEndpointExporter();
     }

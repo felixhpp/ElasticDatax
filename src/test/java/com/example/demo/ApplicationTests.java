@@ -7,6 +7,9 @@ import com.example.demo.core.enums.ElasticTypeEnum;
 import com.example.demo.core.entity.ESBulkModel;
 import com.example.demo.core.utils.DateFormatUtil;
 import com.example.demo.jobs.Pipeline;
+import com.example.demo.jobs.elasticsearch.SearchItemConfig;
+import com.example.demo.jobs.elasticsearch.Suggest;
+import com.example.demo.jobs.hbase.LisSynTest;
 import com.example.demo.service.TaskService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +20,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.task.TaskRejectedException;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -35,6 +40,45 @@ public class ApplicationTests {
         logger.info("输出info log42");
         logger.debug("输出debug log42");
         logger.error("输出error log42");
+    }
+    @Test
+    public void queryLisitem() throws SQLException, IOException, ClassNotFoundException {
+        String startDate = "20080101";
+        String endDate = "20191231";
+        String sql = "SELECT oe_orditem.oeori_itmmast_dr || '_' || lis_inspection_result.english_name as lis_catcode, lis_inspection_result.lis_id AS lis_id, lis_inspection_result.test_item_id AS test_item_id, lis_inspection_result.group_id AS group_id, lis_inspection_result.inspection_date AS lis_date, lis_inspection_result.inspection_time AS lis_time , lis_inspection_result.sample_number AS lis_sample_number, lis_inspection_result.english_name AS lis_code, lis_inspection_result.chinese_name AS lis_name, lis_inspection_result.quantitative_result AS lis_value, lis_inspection_result.qualitative_result AS lis_result , lis_inspection_result.test_item_unit AS lis_unit, lis_inspection_result.dhcchis_id AS his_id, oe_orditem.oeori_rowid AS oeori_rowid, oe_orditem.oeori_itmmast_dr AS lis_ordcode, oe_order.oeord_date AS oeord_date , pa_adm.paadm_rowid AS lis_admno, pa_adm.paadm_admno AS paadm_admno, pa_adm.paadm_papmi_dr AS paadm_papmi_dr, pa_patmas.papmi_no AS lis_regno FROM( select a.inspection_id || a.test_item_id as lis_id, replace(a.his_id,'@','||') as dhcchis_id, * from db002_dsn0013_lis_dbo.lis_inspection_result a where a.inspection_date >= "
+                + startDate + " and a.inspection_date <= " + endDate
+                + ") lis_inspection_result LEFT JOIN db002_dsn0001_sqluser.oe_orditem oe_orditem ON oe_orditem.oeori_rowid = lis_inspection_result.dhcchis_id LEFT JOIN db002_dsn0001_sqluser.oe_order oe_order ON oe_order.oeord_rowid = oe_orditem.oeori_oeord_parref LEFT JOIN db002_dsn0001_sqluser.pa_adm pa_adm ON pa_adm.paadm_rowid = oe_order.oeord_adm_dr "
+                +" LEFT JOIN db002_dsn0001_sqluser.pa_patmas pa_patmas ON pa_patmas.papmi_rowid = pa_adm.paadm_papmi_dr";
+        //String all_sql = "SELECT oe_orditem.oeori_itmmast_dr || '_' || lis_inspection_result.english_name as lis_catcode, lis_inspection_result.lis_id AS lis_id, lis_inspection_result.test_item_id AS test_item_id, lis_inspection_result.group_id AS group_id, lis_inspection_result.inspection_date AS lis_date, lis_inspection_result.inspection_time AS lis_time , lis_inspection_result.sample_number AS lis_sample_number, lis_inspection_result.english_name AS lis_code, lis_inspection_result.chinese_name AS lis_name, lis_inspection_result.quantitative_result AS lis_value, lis_inspection_result.qualitative_result AS lis_result , lis_inspection_result.test_item_unit AS lis_unit, lis_inspection_result.dhcchis_id AS his_id, oe_orditem.oeori_rowid AS oeori_rowid, oe_orditem.oeori_itmmast_dr AS lis_ordcode, oe_order.oeord_date AS oeord_date , pa_adm.paadm_rowid AS lis_admno, pa_adm.paadm_admno AS paadm_admno, pa_adm.paadm_papmi_dr AS paadm_papmi_dr, pa_patmas.papmi_no AS lis_regno FROM( select a.inspection_id || a.test_item_id as lis_id, replace(a.his_id,'@','||') as dhcchis_id, * from db002_dsn0013_lis_dbo.lis_inspection_result a ) lis_inspection_result LEFT JOIN db002_dsn0001_sqluser.oe_orditem oe_orditem ON oe_orditem.oeori_rowid = lis_inspection_result.dhcchis_id LEFT JOIN db002_dsn0001_sqluser.oe_order oe_order ON oe_order.oeord_rowid = oe_orditem.oeori_oeord_parref LEFT JOIN db002_dsn0001_sqluser.pa_adm pa_adm ON pa_adm.paadm_rowid = oe_order.oeord_adm_dr LEFT JOIN db002_dsn0001_sqluser.pa_patmas pa_patmas ON pa_patmas.papmi_rowid = pa_adm.paadm_papmi_dr";
+        LisSynTest lisSynTest = LisSynTest.getInstance();
+
+        //lisSynTest.testQuery(sql);
+    }
+
+    /**
+     * 通过对es lisitem 聚合 整理检验项和医嘱大类 关联关系
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     * @throws IOException
+     */
+    @Test
+    public void getSearchItem() throws SQLException, ClassNotFoundException, IOException {
+        SearchItemConfig searchItemConfig = new SearchItemConfig();
+
+        //searchItemConfig.Query();
+    }
+
+    /**
+     * 从数据表中导入es 推荐词
+     */
+    @Test
+    public void importSuggestIndex() throws SQLException, ClassNotFoundException {
+        String sql = "SELECT a.ID AS ID, a.Name AS Name FROM SuggestDics a WHERE a.UpdateTime = 0";
+
+        Suggest suggest = new Suggest();
+        suggest.bulkToES(sql);
+
+        System.out.println("sucess");
     }
 
     @Test

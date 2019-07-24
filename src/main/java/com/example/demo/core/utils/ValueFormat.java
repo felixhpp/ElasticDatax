@@ -1,6 +1,7 @@
 package com.example.demo.core.utils;
 
 import com.example.demo.core.enums.ValueTypeEnum;
+import org.springframework.util.StringUtils;
 
 import java.text.DecimalFormat;
 
@@ -16,7 +17,6 @@ public final class ValueFormat {
     private int DecimalAcc = 3;     // 小数精度，默认为3
     private String Accuracy;
     private double MaxValue;
-    private String MeteData = "";
     // 正负位
     private String PosNegNum = "0";
     // 大于小于位
@@ -25,8 +25,7 @@ public final class ValueFormat {
     private String AbsoluteValue;
     private String FormatData = "";
 
-    private ValueTypeEnum DataType = ValueTypeEnum.DefaultValue;
-    private Boolean IsNumber = true;
+    //private ValueTypeEnum DataType = ValueTypeEnum.DefaultValue;
 
     public ValueFormat() {
         Accuracy = getAccuracy();
@@ -41,29 +40,16 @@ public final class ValueFormat {
     }
 
     public String ToFormat(String value) {
-        MeteData = value;
+        if (StringUtils.isEmpty(value)) {
+            return null;
+        }
+        Boolean IsNumber = true;
         String format = "";
 
-        doFormatValue(value);
-        if (IsNumber) {
-            format = String.format("%s%s%s", PosNegNum, AbsoluteValue, GltNum);
-        } else {
-            format = AbsoluteValue;
-        }
-
-        FormatData = format;
-
-        return format;
-    }
-
-    private void doFormatValue(String value) {
-        if (value == "" && value == null)
-            throw new IllegalArgumentException("value");
 
         value = value.trim();
         // 获取类型
-        DataType = ValidHelper.ValidValueType(value);
-        String formatStr = "";
+        ValueTypeEnum DataType = ValidHelper.ValidValueType(value);
         String posNegNum = "1";
         String gltNum = "1";
         // 绝对值， 补0 后
@@ -98,7 +84,7 @@ public final class ValueFormat {
                 break;
         }
 
-        if (absolute != "" && IsNumber) {
+        if (!"".equals(absolute) && IsNumber) {
             double curNum = Double.parseDouble(absolute);
             if (DataType == ValueTypeEnum.NegativeNumValue) {
                 curNum = MaxValue - curNum;
@@ -107,9 +93,15 @@ public final class ValueFormat {
             absolute = df.format(curNum);
         }
 
-        PosNegNum = posNegNum;
-        GltNum = gltNum;
-        AbsoluteValue = absolute;
+        if (IsNumber) {
+            format = String.format("%s%s%s", posNegNum, absolute, gltNum);
+        } else {
+            format = absolute;
+        }
+
+        FormatData = format;
+
+        return format;
     }
 
     /**
@@ -118,17 +110,17 @@ public final class ValueFormat {
      * @return
      */
     private String getAccuracy() {
-        String intgetStr = "";
+        StringBuilder intgetStr = new StringBuilder();
         for (int i = 0; i < this.IntgerAcc; i++) {
-            intgetStr = intgetStr + "0";
+            intgetStr.append("0");
         }
 
-        String decimalStr = "";
+        StringBuilder decimalStr = new StringBuilder();
         for (int i = 0; i < this.DecimalAcc; i++) {
-            decimalStr = decimalStr + "0";
+            decimalStr.append("0");
         }
 
-        return "" + intgetStr + "." + decimalStr + "";
+        return "" + intgetStr.toString() + "." + decimalStr.toString() + "";
     }
 
     /**
@@ -137,18 +129,19 @@ public final class ValueFormat {
      * @return
      */
     private double getMaxValue() {
-        String intgetStr = "";
+        StringBuilder numberStr = new StringBuilder();
+        StringBuilder intgetStr = new StringBuilder();
         for (int i = 0; i < this.IntgerAcc; i++) {
-            intgetStr = intgetStr + "9";
+            intgetStr.append("9");
         }
 
-        String decimalStr = "";
+        StringBuilder decimalStr = new StringBuilder();
         for (int i = 0; i < this.DecimalAcc; i++) {
-            decimalStr = decimalStr + "9";
+            decimalStr.append("9");
         }
 
-        String numstr = intgetStr + "." + decimalStr;
+        numberStr.append(intgetStr).append(".").append(decimalStr);
 
-        return Double.parseDouble(numstr);
+        return Double.parseDouble(numberStr.toString());
     }
 }

@@ -1,27 +1,20 @@
 package com.example.demo.bean;
 
 import com.example.demo.core.utils.FileReadUtil;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
-import java.io.*;
-import java.util.Map;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
-/**
- * hbase配置信息 bean
- *
- * @author felix
- */
-public class HBaseTableProperties {
+public class HbaseProperties {
     private static Properties properties;
 
     static {
         properties = new Properties();
         try {
-            String path = ProjectPath.getRootPath() + "table.properties";
+            String path = ProjectPath.getRootPath() + "hbase.properties";
             InputStream in = new BufferedInputStream(new FileInputStream(path));
             properties.load(in);
         } catch (IOException e) {
@@ -33,7 +26,7 @@ public class HBaseTableProperties {
         return properties;
     }
 
-    public static String getValueByKey(String key){
+    public  String getProperty(String key){
         return properties.getProperty(key,"");
     }
 }

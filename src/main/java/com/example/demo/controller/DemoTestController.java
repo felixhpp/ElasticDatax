@@ -9,17 +9,22 @@ import com.example.demo.core.entity.ESBulkModel;
 import com.example.demo.core.enums.ElasticTypeEnum;
 import com.example.demo.core.utils.ResultUtil;
 import com.example.demo.jobs.ConvertPipeline;
+import com.example.demo.jobs.analysis.CaseBulkMode;
 import com.example.demo.jobs.analysis.CaseRecodrXmlBean;
 import com.example.demo.jobs.analysis.CaseRecordXmlAnaly;
+import com.example.demo.jobs.analysis.XmlFileBulkReader;
 import com.example.demo.jobs.hbase.HBaseBulkProcessor;
+import com.example.demo.jobs.hbase.LibAHBaseSyn;
 import com.example.demo.service.DefaultDicMapService;
 import com.example.demo.service.ElasticBulkService;
+import org.apache.commons.collections.map.HashedMap;
 import org.dom4j.Document;
 import org.dom4j.io.SAXReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.system.ApplicationHome;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.spring.web.json.Json;
 
 import java.io.File;
 import java.io.StringReader;
@@ -31,7 +36,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/test")
 public class DemoTestController {
-    private int TOTAL = 10000;
+    private int TOTAL = 10;
     private boolean isDev = false;
 
     @Autowired
@@ -52,6 +57,23 @@ public class DemoTestController {
         return ResultUtil.success(reList);
     }
 
+    @GetMapping("bulk/patient/1")
+    public RestResult bulkPatientTest() throws Exception {
+        List<Map<String, Object>> maps = new ArrayList<>();
+        Map<String, Object> map1 = new HashedMap();
+        map1.put("id", "08419303");
+        map1.put("routing", "08419303");
+        map1.put("pat_regno", "08419303");
+        map1.put("pat_recordno", "");
+        map1.put("pat_name", "谢雨航");
+        map1.put("pat_idcard", "141122199309090101");
+        map1.put("pat_birthday","2005-07-08" );
+        maps.add(map1);
+        List<Object> reList = exeConvert(maps, ElasticTypeEnum.PATIENT);
+
+        exeBulk(maps, ElasticTypeEnum.PATIENT);
+        return ResultUtil.success(reList);
+    }
     @GetMapping("convert/patient")
     public RestResult convertPatient() throws Exception {
         List<Map<String, Object>> maps = buildPatientData();
@@ -73,7 +95,22 @@ public class DemoTestController {
         exeBulk(maps, ElasticTypeEnum.MEDICAL_RECORD);
         return ResultUtil.success(reList);
     }
+    @GetMapping("bulk/medicalrecord/1")
+    public RestResult bulkAdmTest() throws Exception {
+        List<Map<String, Object>> maps = new ArrayList<>();
+        Map<String, Object> map1 = new HashedMap();
+        map1.put("mr_admid", "9490476");
+        map1.put("mr_regno", "03631757");
 
+        map1.put("mr_admdate", "2014-05-09 13:18:55");
+        map1.put("mr_admtime", "13:18:55");
+        map1.put("mr_dischdate", "");
+        map1.put("mr_dischtime", "");
+        maps.add(map1);
+        List<Object> reList = exeConvert(maps, ElasticTypeEnum.MEDICAL_RECORD);
+        exeBulk(maps, ElasticTypeEnum.MEDICAL_RECORD);
+        return ResultUtil.success(reList);
+    }
     /**
      * 数据转换测试
      *
@@ -89,6 +126,21 @@ public class DemoTestController {
     @GetMapping("bulk/diagnose")
     public RestResult bulkDiagnose() throws Exception {
         List<Map<String, Object>> maps = buildDiagnoseData();
+        List<Object> reList = exeConvert(maps, ElasticTypeEnum.DIAGNOSE);
+        exeBulk(maps, ElasticTypeEnum.DIAGNOSE);
+        return ResultUtil.success(reList);
+    }
+    @GetMapping("bulk/diagnose/1")
+    public RestResult bulkDiagnoseTest() throws Exception {
+        List<Map<String, Object>> maps = new ArrayList<>();
+        Map<String, Object> map1 = new HashedMap();
+        map1.put("diag_id", "20366318||1" );
+        map1.put("diag_admid", "20366318");
+        map1.put("diag_regno", "09100140");
+        map1.put("diag_date", "2018-05-18 00:00:00");
+        map1.put("diag_time", "10:33:01");
+        map1.put("diag_code", "15369");
+        maps.add(map1);
         List<Object> reList = exeConvert(maps, ElasticTypeEnum.DIAGNOSE);
         exeBulk(maps, ElasticTypeEnum.DIAGNOSE);
         return ResultUtil.success(reList);
@@ -114,6 +166,26 @@ public class DemoTestController {
         List<Map<String, Object>> maps = buildOrdItemData();
         List<Object> reList = exeConvert(maps, ElasticTypeEnum.ORDITEM);
 
+        BulkResponseBody responseBody = exeBulk(maps, ElasticTypeEnum.ORDITEM);
+        return ResultUtil.success(responseBody);
+    }
+
+    @GetMapping("bulk/orditem/1")
+    public RestResult bulkOrdItemTest() throws Exception {
+        List<Map<String, Object>> maps = new ArrayList<>();
+        Map<String, Object> map1 = new HashedMap();
+        map1.put("ord_id", "241167||56");
+        map1.put("ord_admno", "243384");
+        map1.put("ord_regno", "00173380");
+        map1.put("ord_startdate", "2009-09-17 00:00:00");
+        map1.put("ord_starttime", "17:35:00");
+        map1.put("ord_enddate", "");
+        map1.put("ord_endtime", "");
+        map1.put("ord_doseqty", "1");
+        map1.put("ord_code", "120400002");
+
+        maps.add(map1);
+        List<Object> reList = exeConvert(maps, ElasticTypeEnum.ORDITEM);
         BulkResponseBody responseBody = exeBulk(maps, ElasticTypeEnum.ORDITEM);
         return ResultUtil.success(responseBody);
     }
@@ -173,9 +245,12 @@ public class DemoTestController {
         Document document = reader.read(file);
         CaseRecodrXmlBean bean = CaseRecordXmlAnaly.analyCaseRecordXml(document, typeEnum);
         Map<String, Object> maps = bean.getAnalyResult();
-        maps.put("documentid", "11111");
+        maps.put("documentid", "111112");
+        maps.put("visitnumber", "9490476t");
+        maps.put("patientid", "03631757t");
         ESBulkModel bulkMode = ConvertPipeline
                 .convertToBulkModel(typeEnum, maps, true);
+
         //elasticBulkService.bulkCase(bodys);
         return ResultUtil.success(bulkMode);
     }
@@ -209,15 +284,83 @@ public class DemoTestController {
         if (!file.exists()) {
             file = new File(ResourceUtils.getURL("classpath:" + fileName).getPath());
         }
+        XmlFileBulkReader xmlReader = XmlFileBulkReader.getInstance();
+        long startTime = System.currentTimeMillis();
+        for (int i = 0; i < 1; i ++){
+            Document document = reader.read(file);
+//            maps.put("documentid", "11111");
+//            maps.put("visitnumber", "9490476t");
+//            maps.put("patientid", "03631757t");
+            CaseBulkMode bulkMode = new CaseBulkMode("csmsearch",
+                    typeEnum.getEsType(),
+                    "12345" + i,
+                    "9490474",
+                    "03631757",
+                    document, typeEnum);
+            xmlReader.add(bulkMode);
+        }
+        long endTime = System.currentTimeMillis();
 
-        Document document = reader.read(file);
-        CaseRecodrXmlBean bean = CaseRecordXmlAnaly.analyCaseRecordXml(document, typeEnum);
-        Map<String, Object> maps = bean.getAnalyResult();
-        maps.put("documentid", "11111");
-        ESBulkModel bulkMode = ConvertPipeline
-                .convertToBulkModel(typeEnum, maps, true);
-        elasticBulkService.bulkCaseTest(bean, typeEnum);
-        return ResultUtil.success(bulkMode);
+        return ResultUtil.success("成功，time tool: " + (endTime - startTime));
+    }
+
+    //hbase测试
+    @GetMapping("hbasetest")
+    public RestResult hbaseTest() throws Exception {
+        long start = System.currentTimeMillis();
+        try {
+            LibAHBaseSyn libAHBaseSyn =  LibAHBaseSyn.getInstance();
+            libAHBaseSyn.setParams("2019-07-01", "2019-07-11");
+            long size = 0;
+            for(int m = 0; m < 1; m++){
+//                long batch = libAHBaseSyn.testQuery(ElasticTypeEnum.MEDICAL_RECORD.getEsType());
+//                size = size + batch;
+                List<Map<String, Object>> maps = buildAdmData();
+                //ElasticTypeEnum typeEnum = ElasticTypeEnum.getByEsType();
+//                List<ESBulkModel> models = ConvertPipeline.convertToBulkModels(ElasticTypeEnum.MEDICAL_RECORD, maps,
+//                        true);
+//
+//                for (ESBulkModel model : models){
+//                    hBaseBulkProcessor.add(model);
+//                }
+
+                size += maps.size();
+            }
+            long end = System.currentTimeMillis();
+            Map<String, Object> map = new HashMap<>();
+            map.put("time", (end-start) + "ms");
+            map.put("model", "成功导入" + size + "条");
+            return ResultUtil.success(map);
+        }catch (Exception e){
+            return ResultUtil.error(e.getMessage());
+        }
+
+    }
+
+    @GetMapping("hbase/{table}/{startdate}/{enddate}")
+    public RestResult hbase(@PathVariable(name = "table") String table,
+                            @PathVariable(name = "startdate") String startdate,
+                            @PathVariable(name = "enddate") String enddate) throws Exception {
+        long start = System.currentTimeMillis();
+        try {
+            ElasticTypeEnum typeEnum = ElasticTypeEnum.getByEsType(table);
+            if(typeEnum == null){
+                return ResultUtil.error("table 的名称不再指定范围内,name:{}" ,table);
+            }
+            LibAHBaseSyn libAHBaseSyn =  LibAHBaseSyn.getInstance();
+            libAHBaseSyn.setParams(startdate, enddate);
+            long size = libAHBaseSyn.testQuery(typeEnum.getEsType());
+
+            long end = System.currentTimeMillis();
+            Map<String, Object> map = new HashMap<>();
+            map.put("time", (end-start) + "ms");
+            map.put("model", "成功导入" + size + "条");
+            System.out.println(JSON.toJSONString(map));
+            return ResultUtil.success(map);
+        }catch (Exception e){
+            return ResultUtil.error(e.getMessage());
+        }
+
     }
 
     private List<Map<String, Object>> buildDiagnoseData() {
@@ -365,8 +508,9 @@ public class DemoTestController {
                 "20180608", "20180618", "20180617"};
         String[] listime = {"021257", "092310", "092309",
                 "092310", "092310", "092317"};
-        String[] lisValue = {"未见", "查见", "2+","4.8",
-                "11.50", "0-3", "-"};
+//        String[] lisValue = {"未见", "查见", "2+","4.8",
+//                "11.50", "0-3", "-"};
+        String[] lisValue = {"42.1", "4.8"};
         for (int i = 0; i < total; i++) {
             Map<String, Object> object = new HashMap<>();
             object.put("inspection_id", "123"+ i);
@@ -450,13 +594,6 @@ public class DemoTestController {
         long startTime = System.currentTimeMillis();   //获取开始时间
         List<ESBulkModel> bulkModels = defaultDicMapService.test(maps, typeEnum);
 
-        long start = System.currentTimeMillis();
-        // 进行hbase测试
-//        for (ESBulkModel m : bulkModels){
-//            hBaseBulkProcessor.add(m);
-//        }
-
-        long end = System.currentTimeMillis();
         if (bulkModels.size() > 10) {
             reList.addAll(bulkModels.subList(0, 10));
         } else {

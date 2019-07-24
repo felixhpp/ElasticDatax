@@ -30,6 +30,9 @@ public final class Pipeline {
     private static ConcurrentHashMap<String, Pipeline> baseMap = new ConcurrentHashMap<>();
     // 是否启用mapper, 默认否
     private boolean onMapper = false;
+    /**
+     * 表名，同ES type
+     */
     private String theme;
     private String idField = null;
     private String parentField = null;

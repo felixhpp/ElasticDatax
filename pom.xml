@@ -187,9 +187,17 @@
             <artifactId>cachedb</artifactId>
             <version>1.0.0</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>sqljdbc4</artifactId>
+            <version>1.0.0</version>
+        </dependency>
         <!-- hua wei hadoop start-->
-
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>gsjdbc4</artifactId>
+            <version>1.0.0</version>
+        </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-collections</artifactId>
@@ -415,6 +423,12 @@
                         <include>static/**</include>
                         <include>templates/**</include>
                         <include>conf/**</include>
+                        <include>jaas.conf</include>
+                        <include>krb5.conf</include>
+                        <include>user.keytab</include>
+                        <include>core-site.xml</include>
+                        <include>hdfs-site.xml</include>
+                        <include>hbase-site.xml</include>
                     </includes>
                 </configuration>
             </plugin>
@@ -481,6 +495,12 @@
                     <include>*.xml</include>
                     <include>*.properties</include>
                     <include>conf/**</include>
+                    <include>jaas.conf</include>
+                    <include>krb5.conf</include>
+                    <include>user.keytab</include>
+                    <include>core-site.xml</include>
+                    <include>hdfs-site.xml</include>
+                    <include>hbase-site.xml</include>
                 </includes>
             </resource>
         </resources>
