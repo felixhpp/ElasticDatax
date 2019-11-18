@@ -73,9 +73,9 @@ public class ElasticApiController {
     public RestResult bulk(String content) {
         //logger.info(content);
         long startTime = System.currentTimeMillis();
-        BulkRequestBody requetsBody = JSONObject.parseObject(content, BulkRequestBody.class);
-        String dataStr = requetsBody.getData();
-        String theme = requetsBody.getTheme();
+        BulkRequestBody requestBody = JSONObject.parseObject(content, BulkRequestBody.class);
+        String dataStr = requestBody.getData();
+        String theme = requestBody.getTheme();
         BulkResponseBody result = new BulkResponseBody();
         try {
             if (StringUtils.isEmpty(dataStr)) {
