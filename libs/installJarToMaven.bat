@@ -25,5 +25,5 @@ call mvn install:install-file -DgroupId=com.huawei.hadoop -DartifactId=dynalogge
 call mvn install:install-file -DgroupId=com.huawei.zookeeper -DartifactId=zookeeper -Dversion=3.5.1 -Dpackaging=jar -Dfile=zookeeper-3.5.1.jar
 call mvn install:install-file -DgroupId=org.apache.commons -DartifactId=commons-configuration -Dversion=1.6 -Dpackaging=jar -Dfile=commons-configuration-1.6.jar
 call mvn install:install-file -DgroupId=org.postgresql -DartifactId=gsjdbc4 -Dversion=1.0.0 -Dpackaging=jar -Dfile=gsjdbc4.jar
-
+call mvn install:install-file -DgroupId=com.dhcc.csmsearch -DartifactId=huawei-elasticsearch -Dversion=2.0.0 -Dpackaging=jar -Dfile=huawei-elasticsearch-2.0.0.jar
 pause

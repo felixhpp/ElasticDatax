@@ -49,6 +49,7 @@
 <!-- elasticMapper name属性是必须的，且唯一 -->
 <!ATTLIST elasticMapper name ID #REQUIRED>
 <!ATTLIST elasticMapper desc #PCDATA>
+<!ATTLIST elasticMapper business #REQUIRED>
 <!-- property sourceName属性是必须的 -->
 <!ATTLIST property sourceName CDATA #REQUIRED>
 <!-- property targetName属性是必须的 -->

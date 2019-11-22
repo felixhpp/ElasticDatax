@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE elasticMapper SYSTEM "elasticmapping.dtd">
-<elasticMapper name="diagnose" desc="导入诊断数据">
+<elasticMapper name="diagnose" desc="导入诊断数据" business="da">
     <propertys>
-        <property sourceName="diag_id"  targetName="Diag_Id" valueType="String" idField="true"></property>
-        <property sourceName="diag_admid" targetName="Diag_AdmId" valueType="String" rowKey="true" parentField="true"></property>
-        <property sourceName="diag_regno" targetName="Diag_RegNo"  valueType="String" routingField="true"></property>
-        <property sourceName="diag_date" targetName="Diag_Time" valueType="String">
+        <property sourceName="diag_id"  targetName="da_diag_id" valueType="String" idField="true"></property>
+        <property sourceName="diag_admid" targetName="admno" valueType="String" rowKey="true" parentField="true"></property>
+        <property sourceName="diag_regno" targetName="regno"  valueType="String" routingField="true"></property>
+        <property sourceName="diag_date" targetName="da_diag_time" valueType="String">
             <dateConcatConvertor methodName="concatDatetime">
                 <dateParameter value="diag_date" format="shortDate"></dateParameter>
                 <timeParameter value="diag_time" format="time"></timeParameter>
             </dateConcatConvertor>
         </property>
-        <property sourceName="diag_type_code" targetName="Diag_Type" valueType="String">
+        <property sourceName="diag_type_code" targetName="da_diag_type" valueType="String">
             <dicConvertor methodName="getByCode" dicType="DiagnoseType">
                 <parameter></parameter>
             </dicConvertor>
         </property>
         <!--诊断名称  通过编码获取-->
-        <property sourceName="diag_name" targetName="Diag_Name" valueType="String">
+        <property sourceName="diag_name" targetName="da_diag_name" valueType="String">
             <if field="diag_name" test="isEmpty">
                 <dicConvertor methodName="getByCode" dicType="DiagnoseName">
                     <parameter>diag_code</parameter>
@@ -25,9 +25,9 @@
             </if>
         </property>
         <!--诊断编码-->
-        <property sourceName="diag_code" targetName="Diag_Code " valueType="String"></property>
+        <property sourceName="diag_code" targetName="da_diag_code" valueType="String"></property>
         <!--诊断顺位-->
-        <property sourceName="diag_no" targetName="Diag_No" valueType="String"></property>
+        <property sourceName="diag_no" targetName="da_diag_no" valueType="String"></property>
     </propertys>
 
     <filters>
@@ -41,7 +41,7 @@
 
     <outputs>
         <output>
-            <elasticsearch index="csmsearch" type="diagnose"></elasticsearch>
+            <elasticsearch index="csmsearch" type="doc"></elasticsearch>
         </output>
         <output>
             <mapperFile fileName="diagnoseforstatistics.xml"></mapperFile>

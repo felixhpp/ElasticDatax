@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE elasticMapper SYSTEM "elasticmapping.dtd">
-<elasticMapper name="patient" desc="导入病人基本信息数据">
+<elasticMapper name="patient" desc="导入病人基本信息数据" business="pa">
     <propertys>
-        <property sourceName="pat_regno" targetName="Pat_RegNo" valueType="String" idField="true" routingField="true"></property>
-        <property sourceName="pat_recordno" targetName="Pat_RecordNo" valueType="String"></property>
-        <property sourceName="pat_name" targetName="Pat_Name" valueType="String"></property>
-        <property sourceName="pat_gender_code" targetName="Pat_Gender" valueType="String">
+        <property sourceName="rowkey" targetName="rowkey" rowKey="true"></property>
+        <property sourceName="pat_regno" targetName="regno" valueType="String" idField="true" routingField="true"></property>
+        <property sourceName="pat_recordno" targetName="pa_pat_recordno" valueType="String"></property>
+        <property sourceName="pat_name" targetName="pa_pat_name" valueType="String"></property>
+        <property sourceName="pat_gender_code" targetName="pa_pat_gender" valueType="String">
             <dicConvertor methodName="getByCode" dicType="Sex">
                 <parameter type="String">pat_gender_code</parameter>
             </dicConvertor>
         </property>
-        <property sourceName="pat_idcard" targetName="Pat_IDCard" valueType="String"></property>
-        <property sourceName="pat_nation_code" targetName="Pat_Nation"  valueType="String">
+        <property sourceName="pat_idcard" targetName="pa_pat_idcard" valueType="String"></property>
+        <property sourceName="pat_nation_code" targetName="pa_pat_nation"  valueType="String">
             <dicConvertor methodName="getByCode" dicType="National">
                 <parameter type="String">pat_nation_code</parameter>
             </dicConvertor>
         </property>
-        <property sourceName="pat_marital_code" targetName="Pat_Marital" valueType="String">
+        <property sourceName="pat_marital_code" targetName="pa_pat_marital_status" valueType="String">
             <dicConvertor methodName="getByCode" dicType="Marital">
                 <parameter></parameter>
             </dicConvertor>
         </property>
-        <property sourceName="pat_birthday" targetName="Pat_Birthday" valueType="Date" format="yyyy-MM-dd">
+        <property sourceName="pat_birthday" targetName="pa_pat_birthday" valueType="Date" format="yyyy-MM-dd">
             <dateFormatConvertor methodName="formatDate" formatType="shortDate">
                 <parameter></parameter>
             </dateFormatConvertor>
@@ -30,7 +31,7 @@
 
     <outputs>
         <output>
-            <elasticsearch index="csmsearch" type="patient"></elasticsearch>
+            <elasticsearch index="csmsearch" type="doc"></elasticsearch>
         </output>
     </outputs>
 </elasticMapper>
