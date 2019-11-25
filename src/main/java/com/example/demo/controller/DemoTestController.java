@@ -388,9 +388,9 @@ public class DemoTestController {
     private List<Map<String, Object>> buildPatientData() {
         int total = TOTAL;
         List<Map<String, Object>> maps = new ArrayList<>();
-        String[] sexCode = {"F", "M", "I"};
+        String[] sexCode = {"0", "1", "2", "9"};
         String[] nationCode = {"01", "02", "03", "04", "04"};
-        String[] maritalCode = {"1", "2", "5", "3", "4"};
+        String[] maritalCode = {"1", "2", "9", "3", "4"};
         String[] birthday = {"", null, "2018-01-01", "2018-10-3 11:11:00", "2018-01-01 11:11:00.0"};
         for (int i = 0; i < total; i++) {
             Map<String, Object> object = new HashMap<>();
@@ -401,8 +401,8 @@ public class DemoTestController {
             object.put("pat_name", "测试姓名" + i);
             object.put("pat_idcard", "141122199309090101" + i);
             if (!isDev) {
-                //object.put("pat_gender_code", getRandom(sexCode));
-                object.put("pat_gender_code", "");
+                object.put("pat_gender_code", getRandom(sexCode));
+//                object.put("pat_gender_code", "");
 //                object.put("pat_nation_code", getRandom(nationCode));
                 object.put("pat_nation_code", null);
                 object.put("pat_marital_code", getRandom(maritalCode));

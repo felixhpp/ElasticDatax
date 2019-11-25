@@ -2,16 +2,17 @@ package com.example.demo.jobs.elasticsearch;
 
 
 import com.alibaba.fastjson.JSON;
+import com.dhcc.csmsearch.common.model.Const;
 import com.dhcc.csmsearch.elasticsearch.common.ElasticsearchManage;
 import com.example.demo.core.entity.ESBulkModel;
 import com.example.demo.core.utils.SpringUtils;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.huawei.fusioninsight.elasticsearch.transport.client.PreBuiltHWTransportClient;
+import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.text.MessageFormat;
@@ -41,7 +42,7 @@ public final class ElasticBulkProcessor {
     /**
      * 可重用固定个数的线程池
      */
-    private static ExecutorService fixedThreadPool = null;
+    private static ExecutorService fixedThreadPool = Executors.newFixedThreadPool(10);;
 
     private ElasticBulkProcessor(ElasticsearchManage elasticsearchManage) throws IOException {
         client = elasticsearchManage.getTransportClient();
@@ -123,18 +124,31 @@ public final class ElasticBulkProcessor {
         BulkRequestBuilder bulkRequest = client.prepare().prepareBulk();
         int commit = models.size();
         long starttime = System.currentTimeMillis();
+        String esType = Const.default_elastic_type_name;
         for (int j = 0; j < commit; j++) {
             ESBulkModel curModel = models.get(j);
             esJson.clear();
-            esJson.put("id", curModel.getId());
-            esJson.put("name", "Linda");
-            esJson.put("sex", "man");
-            esJson.put("age", 78);
+            String docId = curModel.getId();
+            String routing = curModel.getRouting();
+            String docTyoe = curModel.getType();
+            String parent = curModel.getParent();
+            esJson.put(Const.default_elastic_source_id_field, docId);
+            esJson.put(Const.default_elastic_regno_field, routing);
+            esJson.put(Const.default_elastic_admno_field, curModel.getAdmId());
+            if(StringUtils.isEmpty(parent)){
+                esJson.put(Const.default_elastic_join_field, docTyoe);
+            }else {
+                Map<String, Object> joinMap = new HashMap<>();
+                joinMap.put("name", docTyoe);
+                joinMap.put("parent", parent);
+                esJson.put(Const.default_elastic_join_field, joinMap);
+            }
+
+            esJson.putAll(curModel.getMapData());
             bulkRequest.add(client.prepare()
-                    .prepareIndex(curModel.getIndex(), curModel.getType())
-                    .setId(curModel.getId())
+                    .prepareIndex(curModel.getIndex(), esType, docId)
                     .setRouting(curModel.getRouting())
-                    .setSource(curModel.getMapData()));
+                    .setSource(esJson));
         }
         BulkResponse bulkResponse = bulkRequest.get();
         if (bulkResponse.hasFailures()) {

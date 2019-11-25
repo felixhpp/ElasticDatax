@@ -16,7 +16,9 @@ public final class ESBulkModel {
     private String id;
 
     private String parent;
-
+    /**
+     * routing 可以作为登记号
+     */
     private String routing;
 
     /**

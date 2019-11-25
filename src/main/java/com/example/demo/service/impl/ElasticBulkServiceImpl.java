@@ -411,7 +411,8 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
         if (map == null || map.size() <= 0) {
             return false;
         }
-
+        bulkMode.setIndex(index);
+        bulkMode.setType(type);
 //        IndexRequest request = new IndexRequest(index, type, bulkMode.getId())
 //                .source(bulkMode.getMapData())
 //                .routing(bulkMode.getRouting());
@@ -420,29 +421,16 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
 //        }
         bulkProcessor.add(bulkMode);
 
-        //如果是诊断， 同时导入诊断统计信息
-        if (type.equals(ElasticTypeEnum.DIAGNOSE.getEsType())) {
-            ESBulkModel cBulkMode = ConvertPipeline.convertToBulkModel(ElasticTypeEnum.DIAGNOSE_Statistics,
-                    bulkMode.getMapData(), mapperBean.getOnMapper());
-            if (cBulkMode == null || cBulkMode.isEmpty()) {
-                return true;
-            }
-//            IndexRequest cRequest = new IndexRequest(index, ElasticTypeEnum.DIAGNOSE_Statistics.getEsType(),
-//                    cBulkMode.getId())
-//                    .source(cBulkMode.getMapData())
-//                    .routing(cBulkMode.getRouting());
-//            if (!StringUtils.isEmpty(cBulkMode.getParent())) {
-//                cRequest.parent(cBulkMode.getParent());
-//            }
-            bulkProcessor.add(cBulkMode);
-        }
+
         //如果是医嘱，同时导入药物信息
-        else if (type.equals(ElasticTypeEnum.ORDITEM.getEsType())) {
+        if (type.equals(ElasticTypeEnum.ORDITEM.getEsType())) {
             ESBulkModel cBulkMode = ConvertPipeline.convertToBulkModel(ElasticTypeEnum.Medicine,
                     bulkMode.getMapData(), mapperBean.getOnMapper());
             if (cBulkMode == null || cBulkMode.isEmpty()) {
                 return true;
             }
+            cBulkMode.setIndex(index);
+            cBulkMode.setType(ElasticTypeEnum.Medicine.getEsType());
 //            IndexRequest cRequest = new IndexRequest(index, ElasticTypeEnum.Medicine.getEsType(),
 //                    cBulkMode.getId())
 //                    .source(cBulkMode.getMapData())
