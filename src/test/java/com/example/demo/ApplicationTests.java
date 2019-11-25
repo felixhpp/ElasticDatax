@@ -7,8 +7,7 @@ import com.example.demo.core.enums.ElasticTypeEnum;
 import com.example.demo.core.entity.ESBulkModel;
 import com.example.demo.core.utils.DateFormatUtil;
 import com.example.demo.jobs.Pipeline;
-import com.example.demo.jobs.elasticsearch.SearchItemConfig;
-import com.example.demo.jobs.elasticsearch.Suggest;
+
 import com.example.demo.jobs.hbase.LisSynTest;
 import com.example.demo.service.TaskService;
 import org.slf4j.Logger;
@@ -61,25 +60,25 @@ public class ApplicationTests {
      * @throws ClassNotFoundException
      * @throws IOException
      */
-    @Test
-    public void getSearchItem() throws SQLException, ClassNotFoundException, IOException {
-        SearchItemConfig searchItemConfig = new SearchItemConfig();
-
-        //searchItemConfig.Query();
-    }
+//    @Test
+//    public void getSearchItem() throws SQLException, ClassNotFoundException, IOException {
+//        SearchItemConfig searchItemConfig = new SearchItemConfig();
+//
+//        //searchItemConfig.Query();
+//    }
 
     /**
      * 从数据表中导入es 推荐词
      */
-    @Test
-    public void importSuggestIndex() throws SQLException, ClassNotFoundException {
-        String sql = "SELECT a.ID AS ID, a.Name AS Name FROM SuggestDics a WHERE a.UpdateTime = 0";
-
-        Suggest suggest = new Suggest();
-        suggest.bulkToES(sql);
-
-        System.out.println("sucess");
-    }
+//    @Test
+//    public void importSuggestIndex() throws SQLException, ClassNotFoundException {
+//        String sql = "SELECT a.ID AS ID, a.Name AS Name FROM SuggestDics a WHERE a.UpdateTime = 0";
+//
+//        Suggest suggest = new Suggest();
+//        suggest.bulkToES(sql);
+//
+//        System.out.println("sucess");
+//    }
 
     @Test
     public void dateTest() throws Exception{

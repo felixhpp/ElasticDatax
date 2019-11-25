@@ -2,9 +2,7 @@ package com.example.demo.core.utils;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
-import org.apache.lucene.analysis.ngram.EdgeNGramFilterFactory;
-import org.elasticsearch.search.aggregations.support.format.ValueFormatter;
-import org.joda.time.DateTime;
+
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

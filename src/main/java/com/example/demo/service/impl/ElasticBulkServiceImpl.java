@@ -1,6 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
+import com.dhcc.csmsearch.elasticsearch.common.ElasticsearchManage;
 import com.example.demo.bean.ConvertConfigBean;
 import com.example.demo.core.entity.BulkCaseRequestBody;
 import com.example.demo.core.entity.BulkResponseBody;
@@ -12,23 +13,18 @@ import com.example.demo.jobs.ConvertPipeline;
 import com.example.demo.jobs.analysis.*;
 import com.example.demo.service.ElasticBulkService;
 
-import io.searchbox.client.JestClient;
-import io.searchbox.client.JestResult;
-import io.searchbox.core.*;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.elasticsearch.action.bulk.BulkProcessor;
 import org.elasticsearch.action.index.IndexRequest;
-import org.elasticsearch.action.update.UpdateRequest;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
@@ -48,10 +44,11 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
 
     private static XmlFileBulkReader xmlFileBulkReader = XmlFileBulkReader.getInstance();
 
-    @Autowired
-    JestClient jestClient;
 
-    @Autowired
+    @Resource(name="ElasticsearchManage")
+    private ElasticsearchManage elasticsearchManage;
+
+    @Resource(name = "ESBulkProcessor")
     private BulkProcessor bulkProcessor;
 
     @Autowired
@@ -64,53 +61,6 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
     private com.example.demo.mapper.cache.DicOrderItemMappper dicOrderItemMappper;
 
     private static Base64.Decoder decoder = Base64.getDecoder();
-
-//    /**
-//     * 删除文档
-//     * @param indexId
-//     * @param indexName
-//     * @param indexType
-//     * @return
-//     */
-//    public boolean deleteDoc(String indexId, String indexName, String indexType) {
-//        Delete.Builder builder = new Delete.Builder(indexId);
-//        builder.id(indexId);
-//        builder.refresh(true);
-//        Delete delete = builder.index(indexName).type(indexType).build();
-//        try {
-//            JestResult result = jestClient.execute(delete);
-//            if (result != null && !result.isSucceeded()) {
-//                throw new RuntimeException(result.getErrorMessage() + "删除文档失败!");
-//            }
-//        } catch (Exception e) {
-//            logger.error("", e);
-//            return false;
-//        }
-//
-//        return true;
-//    }
-
-    @Override
-    public JestResult deleteDocumentByQuery(String index, String type, String params) {
-
-        DeleteByQuery db = new DeleteByQuery.Builder(params)
-                .addIndex(index)
-                .addType(type)
-                .build();
-
-        JestResult result = null ;
-        try {
-            result = jestClient.execute(db);
-            if (result != null && !result.isSucceeded()) {
-                throw new RuntimeException(result.getErrorMessage() + "删除文档失败!");
-            }
-            logger.info("deleteDocument == " + result.getJsonString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
 
     /**
      * 批量导入
@@ -403,30 +353,6 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
         }
 
         return result;
-    }
-
-    /**
-     * 通过登记号获取患者信息
-     *
-     * @param regNo 登记号
-     * @return String
-     * @throws IOException
-     */
-    @Override
-    public String getPatientByRegNo(String regNo) throws IOException {
-        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        if (StringUtils.isEmpty(regNo)) {
-            searchSourceBuilder.query(QueryBuilders.matchAllQuery());
-            searchSourceBuilder.size(100);
-        } else {
-            searchSourceBuilder.query(QueryBuilders.termQuery("Pat_RegNo", regNo));
-        }
-
-        Search.Builder builder = new Search.Builder(searchSourceBuilder.toString());
-        builder.addIndex("csmsearch").addType("patient");
-        JestResult jestResult = jestClient.execute(builder.build());
-
-        return jestResult.getJsonString();
     }
 
     private void bulkOtherCaseResult(CaseRecordXmlOtherBean otherBean,

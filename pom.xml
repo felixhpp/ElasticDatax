@@ -108,6 +108,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.4</version>
+            <scope>provided</scope>
+        </dependency>
         <!-- ehcache 缓存 -->
         <!-- https://mvnrepository.com/artifact/net.sf.ehcache/ehcache -->
         <dependency>
@@ -199,17 +205,6 @@
             <artifactId>gsjdbc4</artifactId>
             <version>1.0.0</version>
         </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-collections</artifactId>
-            <version>3.2.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-configuration</artifactId>
-            <version>1.6</version>
-        </dependency>
-
 
         <dependency>
             <groupId>org.apache.htrace</groupId>
@@ -234,22 +229,7 @@
             <artifactId>dom4j</artifactId>
             <version>1.6.1</version>
         </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.16.10</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>RELEASE</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations-java5</artifactId>
-            <version>17.0.0</version>
-        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-websocket</artifactId>
@@ -258,6 +238,11 @@
         <dependency>
             <groupId>com.dhcc.csmsearch</groupId>
             <artifactId>huawei-elasticsearch</artifactId>
+            <version>2.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.dhcc.csmsearch</groupId>
+            <artifactId>csmsearch-export</artifactId>
             <version>2.0.0</version>
         </dependency>
     </dependencies>

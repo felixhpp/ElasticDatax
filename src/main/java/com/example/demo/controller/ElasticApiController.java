@@ -7,7 +7,6 @@ import com.alibaba.fastjson.JSONReader;
 import com.example.demo.core.entity.*;
 import com.example.demo.service.ElasticBulkService;
 import com.example.demo.core.utils.ResultUtil;
-import io.searchbox.client.JestResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -39,27 +38,6 @@ public class ElasticApiController {
 
     @Autowired
     ElasticBulkService elasticBulkService;
-
-    /**
-     * 批量删除ES 指定type下数据
-     * @param index
-     * @param type
-     * @param params
-     * @return
-     */
-    @DeleteMapping(path = "delete/{index}/{type}/_query")
-    public RestResult deleteByQuery(
-            @PathVariable(name = "index") String index,
-            @PathVariable(name = "type") String type,
-            @RequestBody String params){
-        try {
-            JestResult result = elasticBulkService.deleteDocumentByQuery(index, type, params);
-            return ResultUtil.success(result);
-        }catch (Exception e){
-            return ResultUtil.error(e.getMessage());
-        }
-    }
-
 
     /**
      * 集成平台API调用接口，批量导入ES数据
@@ -132,13 +110,6 @@ public class ElasticApiController {
         long endTime = System.currentTimeMillis();
         logger.info("=====bulk [ " + body.get(0).getDocumentTypeDesc() + " ],tool：" + (endTime - startTime) + "ms，message:" + responseBody.getResultContent());
         return ResultUtil.success(responseBody);
-    }
-
-    @ApiOperation(value = "根据登记号获取病人基本信息", notes = "根据登记号获取病人基本信息")
-    @ApiImplicitParam(name = "regNo", value = "登记号", paramType = "path", required = true, dataType = "String")
-    @GetMapping(path = "getPatient/{regNo}")
-    public RestResult getPatientByRegNo(@PathVariable(name = "regNo") String regNo) throws IOException {
-        return ResultUtil.success(elasticBulkService.getPatientByRegNo(regNo));
     }
 
     /**

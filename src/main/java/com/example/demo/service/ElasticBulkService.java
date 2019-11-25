@@ -4,7 +4,6 @@ import com.example.demo.core.entity.BulkCaseRequestBody;
 import com.example.demo.core.entity.BulkResponseBody;
 import com.example.demo.core.enums.ElasticTypeEnum;
 import com.example.demo.jobs.analysis.CaseRecodrXmlBean;
-import io.searchbox.client.JestResult;
 
 import java.io.IOException;
 import java.util.List;
@@ -24,12 +23,8 @@ public interface ElasticBulkService {
      */
     BulkResponseBody bulkSuggestion();
 
-    String getPatientByRegNo(String regNo) throws IOException;
-
     BulkResponseBody bulkCase(List<BulkCaseRequestBody> caseRequestBodies);
 
     BulkResponseBody bulkCaseTest(CaseRecodrXmlBean bean, ElasticTypeEnum typeEnum);
-
-    JestResult deleteDocumentByQuery(String index, String type, String params);
 
 }

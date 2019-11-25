@@ -29,10 +29,11 @@ public final class XmlFileBulkReader {
     private final static int batchSize = 500;
     private final static int poolSize = 4;
     private final static long totalFreeTime = 5 * 60 * 1000; // 5分钟
-    private BulkProcessor bulkProcessor = SpringUtils.getBean(BulkProcessor.class);
+    private BulkProcessor bulkProcessor = SpringUtils.getBean("ESBulkProcessor");
     private static XmlFileBulkReader bulkReader;
 
     public static AtomicInteger activeThreadCount = new AtomicInteger(0);
+
     /**
      * 初始化队列
      */
