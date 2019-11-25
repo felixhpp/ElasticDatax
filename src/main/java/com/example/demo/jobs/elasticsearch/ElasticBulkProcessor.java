@@ -19,10 +19,6 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.huawei.fusioninsight.elasticsearch.transport.client.ClientFactory.isSecureMode;
-import static java.util.concurrent.Executors.*;
-import static javax.swing.text.html.HTML.Tag.OL;
-
 /**
  * 批量导入HBase工具
  *
@@ -117,6 +113,10 @@ public final class ElasticBulkProcessor {
         }
     }
 
+    /**
+     * 写入ES数据
+     * @param models
+     */
     private void DataInput(List<ESBulkModel> models){
 
         Map<String, Object> esJson = new HashMap<String, Object>();
@@ -130,8 +130,6 @@ public final class ElasticBulkProcessor {
             esJson.put("name", "Linda");
             esJson.put("sex", "man");
             esJson.put("age", 78);
-            esJson.put("height", 210);
-            esJson.put("weight", 180);
             bulkRequest.add(client.prepare()
                     .prepareIndex(curModel.getIndex(), curModel.getType())
                     .setId(curModel.getId())

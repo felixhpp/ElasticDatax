@@ -29,7 +29,7 @@ public final class XmlFileBulkReader {
     private final static int batchSize = 500;
     private final static int poolSize = 4;
     private final static long totalFreeTime = 5 * 60 * 1000; // 5分钟
-    private BulkProcessor bulkProcessor = SpringUtils.getBean("ESBulkProcessor");
+//    private BulkProcessor bulkProcessor = SpringUtils.getBean("ElasticBulkProcessor");
     private static XmlFileBulkReader bulkReader;
 
     public static AtomicInteger activeThreadCount = new AtomicInteger(0);
@@ -188,7 +188,7 @@ public final class XmlFileBulkReader {
                 if (!StringUtils.isEmpty(model.getAdmId())) {
                     updateRequest.parent(model.getAdmId());
                 }
-                bulkProcessor.add(updateRequest);
+                //bulkProcessor.add(updateRequest);
                 break;
             default:
                 IndexRequest request = new IndexRequest(model.getIndexName(), model.getTypeNme(), model.getId())
@@ -197,7 +197,7 @@ public final class XmlFileBulkReader {
                 if (!StringUtils.isEmpty(model.getAdmId())) {
                     request.parent(model.getAdmId());
                 }
-                bulkProcessor.add(request);
+                //bulkProcessor.add(request);
         }
 
 

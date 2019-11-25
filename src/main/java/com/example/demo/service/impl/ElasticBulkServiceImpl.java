@@ -1,7 +1,6 @@
 package com.example.demo.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
-import com.dhcc.csmsearch.elasticsearch.common.ElasticsearchManage;
 import com.example.demo.bean.ConvertConfigBean;
 import com.example.demo.core.entity.BulkCaseRequestBody;
 import com.example.demo.core.entity.BulkResponseBody;
@@ -11,13 +10,12 @@ import com.example.demo.core.utils.DateFormatUtil;
 import com.example.demo.entity.DictionaryMap;
 import com.example.demo.jobs.ConvertPipeline;
 import com.example.demo.jobs.analysis.*;
+import com.example.demo.jobs.elasticsearch.ElasticBulkProcessor;
 import com.example.demo.service.ElasticBulkService;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
-import org.elasticsearch.action.bulk.BulkProcessor;
-import org.elasticsearch.action.index.IndexRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +23,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -45,11 +41,8 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
     private static XmlFileBulkReader xmlFileBulkReader = XmlFileBulkReader.getInstance();
 
 
-    @Resource(name="ElasticsearchManage")
-    private ElasticsearchManage elasticsearchManage;
-
-    @Resource(name = "ESBulkProcessor")
-    private BulkProcessor bulkProcessor;
+    @Resource(name = "ElasticBulkProcessor")
+    private ElasticBulkProcessor bulkProcessor;
 
     @Autowired
     private ConvertConfigBean mapperBean;
@@ -326,24 +319,24 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
                 String idStr = "diagnose" + map.getDicCode();
                 Map<String, Object> mapObj = new HashMap<>();
                 mapObj.put("Text", map.getDicName());
-                boolean add = addBulkProcessor(suggesstionIndex, suggesstionType, idStr, mapObj);
-                boolean addCom = addBulkProcessor(suggesstionComIndex, suggesstionComType, idStr, mapObj);
+//                boolean add = addBulkProcessor(suggesstionIndex, suggesstionType, idStr, mapObj);
+//                boolean addCom = addBulkProcessor(suggesstionComIndex, suggesstionComType, idStr, mapObj);
             }
             dictionaryMaps = dictionaryMapMapper.getAllDept();
             for (DictionaryMap map : dictionaryMaps) {
                 String idStr = "dept" + map.getDicCode();
                 Map<String, Object> mapObj = new HashMap<>();
                 mapObj.put("Text", map.getDicName());
-                boolean add = addBulkProcessor(suggesstionIndex, suggesstionType, idStr, mapObj);
-                boolean addCom = addBulkProcessor(suggesstionComIndex, suggesstionComType, idStr, mapObj);
+//                boolean add = addBulkProcessor(suggesstionIndex, suggesstionType, idStr, mapObj);
+//                boolean addCom = addBulkProcessor(suggesstionComIndex, suggesstionComType, idStr, mapObj);
             }
             dictionaryMaps = dicOrderItemMappper.getAllPHCGeneric();
             for (DictionaryMap map : dictionaryMaps) {
                 String idStr = "phcg" + map.getDicCode();
                 Map<String, Object> mapObj = new HashMap<>();
                 mapObj.put("Text", map.getDicName());
-                boolean add = addBulkProcessor(suggesstionIndex, suggesstionType, idStr, mapObj);
-                boolean addCom = addBulkProcessor(suggesstionComIndex, suggesstionComType, idStr, mapObj);
+//                boolean add = addBulkProcessor(suggesstionIndex, suggesstionType, idStr, mapObj);
+//                boolean addCom = addBulkProcessor(suggesstionComIndex, suggesstionComType, idStr, mapObj);
             }
             result.setResultCode("0");
             result.setResultContent("成功");
@@ -419,13 +412,13 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
             return false;
         }
 
-        IndexRequest request = new IndexRequest(index, type, bulkMode.getId())
-                .source(bulkMode.getMapData())
-                .routing(bulkMode.getRouting());
-        if (!StringUtils.isEmpty(bulkMode.getParent())) {
-            request.parent(bulkMode.getParent());
-        }
-        bulkProcessor.add(request);
+//        IndexRequest request = new IndexRequest(index, type, bulkMode.getId())
+//                .source(bulkMode.getMapData())
+//                .routing(bulkMode.getRouting());
+//        if (!StringUtils.isEmpty(bulkMode.getParent())) {
+//            request.parent(bulkMode.getParent());
+//        }
+        bulkProcessor.add(bulkMode);
 
         //如果是诊断， 同时导入诊断统计信息
         if (type.equals(ElasticTypeEnum.DIAGNOSE.getEsType())) {
@@ -434,14 +427,14 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
             if (cBulkMode == null || cBulkMode.isEmpty()) {
                 return true;
             }
-            IndexRequest cRequest = new IndexRequest(index, ElasticTypeEnum.DIAGNOSE_Statistics.getEsType(),
-                    cBulkMode.getId())
-                    .source(cBulkMode.getMapData())
-                    .routing(cBulkMode.getRouting());
-            if (!StringUtils.isEmpty(cBulkMode.getParent())) {
-                cRequest.parent(cBulkMode.getParent());
-            }
-            bulkProcessor.add(cRequest);
+//            IndexRequest cRequest = new IndexRequest(index, ElasticTypeEnum.DIAGNOSE_Statistics.getEsType(),
+//                    cBulkMode.getId())
+//                    .source(cBulkMode.getMapData())
+//                    .routing(cBulkMode.getRouting());
+//            if (!StringUtils.isEmpty(cBulkMode.getParent())) {
+//                cRequest.parent(cBulkMode.getParent());
+//            }
+            bulkProcessor.add(cBulkMode);
         }
         //如果是医嘱，同时导入药物信息
         else if (type.equals(ElasticTypeEnum.ORDITEM.getEsType())) {
@@ -450,14 +443,14 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
             if (cBulkMode == null || cBulkMode.isEmpty()) {
                 return true;
             }
-            IndexRequest cRequest = new IndexRequest(index, ElasticTypeEnum.Medicine.getEsType(),
-                    cBulkMode.getId())
-                    .source(cBulkMode.getMapData())
-                    .routing(cBulkMode.getRouting());
-            if (!StringUtils.isEmpty(cBulkMode.getParent())) {
-                cRequest.parent(cBulkMode.getParent());
-            }
-            bulkProcessor.add(cRequest);
+//            IndexRequest cRequest = new IndexRequest(index, ElasticTypeEnum.Medicine.getEsType(),
+//                    cBulkMode.getId())
+//                    .source(cBulkMode.getMapData())
+//                    .routing(cBulkMode.getRouting());
+//            if (!StringUtils.isEmpty(cBulkMode.getParent())) {
+//                cRequest.parent(cBulkMode.getParent());
+//            }
+            bulkProcessor.add(cBulkMode);
         }
         return true;
     }
@@ -471,18 +464,18 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
      * @param map   数据
      * @return 提交成功，返回true,否则返回false
      */
-    private boolean addBulkProcessor(String index, String type, String id, Map<String, Object> map) {
-        if (map == null || map.size() == 0) {
-            return false;
-        }
-
-        IndexRequest request = new IndexRequest(index, type, id)
-                .source(map);
-
-        bulkProcessor.add(request);
-
-        return true;
-    }
+//    private boolean addBulkProcessor(String index, String type, String id, Map<String, Object> map) {
+//        if (map == null || map.size() == 0) {
+//            return false;
+//        }
+//
+//        IndexRequest request = new IndexRequest(index, type, id)
+//                .source(map);
+//
+//        bulkProcessor.add(request);
+//
+//        return true;
+//    }
 
     /**
      * 通过theme获取ElasticsearchTypeEnum 实例

@@ -88,7 +88,7 @@ spring:
       type: com.alibaba.druid.pool.DruidDataSource
       username: _system
       password: sysmdm
-      url: jdbc:Cache://192.178.61.120:1972/mdm
+      url: jdbc:Cache://192.178.61.91:1972/mdm
       driver-class-name: com.intersys.jdbc.CacheDriver
       # 连接池配置
       initialSize: 5    # 初始化大小，最小，最大

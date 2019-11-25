@@ -44,9 +44,6 @@ public class DemoTestController {
     @Autowired
     private ElasticBulkService elasticBulkService;
 
-//    @Autowired
-//    private HBaseBulkProcessor hBaseBulkProcessor;
-
     @GetMapping("bulk/patient")
     public RestResult bulkPatient() throws Exception {
         List<Map<String, Object>> maps = buildPatientData();
