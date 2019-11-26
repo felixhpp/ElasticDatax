@@ -93,6 +93,7 @@ public final class Pipeline {
         // 是否满足过滤条件
         boolean isFilter = true;
         ESBulkModel model = null;
+
         //是否启用mapper开关, 关闭时直接copy 整个数组
         if (!onMapper) {
             sourceData.putAll(targetObject);
@@ -166,6 +167,7 @@ public final class Pipeline {
 
             model.setMapData(targetObject);
             model.setTheme(theme);
+            model.setBusiness(elasticMapperBean.getBusiness());
         }
 
         return model;

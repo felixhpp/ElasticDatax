@@ -31,6 +31,7 @@ public final class ESBulkModel {
      */
     private String theme;
 
+    private String business;
     /**
      * 文档id
      */
@@ -108,6 +109,14 @@ public final class ESBulkModel {
 
     public void setDocId(String docId) {
         this.docId = docId;
+    }
+
+    public String getBusiness() {
+        return business;
+    }
+
+    public void setBusiness(String business) {
+        this.business = business;
     }
 
     public boolean isEmpty() {
