@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE elasticMapper SYSTEM "elasticmapping.dtd">
-<elasticMapper name="diagnose" desc="导入诊断数据" business="da">
+<elasticMapper name="diagnose" theme="theme" desc="导入诊断数据" business="da">
     <propertys>
         <property sourceName="diag_id"  targetName="da_diag_id" valueType="String" idField="true"></property>
         <property sourceName="diag_admid" targetName="admno" valueType="String" rowKey="true" parentField="true"></property>
@@ -27,7 +27,7 @@
         <!--诊断编码-->
         <property sourceName="diag_code" targetName="da_diag_code" valueType="String"></property>
         <!--诊断顺位-->
-        <property sourceName="diag_no" targetName="da_diag_no" valueType="String"></property>
+        <!--<property sourceName="diag_no" targetName="da_diag_no" valueType="String"></property>-->
     </propertys>
 
     <filters>

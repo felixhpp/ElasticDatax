@@ -44,6 +44,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Value("${spring.profiles.active}")
     private String env;//当前激活的配置文件
 
+    @Bean(name = "env")
+    public String getEnv(){
+        return env;
+    }
+
     /**
      * 使用阿里 FastJson 作为JSON MessageConverter
      *

@@ -22,6 +22,7 @@
 <!--通过某一个字段计算-->
 <!ELEMENT calculateConvertor (startDateParameter,endDateParameter)>
 <!ELEMENT sqlConvertor (#PCDATA)>
+<!--日期连接-->
 <!ELEMENT dateConcatConvertor (dateParameter, timeParameter)>
 <!ELEMENT dateConcat2Convertor (dateParameter, timeParameter)>
 <!ELEMENT valueFormatConvertor (parameter)>
@@ -50,6 +51,7 @@
 <!ATTLIST elasticMapper name ID #REQUIRED>
 <!ATTLIST elasticMapper desc #PCDATA>
 <!ATTLIST elasticMapper business #REQUIRED>
+<!ATTLIST elasticMapper theme #REQUIRED>
 <!-- property sourceName属性是必须的 -->
 <!ATTLIST property sourceName CDATA #REQUIRED>
 <!-- property targetName属性是必须的 -->

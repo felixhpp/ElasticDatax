@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE elasticMapper SYSTEM "elasticmapping.dtd">
-<elasticMapper name="patient" desc="导入病人基本信息数据" business="pa">
+<elasticMapper name="patient" theme="theme"  desc="导入病人基本信息数据" business="pa">
     <propertys>
         <property sourceName="rowkey" targetName="rowkey" rowKey="true"></property>
         <property sourceName="pat_regno" targetName="regno" valueType="String" idField="true" routingField="true"></property>
@@ -17,7 +17,7 @@
                 <parameter type="String">pat_nation_code</parameter>
             </dicConvertor>
         </property>
-        <property sourceName="pat_marital_code" targetName="pa_pat_marital_status" valueType="String">
+        <property sourceName="pat_marital_code" targetName="pa_pat_marital" valueType="String">
             <dicConvertor methodName="getByCode" dicType="Marital">
                 <parameter></parameter>
             </dicConvertor>

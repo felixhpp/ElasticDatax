@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE elasticMapper SYSTEM "elasticmapping.dtd">
-<elasticMapper name="homepagediagnose" desc="病案首页诊断部分">
+<elasticMapper name="homepagediagnose" theme="theme"  desc="病案首页诊断部分">
     <!--doc id 通过病案首页ID + 诊断编码 + 类型-->
     <propertys>
         <property sourceName="documentid" targetName="Hpd_id" desc="ID" idField="true"></property>

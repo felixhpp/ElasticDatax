@@ -13,6 +13,10 @@ import java.util.List;
  */
 @Data
 public final class ElasticMapperBean {
+    private String business;
+
+    private String theme;
+
     /**
      * xml文件名称
      */

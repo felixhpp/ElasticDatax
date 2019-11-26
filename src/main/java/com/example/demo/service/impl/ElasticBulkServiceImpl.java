@@ -40,7 +40,6 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
 
     private static XmlFileBulkReader xmlFileBulkReader = XmlFileBulkReader.getInstance();
 
-
     @Resource(name = "ElasticBulkProcessor")
     private ElasticBulkProcessor bulkProcessor;
 
@@ -129,21 +128,48 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
     public BulkResponseBody bulk(String theme, List<Map<String, Object>> dataList) {
         BulkResponseBody result = new BulkResponseBody();
         try {
-            String indexName = mapperBean.getDefaultIndex();
             ElasticTypeEnum typeEnum = getInstanceByTheme(theme);
             if (typeEnum == null) {
                 result.setResultCode("-1");
                 result.setResultContent("请求异常，错误信息: 未找到" + theme + "对应的ES类型");
                 return result;
             }
-            String typeName = typeEnum.getEsType();
-            result = this.bulk(indexName, typeName, dataList);
+            result = this.bulk(typeEnum, dataList);
         } catch (Exception e) {
             logger.error("bulk [" + theme + "] error: ", e);
             result.setResultCode("-1");
             result.setResultContent("请求异常，错误信息:" + e.getMessage());
         }
 
+        return result;
+    }
+
+
+    private BulkResponseBody bulk(ElasticTypeEnum typeEnum, List<Map<String, Object>> dataList){
+        BulkResponseBody result = new BulkResponseBody();
+
+        if (typeEnum == null) {
+            result.setResultCode("-1");
+            result.setResultContent("请求异常，错误信息: 未找到对应的ES类型");
+            return result;
+        }
+        int size = dataList.size();
+
+        //生成一个集合
+        List<ESBulkModel> models = ConvertPipeline.convertToBulkModels(typeEnum,
+                dataList, mapperBean.getOnMapper());
+
+        if (models != null && models.size() > 0) {
+            for (ESBulkModel model : models) {
+                boolean add = addBulkProcessor(model, mapperBean.getDefaultIndex(), typeEnum.getEsType());
+                if (!add) {
+                    size--;
+                }
+            }
+        }
+
+        result.setResultCode("0");
+        result.setResultContent("成功" + size + "条");
         return result;
     }
 
@@ -413,14 +439,8 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
         }
         bulkMode.setIndex(index);
         bulkMode.setType(type);
-//        IndexRequest request = new IndexRequest(index, type, bulkMode.getId())
-//                .source(bulkMode.getMapData())
-//                .routing(bulkMode.getRouting());
-//        if (!StringUtils.isEmpty(bulkMode.getParent())) {
-//            request.parent(bulkMode.getParent());
-//        }
-        bulkProcessor.add(bulkMode);
 
+        bulkProcessor.add(bulkMode);
 
         //如果是医嘱，同时导入药物信息
         if (type.equals(ElasticTypeEnum.ORDITEM.getEsType())) {
@@ -431,39 +451,11 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
             }
             cBulkMode.setIndex(index);
             cBulkMode.setType(ElasticTypeEnum.Medicine.getEsType());
-//            IndexRequest cRequest = new IndexRequest(index, ElasticTypeEnum.Medicine.getEsType(),
-//                    cBulkMode.getId())
-//                    .source(cBulkMode.getMapData())
-//                    .routing(cBulkMode.getRouting());
-//            if (!StringUtils.isEmpty(cBulkMode.getParent())) {
-//                cRequest.parent(cBulkMode.getParent());
-//            }
+
             bulkProcessor.add(cBulkMode);
         }
         return true;
     }
-
-    /**
-     * 将ES导入任务添加到 BulkProcessor
-     *
-     * @param index 索引名称
-     * @param type  类型名称
-     * @param id    id
-     * @param map   数据
-     * @return 提交成功，返回true,否则返回false
-     */
-//    private boolean addBulkProcessor(String index, String type, String id, Map<String, Object> map) {
-//        if (map == null || map.size() == 0) {
-//            return false;
-//        }
-//
-//        IndexRequest request = new IndexRequest(index, type, id)
-//                .source(map);
-//
-//        bulkProcessor.add(request);
-//
-//        return true;
-//    }
 
     /**
      * 通过theme获取ElasticsearchTypeEnum 实例

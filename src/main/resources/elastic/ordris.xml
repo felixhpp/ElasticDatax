@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE elasticMapper SYSTEM "elasticmapping.dtd">
-<elasticMapper name="ordris" desc="导入检查数据" business="or">
+<elasticMapper name="ordris" theme="theme"  desc="导入检查数据" business="or">
     <propertys>
         <!--id字段-->
         <property sourceName="or_id"  targetName="or_ris_id" valueType="String" idField="true"></property>
@@ -15,7 +15,7 @@
         <!--检查项目名称-->
         <property sourceName="or_name" targetName="or_ris_name" valueType="String"></property>
         <!--检查项目归一后编码-->
-        <property sourceName="or_ordcode" targetName="or_ris_generic_code" valueType="String">
+        <property sourceName="or_ordcode" targetName="or_ris_genericcode" valueType="String">
             <dicConvertor methodName="getByCode" dicType="OrderItem">
                 <parameter>or_ordcode</parameter>
             </dicConvertor>

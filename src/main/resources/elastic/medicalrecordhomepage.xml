@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE elasticMapper SYSTEM "elasticmapping.dtd">
-<elasticMapper name="medicalrecordhomepage" desc="导入病案首页数据">
+<elasticMapper name="medicalrecordhomepage" theme="theme"  desc="导入病案首页数据">
     <propertys>
         <property sourceName="documentid"  targetName="MRHP_Id" valueType="String" idField="true"></property>
         <!--就诊号ID-->

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE elasticMapper SYSTEM "elasticmapping.dtd">
-<elasticMapper name="orditem" desc="导入医嘱数据" business="oe">
+<elasticMapper name="orditem" theme="theme"  desc="导入医嘱数据" business="oe">
     <propertys>
         <property sourceName="ord_id"  targetName="oe_ord_id" valueType="String" idField="true"></property>
         <property sourceName="ord_admno" targetName="admno" valueType="String" rowKey="true" parentField="true"></property>
@@ -70,13 +70,13 @@
             </dateConcatConvertor>
         </property>
         <!--开医嘱科室-->
-        <property sourceName="ord_dept_code" targetName="oe_ord_dept_name" valueType="String">
+        <property sourceName="ord_dept_code" targetName="oe_ord_dept" valueType="String">
             <dicConvertor methodName="getByCode" dicType="Deptartment">
                 <parameter>ord_dept_code</parameter>
             </dicConvertor>
         </property>
         <!--执行医嘱科室-->
-        <property sourceName="ord_execdept_code" targetName="oe_ord_execdept_name" valueType="String">
+        <property sourceName="ord_execdept_code" targetName="oe_ord_execdept" valueType="String">
             <dicConvertor methodName="getByCode" dicType="Deptartment">
                 <parameter></parameter>
             </dicConvertor>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE elasticMapper SYSTEM "elasticmapping.dtd">
-<elasticMapper name="medicalrecord" desc="导入就诊信息数据" business="mr">
+<elasticMapper name="medicalrecord" theme="theme"  desc="导入就诊信息数据" business="mr">
     <propertys>
         <property sourceName="mr_admid"  targetName="admno" valueType="String" rowKey="true" idField="true" desc="就诊号">
         </property>
@@ -13,7 +13,7 @@
                 <endDateParameter value="mr_admdate"></endDateParameter>
             </calculateConvertor>
         </property>
-        <property sourceName="mr_admhospital_code" targetName="mr_adm_admhospital" valueType="String">
+        <property sourceName="mr_admhospital_code" targetName="mr_adm_hospital" valueType="String">
             <dicConvertor methodName="getByCode" dicType="Hospital">
                 <parameter>mr_admhospital_code</parameter>
             </dicConvertor>
@@ -30,27 +30,27 @@
                 <timeParameter value="mr_admtime" format="time"></timeParameter>
             </dateConcatConvertor>
         </property>
-        <property sourceName="mr_admdept_code" targetName="mr_adm_dept_name" valueType="String">
+        <property sourceName="mr_admdept_code" targetName="mr_adm_dept" valueType="String">
             <dicConvertor methodName="getByCode" dicType="Deptartment">
                 <parameter></parameter>
             </dicConvertor>
         </property>
-        <property sourceName="mr_admdept_code" targetName="mr_adm_generic_dept_code" valueType="String">
+        <property sourceName="mr_admdept_code" targetName="mr_generic_deptcode" valueType="String">
         </property>
-        <property sourceName="mr_dischdate" targetName="mr_adm_dish_datetime" valueType="String">
+        <property sourceName="mr_dischdate" targetName="mr_dish_datetime" valueType="String">
             <dateConcatConvertor methodName="concatDatetime">
                 <dateParameter value="mr_dischdate" format="shortDate"></dateParameter>
                 <timeParameter value="mr_dischtime" format="time"></timeParameter>
             </dateConcatConvertor>
         </property>
-        <property sourceName="mr_dischdept_code" targetName="mr_adm_dish_dept_name" valueType="String">
+        <property sourceName="mr_dischdept_code" targetName="mr_dish_dept" valueType="String">
             <dicConvertor methodName="getByCode" dicType="Deptartment">
                 <parameter></parameter>
             </dicConvertor>
         </property>
         <!--住院天数-->
-        <property sourceName="mr_inpatientdays" targetName="mr_adm_inpatientdays" valueType="String">
-        </property>
+<!--        <property sourceName="mr_inpatientdays" targetName="mr_adm_inpatientdays" valueType="String">-->
+<!--        </property>-->
         <!--就诊状态-->
         <property sourceName="mr_visitstatus_code" targetName="mr_adm_visitstatus" valueType="String">
             <dicConvertor methodName="getByCode" dicType="AdmStatus">

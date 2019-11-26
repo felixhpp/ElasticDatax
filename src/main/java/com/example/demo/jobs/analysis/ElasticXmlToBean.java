@@ -64,6 +64,13 @@ public final class ElasticXmlToBean {
             Document document = reader.read(file);
             // 通过document对象获取根节点
             Element elaticMapper = document.getRootElement();
+            // 获取name
+            String curTheme = elaticMapper.attributeValue("theme");
+            String curBusiness = elaticMapper.attributeValue("business");
+            if(!StringUtils.isEmpty(curBusiness)){
+                elasticMapperBean.setBusiness(curBusiness);
+            }
+
             Iterator it = elaticMapper.elementIterator();
             ArrayList<ElasticProperty> propertys = new ArrayList<>();
             // 遍历迭代器，获取根节点中的信息

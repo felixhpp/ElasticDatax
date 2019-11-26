@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE elasticMapper SYSTEM "elasticmapping.dtd">
-<elasticMapper name="residentadmitnote" desc="导入入院记录数据">
+<elasticMapper name="residentadmitnote" theme="theme"  desc="导入入院记录数据" business="rn">
     <propertys>
-        <property sourceName="documentid"  targetName="RAN_Id" valueType="String" idField="true"></property>
+        <property sourceName="documentid"  targetName="rn_id" valueType="String" idField="true"></property>
         <!--就诊号ID-->
-        <property sourceName="visitnumber" targetName="RAN_AdmNo" valueType="String" rowKey="true" parentField="true"></property>
+        <property sourceName="visitnumber" targetName="admno" valueType="String" rowKey="true" parentField="true"></property>
         <!--登记号-->
-        <property sourceName="patientid" targetName="RAN_RegNo"  valueType="String" routingField="true"></property>
+        <property sourceName="patientid" targetName="regno"  valueType="String" routingField="true"></property>
         <!--主诉-->
-        <property sourceName="zs" targetName="RAN_Complain" valueType="String"></property>
+        <property sourceName="zs" targetName="rn_complain" valueType="String"></property>
         <!--现病史-->
-        <property sourceName="xbs" targetName="RAN_PresentIllness" valueType="String"></property>
+        <property sourceName="xbs" targetName="rn_presentillness" valueType="String"></property>-------------
         <!--既往史-->
-        <property sourceName="jws" targetName="RAN_PastHistory" valueType="String"></property>
+        <property sourceName="jws" targetName="rn_pasthistory" valueType="String"></property>
         <!--个人史-->
-        <property sourceName="grs" targetName="RAN_Sociology" valueType="String"></property>
+        <property sourceName="grs" targetName="rn_sociology" valueType="String"></property>
         <!--婚育史-->
-        <property sourceName="yjhys" targetName="RAN_Marriage" valueType="String"></property>
+        <property sourceName="yjhys" targetName="rn_marriage" valueType="String"></property>
         <!--家族史-->
-        <property sourceName="jzs" targetName="RAN_Family" valueType="String"></property>
+        <property sourceName="jzs" targetName="rn_family" valueType="String"></property>
         <!--体格检查-->
-        <property sourceName="tgjc" targetName="RAN_PhysicalExamination" valueType="String"></property>
+        <property sourceName="tgjc" targetName="rn_physical_examination" valueType="String"></property>
         <!--专科检查-->
-        <property sourceName="zkqkjc" targetName="RAN_SpecialityExamination" valueType="String"></property>
+        <property sourceName="zkqkjc" targetName="rn_speciality_examination" valueType="String"></property>
         <!--辅助检查-->
-        <property sourceName="fzjc" targetName="RAN_SupplementaryExamination" valueType="String"></property>
+        <property sourceName="fzjc" targetName="rn_supplementary_examination" valueType="String"></property>
     </propertys>
 
     <outputs>
         <output>
-            <elasticsearch index="csmsearch" type="residentadmitnote"></elasticsearch>
+            <elasticsearch index="csmsearch" type="doc"></elasticsearch>
         </output>
     </outputs>
 </elasticMapper>

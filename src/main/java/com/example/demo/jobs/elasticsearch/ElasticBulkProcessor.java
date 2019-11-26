@@ -1,16 +1,14 @@
 package com.example.demo.jobs.elasticsearch;
 
-
-import com.alibaba.fastjson.JSON;
 import com.dhcc.csmsearch.common.model.Const;
+import com.dhcc.csmsearch.common.util.FastList;
 import com.dhcc.csmsearch.elasticsearch.common.ElasticsearchManage;
 import com.example.demo.core.entity.ESBulkModel;
-import com.example.demo.core.utils.SpringUtils;
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.huawei.fusioninsight.elasticsearch.transport.client.PreBuiltHWTransportClient;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.bulk.BulkResponse;
+import org.elasticsearch.common.unit.TimeValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,22 +25,28 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public final class ElasticBulkProcessor {
     private static Logger logger = LoggerFactory.getLogger(ElasticBulkProcessor.class);
+    // 批量处理数据的大小
     private final static int batchSize = 10000;
-    private final static int poolSize = 2;
+    // 线程池线程数量
+    private final static int poolSize = 5;
+    // 空闲时间
     private final static long totalFreeTime = 5 * 60 * 1000; // 5分钟
     private static ElasticBulkProcessor processor;
     PreBuiltHWTransportClient client = null;
+    // 当前激活的线程数量计数器
     public static AtomicInteger activeThreadCount = new AtomicInteger(0);
-    private ElasticsearchManage elasticsearchManage = SpringUtils.getBean("ElasticsearchManage");
+
     /**
-     * 初始化队列
+     * 初始化队列， 作为数据缓存池。
+     * 缓存池的大小为：batchSize * (poolSize + 1)
      */
     private static BlockingQueue<ESBulkModel> blockingQueue = new LinkedBlockingQueue<>(batchSize * (poolSize + 1));
 
     /**
      * 可重用固定个数的线程池
+     * 可控制线程最大并发数，超出的线程会在队列中等待,当处理完一个马上就会去接着处理排队中的任务
      */
-    private static ExecutorService fixedThreadPool = Executors.newFixedThreadPool(10);;
+    private static ExecutorService fixedThreadPool = Executors.newFixedThreadPool(poolSize);;
 
     private ElasticBulkProcessor(ElasticsearchManage elasticsearchManage) throws IOException {
         client = elasticsearchManage.getTransportClient();
@@ -100,11 +104,13 @@ public final class ElasticBulkProcessor {
     private void execute() {
         // 获取当前活动的线程数
         int curActiveCount = activeThreadCount.get();
+        // 如果激活的线程池为0，创建一个新的线程
         if (curActiveCount == 0) {
             ExecuteClass executeClass = new ExecuteClass();
             fixedThreadPool.submit(executeClass);
             activeThreadCount.incrementAndGet();
         } else if (blockingQueue.size() >= batchSize) {
+            // 如果blockingQueue队列中的熟练大于batchSize， 创建一个新的线程
             int freeThreadCount = poolSize - curActiveCount;
             if (freeThreadCount >= 1) {
                 ExecuteClass executeClass = new ExecuteClass();
@@ -118,16 +124,18 @@ public final class ElasticBulkProcessor {
      * 写入ES数据
      * @param models
      */
-    private void DataInput(List<ESBulkModel> models){
+    private void DataInput(FastList<ESBulkModel> models){
 
-        Map<String, Object> esJson = new HashMap<String, Object>();
         BulkRequestBuilder bulkRequest = client.prepare().prepareBulk();
+        bulkRequest.setTimeout(TimeValue.timeValueMinutes(2));
+        // 请求向ElasticSearch提交了数据，等待数据完成刷新，然后再结束请求。实时性高、操作延时长。资源消耗低。
+//        bulkRequest.setRefreshPolicy(WriteRequest.RefreshPolicy.WAIT_UNTIL);
         int commit = models.size();
         long starttime = System.currentTimeMillis();
         String esType = Const.default_elastic_type_name;
         for (int j = 0; j < commit; j++) {
             ESBulkModel curModel = models.get(j);
-            esJson.clear();
+            Map<String, Object> esJson = curModel.getMapData();
             String docId = curModel.getId();
             String routing = curModel.getRouting();
             String docTyoe = curModel.getType();
@@ -144,19 +152,47 @@ public final class ElasticBulkProcessor {
                 esJson.put(Const.default_elastic_join_field, joinMap);
             }
 
-            esJson.putAll(curModel.getMapData());
             bulkRequest.add(client.prepare()
                     .prepareIndex(curModel.getIndex(), esType, docId)
                     .setRouting(curModel.getRouting())
                     .setSource(esJson));
         }
-        BulkResponse bulkResponse = bulkRequest.get();
+        long endtime = System.currentTimeMillis();
+        BulkResponse bulkResponse =  bulkRequest.execute().actionGet(); //;bulkRequest.get();
+        long bulkendTime = System.currentTimeMillis();
         if (bulkResponse.hasFailures()) {
             logger.info("Batch indexing fail!");
         } else {
-            logger.info("Batch indexing success and put data time is " + (System.currentTimeMillis() - starttime));
+            StringBuilder sb = new StringBuilder();
+            sb.append("Batch elasticsearch finish. total: ")
+                    .append(System.currentTimeMillis() - starttime)
+                    .append("ms, bulkTook: ")
+                    .append(bulkResponse.getTook())
+                    .append(", bulkBatch: ")
+                    .append(bulkResponse.getItems().length)
+                    .append(", Get es json time:")
+                    .append(endtime - starttime).append("ms. ")
+                    .append("Execute bulkRequest time:")
+                    .append(bulkendTime - endtime).append("ms.");;
+            logger.info(sb.toString());
         }
     }
+
+//    private void InputElasticsearch(){
+//        ActionListener<BulkResponse> listener = new ActionListener<BulkResponse>() {
+//            @Override
+//            public void onResponse(BulkResponse bulkResponse) {
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Exception e) {
+//
+//            }
+//        };
+//
+//        client.prepare().bulkAsync(request, listener);
+//    }
 
     class ExecuteClass implements Callable<Integer> {
 
@@ -172,7 +208,7 @@ public final class ElasticBulkProcessor {
                     long curThreadStartTime = System.currentTimeMillis();
                     freeTime = 0;
                     curTotalFreeTime = 0;
-                    List<ESBulkModel> models = new ArrayList<>();
+                    FastList<ESBulkModel> models = new FastList<>(ESBulkModel.class);
                     blockingQueue.drainTo(models, batchSize);
                     if (models.size() == 0) {
                         logger.info(MessageFormat.format("currentThread {0} had no data ", Thread.currentThread().getName()));
@@ -192,7 +228,8 @@ public final class ElasticBulkProcessor {
                         long curThreadStartTime = System.currentTimeMillis();
                         freeTime = 0;
                         if (blockingQueue.size() > 0) {
-                            List<ESBulkModel> models = new ArrayList<>();
+//                            List<ESBulkModel> models = new ArrayList<>();
+                            FastList<ESBulkModel> models = new FastList<>(ESBulkModel.class);
                             blockingQueue.drainTo(models);
                             DataInput(models);
                             long curThreadEndTime = System.currentTimeMillis();

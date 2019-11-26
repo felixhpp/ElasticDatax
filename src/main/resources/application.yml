@@ -141,6 +141,7 @@ spring:
 elastic-mapper:
   onMapper: true
   onCache: true  # 系统启动时预先缓存字典类型
+  defaultIndex: csmsearch
 
 management:
     health:

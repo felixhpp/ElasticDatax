@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE elasticMapper SYSTEM "elasticmapping.dtd">
-<elasticMapper name="lisitem" desc="导入检验数据" business="ls">
+<elasticMapper name="lisitem" theme="theme"  desc="导入检验数据" business="ls">
     <propertys>
         <!--检验ID-->
         <property sourceName="inspection_id" targetName="ls_lis_id" valueType="String" idField="true" >
@@ -17,7 +17,7 @@
         <!--检验值-->
         <property sourceName="lis_value" targetName="ls_lis_value" valueType="String"></property>
         <property sourceName="lis_result" targetName="ls_lis_result" valueType="String"></property>
-        <property sourceName="lis_code" targetName="ls_lis_generic_code"  valueType="String"></property>
+        <property sourceName="lis_code" targetName="ls_lis_genericcode"  valueType="String"></property>
         <!--格式化后的检验值,为了方便比较-->
         <property sourceName="lis_value" targetName="ls_lis_formatvalue" valueType="String">
             <valueFormatConvertor methodName="formatValue">

@@ -93,6 +93,22 @@ public class ElasticApiController {
         return ResultUtil.success(result);
     }
 
+    @PostMapping(path = "bulk/{theme}")
+    public RestResult restFulBulk(@PathVariable(name = "theme") String theme, ArrayList<Map<String, Object>> content){
+        BulkResponseBody result = null;
+        try {
+            long startTime = System.currentTimeMillis();
+            result = elasticBulkService.bulk(theme, content);
+            long endTime = System.currentTimeMillis();
+            logger.info("====bulk [" + theme + "] finish：" + result.getResultContent() + "  tool:" + (endTime - startTime) + "ms");
+        } catch (Exception e) {
+            result.setResultCode("-1");
+            result.setResultContent("请求异常，错误信息:" + e.getMessage());
+        }
+
+        return ResultUtil.success(result);
+    }
+
     /**
      * 添加单
      *

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE elasticMapper SYSTEM "elasticmapping.dtd">
-<elasticMapper name="operation" desc="病案首页手术部分" business="op">
+<elasticMapper name="operation" theme="theme"  desc="病案首页手术部分" business="op">
     <!--doc id 通过病案首页ID + 手术时间 +  手术编码-->
     <propertys>
         <property sourceName="documentid" targetName="op_oper_id" desc="手术ID" idField="true"></property>
@@ -8,14 +8,14 @@
         <property sourceName="visitnumber" targetName="regno" desc="登记号" routingField="true"></property>
         <property sourceName="OperName" targetName="op_oper_name" desc="手术名称"></property>
         <property sourceName="OperDate" targetName="op_oper_starttime" desc="手术开始时间"></property>
-        <property sourceName="OperCode" targetName="op_oper_generic_code" desc="手术归一编码"></property>
+        <property sourceName="OperCode" targetName="op_oper_genericcode" desc="手术归一编码"></property>
         <property sourceName="OperName" targetName="op_oper_generic_name" desc="手术归一名称"></property>
         <property sourceName="OperLevel" targetName="op_oper_level" desc="手术级别"></property>
         <property sourceName="AnaesWay" targetName="op_oper_anaesway" desc="麻醉方式"></property>
         <property sourceName="NcisionHealingLevel" targetName="op_oper_ncisionhealinglevel" desc="切口愈合等级"></property>
-        <property sourceName="Operator" targetName="op_oper_operator" desc="术者"></property>
-        <property sourceName="OperaAssistantFir" targetName="op_oper_operaassistantfir" desc="助1"></property>
-        <property sourceName="OperaAssistantSec" targetName="op_oper_operaassistantsec" desc="助2"></property>
+        <property sourceName="Operator" targetName="op_operator" desc="术者"></property>
+        <property sourceName="OperaAssistantFir" targetName="op_oper_aassistantfir" desc="助1"></property>
+        <property sourceName="OperaAssistantSec" targetName="op_oper_aassistantsec" desc="助2"></property>
         <property sourceName="AnaesDoc" targetName="op_oper_anaesdoc" desc="麻醉医师"></property>
         <property sourceName="IsCurOpera" targetName="op_oper_iscuropera" desc="是否本次手术"></property>
     </propertys>
