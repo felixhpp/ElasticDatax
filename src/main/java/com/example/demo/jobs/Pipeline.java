@@ -146,7 +146,12 @@ public final class Pipeline {
             Object rowKeyValue = StringUtils.isEmpty(rowKey) ? "" : targetObject.get(rowKey);
             model = new ESBulkModel();
             if(idValue != null){
-                model.setId(idValue.toString());
+                if(StringUtils.isEmpty(elasticMapperBean.getBusiness())){
+                    model.setId(idValue.toString());
+                }else {
+                    model.setId(elasticMapperBean.getBusiness() + "_" +idValue.toString());
+                }
+
                 model.setDocId(idValue.toString());
             }
             if(routingValue != null){
