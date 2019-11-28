@@ -13,12 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.context.ApplicationContext;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
 
+import javax.annotation.Resource;
 import java.io.File;
 
 /**
@@ -36,12 +36,16 @@ public class CacheMapperFile implements CommandLineRunner {
     @Autowired
     private ApplicationContext applicationContext;
 
+    @Resource
+    private EhCacheCacheManager ehCacheCacheManager;
+
     @Override
     public void run(String... args) throws Exception {
         try {
-            EhCacheCacheManager cacheCacheManager = applicationContext.getBean(EhCacheCacheManager.class);
+//            EhCacheCacheManager cacheCacheManager = applicationContext.getBean(EhCacheCacheManager.class);
             //获取CacheManager类
-            CacheManager cacheManager = cacheCacheManager.getCacheManager();
+//            CacheManager cacheManager = cacheCacheManager.getCacheManager();
+            CacheManager cacheManager = ehCacheCacheManager.getCacheManager();
             if(cacheManager == null){
                 return;
             }
@@ -62,6 +66,9 @@ public class CacheMapperFile implements CommandLineRunner {
             for(File f : filelist){
                 String filename = f.getName();
                 if(filename.endsWith("xml")){
+                    if(cache == null){
+                        logger.error("Cache is null");
+                    }
                     doCache(cache, filename);
                 }
             }

@@ -53,6 +53,9 @@ public class CacheDictionaryData implements CommandLineRunner {
 
             String cacheName = typeEnum.getCacheName();
             Cache cache = cacheManager.getCache(cacheName);
+            if(cache == null){
+                logger.error("Cache is null");
+            }
             doCache(cache, typeEnum);
 
             cache.flush();

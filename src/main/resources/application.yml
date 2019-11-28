@@ -43,7 +43,7 @@ spring:
     encoding: utf-8
     servlet:
       content-type: text/html
-    mode: HTML5
+    mode: HTML
   resources:
     static-locations: classpath:/static/
   mvc:
@@ -71,17 +71,17 @@ spring:
       maxWait: 60000  # 配置获取连接等待超时的时间
       timeBetweenEvictionRunsMillis: 60000  # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
       validation-query: select 'x'
-      test-while-idle: true
-      test-on-borrow: false
-      test-on-return: false
+      #test-while-idle: true
+      #test-on-borrow: false
+      #test-on-return: false
       # 打开PSCache，并且指定每个连接上PSCache的大小
-      pool-prepared-statements: true
-      max-open-prepared-statements: 20
-      max-pool-prepared-statement-per-connection-size: 20
+      #pool-prepared-statements: true
+      #max-open-prepared-statements: 20
+      #max-pool-prepared-statement-per-connection-size: 20
       # 配置监控统计拦截的filters, 去掉后监控界面sql无法统计, 'wall'用于防火墙
-      filters: stat,wall
+      #filters: stat,wall
       # Spring监控AOP切入点，如x.y.z.service.*,配置多个英文逗号分隔
-      aop-patterns: com.springboot.servie.*
+      #aop-patterns: com.springboot.servie.*
     ## Cache 数据库信息
     cache:
       # 数据库访问配置, 使用druid数据源发布后报错， 暂时先使用hikari

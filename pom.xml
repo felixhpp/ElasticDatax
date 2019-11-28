@@ -217,7 +217,6 @@
             <version>2.5.0</version>
         </dependency>
 
-
         <dependency>
             <groupId>cglib</groupId>
             <artifactId>cglib</artifactId>
@@ -291,64 +290,55 @@
                     <skip>true</skip>
                 </configuration>
             </plugin>
-            <!-- 指定jdk版本 -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                    <encoding>UTF-8</encoding>
-                    <!--根据你把lib放的位置-->
-                    <compilerArgs>
-                        <arg>-extdirs</arg>
-                        <arg>${project.basedir}/lib</arg>
-                    </compilerArgs>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <configuration>
-                    <layout>ZIP</layout>
                     <includeSystemScope>true</includeSystemScope>
-                    <includes>
-                        <!-- 项目启动jar包中排除依赖包 -->
-                        <include>
-                            <groupId>non-exists</groupId>
-                            <artifactId>non-exists</artifactId>
-                        </include>
-                    </includes>
+                    <mainClass>com.example.demo.Application</mainClass>
+                    <executable>true</executable>
+                    <addResources>true</addResources>
+                    <outputDirectory>${project.build.directory}/jar</outputDirectory>
                 </configuration>
             </plugin>
-            <!-- 打JAR包 -->
+            <!--jar打包-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
+                    <!-- 不打包资源文件（配置文件和依赖包分开） -->
+                    <excludes>
+                        <exclude>*.yml</exclude>
+                        <exclude>elastic/**</exclude>
+                        <exclude>*.xml</exclude>
+                        <exclude>*.conf</exclude>
+                        <exclude>*.keytab</exclude>
+                        <exclude>*.properties</exclude>
+                        <exclude>*.env</exclude>
+                    </excludes>
                     <archive>
-                        <!-- 生成的jar中，不要包含pom.xml和pom.properties这两个文件 -->
-                        <addMavenDescriptor>false</addMavenDescriptor>
                         <manifest>
-                            <!-- 是否要把第三方jar放到manifest的classpath中 -->
                             <addClasspath>true</addClasspath>
                             <!-- MANIFEST.MF 中 Class-Path 加入前缀 -->
-                            <classpathPrefix>..${file.separator}lib</classpathPrefix>
+                            <classpathPrefix>lib/</classpathPrefix>
+                            <!-- jar包不包含唯一版本标识 -->
+                            <useUniqueVersions>false</useUniqueVersions>
                             <!--指定入口类 -->
                             <mainClass>com.example.demo.Application</mainClass>
                         </manifest>
+                        <manifestEntries>
+                            <!--MANIFEST.MF 中 Class-Path 加入资源文件目录 -->
+                            <Class-Path>./conf/</Class-Path>
+                        </manifestEntries>
                     </archive>
-                    <includes>
-                        <!-- 只打包指定目录的文件 -->
-                        <include>com/example/demo/**</include>
-                        <include>mapper/**/*.xml</include>
-                        <include>*.xml</include>
-                        <include>static/**</include>
-                        <include>templates/**</include>
-                        <include>conf/**</include>
-                        <include>*.conf</include>
-                        <include>*.keytab</include>
-                    </includes>
+                    <outputDirectory>${project.build.directory}</outputDirectory>
                 </configuration>
             </plugin>
             <!-- 该插件的作用是用于复制依赖的jar包到指定的文件夹里 -->
@@ -363,20 +353,53 @@
                             <goal>copy-dependencies</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>target/lib</outputDirectory>
-                            <overWriteReleases>false</overWriteReleases>
-                            <overWriteSnapshots>false</overWriteSnapshots>
-                            <overWriteIfNewer>true</overWriteIfNewer>
-                            <includeScope>compile</includeScope>
+                            <outputDirectory>${project.build.directory}/lib/</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
-
+            <!-- 该插件的作用是用于复制指定的文件 -->
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
-                <version>3.1.0</version>
+                <executions>
+                    <execution> <!-- 复制配置文件 -->
+                        <id>copy-resources</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <nonFilteredFileExtensions>
+                                <nonFilteredFileExtension>png</nonFilteredFileExtension>
+                                <nonFilteredFileExtension>jpg</nonFilteredFileExtension>
+                                <nonFilteredFileExtension>gif</nonFilteredFileExtension>
+                                <nonFilteredFileExtension>ico</nonFilteredFileExtension>
+                                <nonFilteredFileExtension>woff</nonFilteredFileExtension>
+                                <nonFilteredFileExtension>woff2</nonFilteredFileExtension>
+                                <nonFilteredFileExtension>eot</nonFilteredFileExtension>
+                                <nonFilteredFileExtension>ttf</nonFilteredFileExtension>
+                                <nonFilteredFileExtension>svg</nonFilteredFileExtension>
+                                <nonFilteredFileExtension>off</nonFilteredFileExtension>
+                            </nonFilteredFileExtensions>
+                            <resources>
+                                <resource>
+                                    <directory>${project.build.directory}/classes</directory>
+                                    <!--                                    <filtering>false</filtering>-->
+                                    <includes>
+                                        <include>*.yml</include>
+                                        <include>elastic/**</include>
+                                        <include>*.xml</include>
+                                        <include>*.conf</include>
+                                        <include>*.keytab</include>
+                                        <include>*.properties</include>
+                                        <include>*.env</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                            <outputDirectory>${project.build.directory}/conf</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>
@@ -399,30 +422,8 @@
                     </execution>
                 </executions>
             </plugin>
+
         </plugins>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-                <includes>
-                    <include>application.yml</include>
-                    <include>application-${profileActive}.yml</include>
-                    <include>mapper/**/*.xml</include>
-                    <include>elastic/**</include>
-                    <include>static/**</include>
-                    <include>templates/**</include>
-                    <include>*.xml</include>
-                    <include>*.properties</include>
-                    <include>conf/**</include>
-                    <include>jaas.conf</include>
-                    <include>krb5.conf</include>
-                    <include>user.keytab</include>
-                    <include>core-site.xml</include>
-                    <include>hdfs-site.xml</include>
-                    <include>hbase-site.xml</include>
-                </includes>
-            </resource>
-        </resources>
     </build>
     <!--MAVEN打包选择运行环境-->
     <!-- 1:local(默认) 本地 2:dev:开发环境 3:test 4:uat 用户验收测试 5.prod:生产环境-->

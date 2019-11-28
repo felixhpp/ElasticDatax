@@ -45,28 +45,48 @@ public class ElasticApiController {
      * @param content
      * @return
      */
-    @ApiOperation(value = "批量导入ES数据", notes = "批量导入ES数据")
-    @ApiImplicitParam(name = "content", value = "请求json字符串", paramType = "String", required = true, dataType = "String")
-    @PostMapping(path = "bulk")
-    public RestResult bulk(String content) {
-        //logger.info(content);
-        long startTime = System.currentTimeMillis();
-        BulkRequestBody requestBody = JSONObject.parseObject(content, BulkRequestBody.class);
-        String dataStr = requestBody.getData();
-        String theme = requestBody.getTheme();
+//    @ApiOperation(value = "批量导入ES数据", notes = "批量导入ES数据")
+//    @ApiImplicitParam(name = "content", value = "请求json字符串", paramType = "String", required = true, dataType = "String")
+//    @PostMapping(path = "bulk")
+//    public RestResult bulk(String content) {
+//        //logger.info(content);
+//        long startTime = System.currentTimeMillis();
+//        BulkRequestBody requestBody = JSONObject.parseObject(content, BulkRequestBody.class);
+//        String dataStr = requestBody.getData();
+//        String theme = requestBody.getTheme();
+//        BulkResponseBody result = new BulkResponseBody();
+//        try {
+//            if (StringUtils.isEmpty(dataStr)) {
+//                result.setResultCode("-1");
+//                result.setResultContent("content参数中data信息为null");
+//            }
+//            if (StringUtils.isEmpty(theme)) {
+//                result.setResultCode("-1");
+//                result.setResultContent("content参数中theme信息为null");
+//            }
+//
+//            List<Map<String, Object>> bulkData = JSONArray.parseObject(dataStr, ArrayList.class);
+//            result = elasticBulkService.bulk(theme, bulkData);
+//            long endTime = System.currentTimeMillis();
+//            logger.info("====bulk [" + theme + "] finish：" + result.getResultContent() + "  tool:" + (endTime - startTime) + "ms");
+//        } catch (Exception e) {
+//            result.setResultCode("-1");
+//            result.setResultContent("请求异常，错误信息:" + e.getMessage());
+//        }
+//
+//        return ResultUtil.success(result);
+//    }
+
+
+    @PostMapping(path = "bulk/{theme}")
+    public RestResult restfulBulkStr(@PathVariable(name = "theme") String theme, String content){
         BulkResponseBody result = new BulkResponseBody();
         try {
-            if (StringUtils.isEmpty(dataStr)) {
-                result.setResultCode("-1");
-                result.setResultContent("content参数中data信息为null");
-            }
-            if (StringUtils.isEmpty(theme)) {
-                result.setResultCode("-1");
-                result.setResultContent("content参数中theme信息为null");
-            }
+            long startTime = System.currentTimeMillis();
+            BulkRequestBody requestBody = JSONObject.parseObject(content, BulkRequestBody.class);
+            List<Map<String, Object>> data = requestBody.getData();
+            result = elasticBulkService.bulk(theme, data);
 
-            List<Map<String, Object>> bulkData = JSONArray.parseObject(dataStr, ArrayList.class);
-            result = elasticBulkService.bulk(theme, bulkData);
             long endTime = System.currentTimeMillis();
             logger.info("====bulk [" + theme + "] finish：" + result.getResultContent() + "  tool:" + (endTime - startTime) + "ms");
         } catch (Exception e) {
@@ -83,31 +103,16 @@ public class ElasticApiController {
      * @param content
      * @return
      */
-    @PostMapping(path = "bulkBody")
-    public RestResult bulk(@Valid @RequestBody BodyContent content) {
-        BulkRequestBody requetsBody = JSONObject.parseObject(content.getContent(), BulkRequestBody.class);
-        String dataStr = requetsBody.getData();
-        String theme = requetsBody.getTheme();
-        List<Map<String, Object>> bulkData = strToMap(dataStr);
-        BulkResponseBody result = elasticBulkService.bulk(theme, bulkData);
-        return ResultUtil.success(result);
-    }
+//    @PostMapping(path = "bulkBody")
+//    public RestResult bulk(@Valid @RequestBody BodyContent content) {
+//        BulkRequestBody requetsBody = JSONObject.parseObject(content.getContent(), BulkRequestBody.class);
+//        String dataStr = requetsBody.getData();
+//        String theme = requetsBody.getTheme();
+//        List<Map<String, Object>> bulkData = strToMap(dataStr);
+//        BulkResponseBody result = elasticBulkService.bulk(theme, bulkData);
+//        return ResultUtil.success(result);
+//    }
 
-    @PostMapping(path = "bulk/{theme}")
-    public RestResult restFulBulk(@PathVariable(name = "theme") String theme, ArrayList<Map<String, Object>> content){
-        BulkResponseBody result = null;
-        try {
-            long startTime = System.currentTimeMillis();
-            result = elasticBulkService.bulk(theme, content);
-            long endTime = System.currentTimeMillis();
-            logger.info("====bulk [" + theme + "] finish：" + result.getResultContent() + "  tool:" + (endTime - startTime) + "ms");
-        } catch (Exception e) {
-            result.setResultCode("-1");
-            result.setResultContent("请求异常，错误信息:" + e.getMessage());
-        }
-
-        return ResultUtil.success(result);
-    }
 
     /**
      * 添加单

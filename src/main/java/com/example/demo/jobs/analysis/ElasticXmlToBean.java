@@ -59,7 +59,7 @@ public final class ElasticXmlToBean {
                 file = new File(ResourceUtils.getURL("classpath:").getPath() + filePath);
             }
 
-            logger.info("****** start reading file：" + file.getPath());
+            logger.info("****** start reading file:" + file.getPath());
 
             Document document = reader.read(file);
             // 通过document对象获取根节点

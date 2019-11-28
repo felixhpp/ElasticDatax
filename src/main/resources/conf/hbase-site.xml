@@ -14,7 +14,7 @@
 </property>
 <property>
 <name>hbase.master.executor.closeregion.threads</name>
-<value>10</value>
+<value>25</value>
 </property>
 <property>
 <name>dfs.replication</name>
@@ -22,7 +22,7 @@
 </property>
 <property>
 <name>hbase.master.executor.serverops.threads</name>
-<value>5</value>
+<value>50</value>
 </property>
 <property>
 <name>hbase.master.port</name>
@@ -30,11 +30,11 @@
 </property>
 <property>
 <name>hbase.regionserver.keytab.file</name>
-<value>/opt/huawei/Bigdata/FusionInsight_HD_V100R002C80SPC200/install/FusionInsight-HBase-1.3.1/keytabs/HBase/hbase.keytab</value>
+<value>/opt/huawei/Bigdata/FusionInsight_HD_6.5.1.1/install/FusionInsight-HBase-1.3.1/keytabs/HBase/hbase.keytab</value>
 </property>
 <property>
 <name>hbase.hmaster.ip.lists</name>
-<value>hd2,hd3</value>
+<value>cdhx-cn-001,cdhx-mn-002</value>
 </property>
 <property>
 <name>hbase.master.executor.openregion.threads</name>
@@ -46,7 +46,7 @@
 </property>
 <property>
 <name>hbase.master.keytab.file</name>
-<value>/opt/huawei/Bigdata/FusionInsight_HD_V100R002C80SPC200/install/FusionInsight-HBase-1.3.1/keytabs/HBase/hbase.keytab</value>
+<value>/opt/huawei/Bigdata/FusionInsight_HD_6.5.1.1/install/FusionInsight-HBase-1.3.1/keytabs/HBase/hbase.keytab</value>
 </property>
 <property>
 <name>hbase.server</name>
@@ -66,7 +66,7 @@
 </property>
 <property>
 <name>hbase.zookeeper.quorum</name>
-<value>hd1,hd2,hd3</value>
+<value>cdhx-mn-002,cdhx-mn-001,cdhx-cn-001</value>
 </property>
 <property>
 <name>hbase.client.write.buffer</name>
@@ -137,12 +137,16 @@
 <value>true</value>
 </property>
 <property>
+<name>hbase.external.data.rootdir</name>
+<value>hdfs://hacluster/hbase/extdata</value>
+</property>
+<property>
 <name>hbase.disable.table.max.retry.attempts</name>
 <value>24</value>
 </property>
 <property>
 <name>zookeeper.session.timeout</name>
-<value>90000</value>
+<value>180000</value>
 </property>
 <property>
 <name>dfs.domain.socket.path</name>
@@ -197,6 +201,10 @@
 <value>omm</value>
 </property>
 <property>
+<name>hbase.huawei.restore.tmpdir</name>
+<value>hdfs://hacluster/hbase/extdata/restore/tmp</value>
+</property>
+<property>
 <name>hbase.ipc.server.callqueue.handler.factor</name>
 <value>0.1</value>
 </property>
@@ -222,7 +230,7 @@
 </property>
 <property>
 <name>hbase.master.namespace.init.timeout</name>
-<value>1200000</value>
+<value>3600000</value>
 </property>
 <property>
 <name>hbase.sessioncontrol.maxconnectionsinperiod</name>
@@ -234,7 +242,7 @@
 </property>
 <property>
 <name>hbase.master.ipc.address</name>
-<value>hd2</value>
+<value>cdhx-cn-001</value>
 </property>
 <property>
 <name>hbase.sessioncontrol.maxconnections</name>
@@ -318,7 +326,7 @@
 </property>
 <property>
 <name>hbase.master.initializationmonitor.timeout</name>
-<value>1200000</value>
+<value>3600000</value>
 </property>
 <property>
 <name>hbase.replication.cluster.id</name>
@@ -342,7 +350,7 @@
 </property>
 <property>
 <name>hbase.huawei.restore.output</name>
-<value>/user/hbase/hbaseRestore</value>
+<value>hdfs://hacluster/hbase/extdata/hbaseRestore</value>
 </property>
 <property>
 <name>dfs.client.read.shortcircuit.streams.cache.size</name>
@@ -397,10 +405,6 @@
 <value>true</value>
 </property>
 <property>
-<name>hbase.master.executor.tableoperation.threads</name>
-<value>1</value>
-</property>
-<property>
 <name>hbase.regionserver.hlog.writer.impl</name>
 <value>org.apache.hadoop.hbase.regionserver.wal.SecureProtobufLogWriter</value>
 </property>
@@ -438,7 +442,7 @@
 </property>
 <property>
 <name>hbase.master.info.bindAddress</name>
-<value>hd2</value>
+<value>cdhx-cn-001</value>
 </property>
 <property>
 <name>master.rmi.registry.port</name>
@@ -483,6 +487,10 @@
 <property>
 <name>hbase.region.double.assignment.auto.recovery.enabled</name>
 <value>true</value>
+</property>
+<property>
+<name>hbase.huawei.restore.output.v2</name>
+<value>hdfs://hacluster/hbase/extdata/restore/output</value>
 </property>
 <property>
 <name>hbase.master.acl.init.timeout</name>

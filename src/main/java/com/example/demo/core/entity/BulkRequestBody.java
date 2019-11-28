@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -13,17 +15,12 @@ import java.util.ArrayList;
  * @author felix
  */
 public class BulkRequestBody {
-
-    @NotEmpty(message = "data不能为空")
-    @NotNull(message = "data不能为Null")
     @JsonProperty("theme")
     private String theme;
 
-    @NotEmpty(message = "data不能为空")
-    @NotNull(message = "data不能为Null")
     @JsonProperty("data")
     //private ArrayList<Object> data;
-    private String data;
+    private List<Map<String, Object>> data;
 
     final public String getTheme() {
         return theme;
@@ -33,11 +30,11 @@ public class BulkRequestBody {
         this.theme = theme;
     }
 
-    final public String getData() {
+    final public List<Map<String, Object>> getData() {
         return data;
     }
 
-    final public void setData(String data) {
+    final public void setData(List<Map<String, Object>> data) {
         this.data = data;
     }
 }

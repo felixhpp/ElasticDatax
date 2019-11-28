@@ -15,7 +15,7 @@
                 0644->即用户具有读写权限，组用户和其它用户具有只读权限；
             -->
             <!--脚本所在的文件夹，以及打包后将脚本输出到哪个文件夹中 -->
-            <directory>${basedir}/src/bin</directory>
+            <directory>${basedir}/src/main/assembly/bin</directory>
             <outputDirectory>${file.separator}bin</outputDirectory>
             <directoryMode>0775</directoryMode>
             <!-- 哪些文件会被提取 -->
@@ -31,67 +31,68 @@
                 0644->即用户具有读写权限，组用户和其它用户具有只读权限；
             -->
             <!--脚本所在的文件夹，以及打包后将脚本输出到哪个文件夹中 -->
-            <directory>${basedir}/src/bin</directory>
-            <outputDirectory>${file.separator}logs</outputDirectory>
+            <directory>${basedir}/src/main/assembly/bin</directory>
+            <outputDirectory>${file.separator}</outputDirectory>
             <directoryMode>0775</directoryMode>
             <!-- 哪些文件会被提取 -->
             <includes>
-                <include>**.log</include>
+                <include>CSMSearchService.exe</include>
+                <include>CSMSearchService.xml</include>
             </includes>
             <fileMode>0775</fileMode>
         </fileSet>
-        <!-- 指定输出target/classes中的配置文件到conf目录中 -->
         <fileSet>
-            <directory>${basedir}/target/classes</directory>
+            <directory>${basedir}/target/conf</directory>
             <includes>
-                <include>application.yml</include>
-                <include>application-${profileActive}.yml</include>
+                <include>*.yml</include>
+                <include>*.xml</include>
+                <include>*.conf</include>
+                <include>*.keytab</include>
                 <include>*.properties</include>
+                <include>*.env</include>
             </includes>
             <filtered>true</filtered>
             <fileMode>0644</fileMode>
+            <directoryMode>0755</directoryMode>
             <outputDirectory>${file.separator}conf</outputDirectory>
         </fileSet>
         <fileSet>
-            <directory>${basedir}/target/classes</directory>
+            <directory>${basedir}/target/classes/conf</directory>
             <includes>
-                <include>elastic/**</include>
+                <include>*.yml</include>
+                <include>*.xml</include>
+                <include>*.conf</include>
+                <include>*.keytab</include>
+                <include>*.properties</include>
+                <include>*.env</include>
             </includes>
             <filtered>true</filtered>
             <fileMode>0644</fileMode>
-            <outputDirectory>${file.separator}</outputDirectory>
+            <directoryMode>0755</directoryMode>
+            <outputDirectory>${file.separator}conf</outputDirectory>
         </fileSet>
-<!--        static-->
-<!--        <fileSet>-->
-<!--            <directory>${basedir}/target/classes</directory>-->
-<!--            <includes>-->
-<!--                <include>static/**</include>-->
-<!--                <include>templates/**</include>-->
-<!--            </includes>-->
-<!--            <filtered>true</filtered>-->
-<!--            <fileMode>0644</fileMode>-->
-<!--            <outputDirectory>${file.separator}</outputDirectory>-->
-<!--        </fileSet>-->
         <fileSet>
-            <directory>${basedir}/target/classes</directory>
-            <includes>
-                <include>conf/**</include>
-            </includes>
-            <filtered>true</filtered>
+            <directory>${basedir}/target/classes/elastic</directory>
+            <outputDirectory>${file.separator}/elastic</outputDirectory>
             <fileMode>0644</fileMode>
-            <outputDirectory>${file.separator}</outputDirectory>
+            <directoryMode>0755</directoryMode>
+            <includes>
+                <include>*.xml</include>
+                <include>*.dtd</include>
+            </includes>
         </fileSet>
         <!-- 将第三方依赖打包到lib目录中 -->
         <fileSet>
             <directory>${basedir}/target/lib</directory>
             <outputDirectory>${file.separator}lib</outputDirectory>
-            <fileMode>0755</fileMode>
+            <fileMode>0644</fileMode>
+            <directoryMode>0755</directoryMode>
         </fileSet>
-        <!-- 将项目启动jar打包到boot目录中 -->
         <fileSet>
             <directory>${basedir}/target</directory>
-            <outputDirectory>${file.separator}boot</outputDirectory>
-            <fileMode>0755</fileMode>
+            <outputDirectory>${file.separator}</outputDirectory>
+            <fileMode>0644</fileMode>
+            <directoryMode>0755</directoryMode>
             <includes>
                 <include>${project.build.finalName}.jar</include>
             </includes>

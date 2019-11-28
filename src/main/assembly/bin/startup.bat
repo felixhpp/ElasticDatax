@@ -10,9 +10,10 @@ rem Open in a browser
 rem start "" "http://localhost:8161/main"
 
 rem startup jar
-set DIR=%CD%
-cd %0\..\..
-set BASEDIR=%CD%
-java -jar -Xms1024m -Xmx1024m -Dfile.encoding=utf-8 boot/demo-2.3.4.RELEASE.jar --spring.config.location=conf/ --spring.profiles.active=prod
+set DIR=%~dp0
+cd /d %~dp0
+cd ..
+set BASEDIR=%~dp0
+java -jar -Xms1024m -Xmx1024m -Dfile.encoding=utf-8 demo-2.3.4.RELEASE.jar --spring.profiles.active=prod
 
 pause

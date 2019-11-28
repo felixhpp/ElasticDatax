@@ -8,21 +8,23 @@
 # nohup run
 #
 # author: felix
-# date: 2019-07-11
+# date: 2019-10-17
 #======================================================================
 
 JAR_NAME=demo-2.3.4.RELEASE
 Suffix=jar
 APP_NAME=$JAR_NAME.$Suffix
 CUR_SHELL_DIR=`pwd`
-JAR_PATH=$CUR_SHELL_DIR/boot/$APP_NAME
+echo $CUR_SHELL_DIR
+JAR_PATH=$CUR_SHELL_DIR/$APP_NAME
+echo ">>> JAR_PATH: ${JAR_PATH} .<<<"
 # LOG_PATH=./logs/start.log
 LOG_PATH=$CUR_SHELL_DIR/logs/start.log
+echo ">>> LOG_PATH: ${LOG_PATH} .<<<"
 # SPRING_PROFILES_ACTIV="-Dspring.profiles.active=eureka2"
 SPRING_PROFILES_ACTIV=""
 JAVA_MEM_OPTS=" -server -Xms1024m -Xmx1024m -XX:PermSize=128m"
 # JAVA_MEM_OPTS=""
-CONFIG_PATH=" --spring.config.location=./conf/"
 PROFILES_ACTIVE=" --spring.profiles.active=prod"
 # help command
 usage() {
@@ -32,7 +34,7 @@ usage() {
 
 is_exist(){
  pid=`ps -ef|grep $APP_NAME|grep -v grep|awk '{print $2}' `
- # if not found return 1£¬else return 0
+ # if not found return 1 else return 0
  if [ -z "${pid}" ]; then
     return 1
  else
@@ -45,7 +47,7 @@ start(){
  if [ $? -eq "0" ]; then
     echo ">>> ${APP_NAME} is already running. pid=${pid} .<<<"
  else
-    nohup java $JAVA_MEM_OPTS -jar $JAR_PATH $CONFIG_PATH $PROFILES_ACTIVE >> $LOG_PATH 2>&1 &
+    nohup java $JAVA_MEM_OPTS -jar $JAR_PATH $PROFILES_ACTIVE >> $LOG_PATH 2>&1 &
     echo "${APP_NAME} start success"
  fi
 }
