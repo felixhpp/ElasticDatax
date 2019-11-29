@@ -266,6 +266,10 @@ public final class Pipeline {
                 // do some thing
 
                 break;
+            // 等于某一个值
+            case "equert":
+                isFilter = FilterMethod.equert(map, filterBean.getFilterFieldName(), filterBean.getParmText());
+                break;
             default:break;
         }
         return isFilter;

@@ -63,6 +63,11 @@
         <property sourceName="oe_ord_orcat" targetName="md_med_ordcat" valueType="String"></property>
     </propertys>
     <filters>
+        <sourceFilter>
+            <must>
+                <filter filterName="oe_ord_orcat" filterMethod="equert">西药,中成药</filter>
+            </must>
+        </sourceFilter>
         <targetFilter>
             <must>
                 <!-- 用药通用名称不能是空 -->

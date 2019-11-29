@@ -442,17 +442,28 @@ public class ElasticBulkServiceImpl implements ElasticBulkService {
 
         bulkProcessor.add(bulkMode);
 
-        //如果是医嘱，同时导入药物信息
+        //如果是医嘱
         if (type.equals(ElasticTypeEnum.ORDITEM.getEsType())) {
+            // 过滤用药医嘱
             ESBulkModel cBulkMode = ConvertPipeline.convertToBulkModel(ElasticTypeEnum.Medicine,
                     bulkMode.getMapData(), mapperBean.getOnMapper());
-            if (cBulkMode == null || cBulkMode.isEmpty()) {
-                return true;
-            }
-            cBulkMode.setIndex(index);
-            cBulkMode.setType(ElasticTypeEnum.Medicine.getEsType());
+            if (cBulkMode != null && !cBulkMode.isEmpty()) {
+                cBulkMode.setIndex(index);
+                cBulkMode.setType(ElasticTypeEnum.Medicine.getEsType());
 
-            bulkProcessor.add(cBulkMode);
+                bulkProcessor.add(cBulkMode);
+            }
+
+            // 过滤检验医嘱
+            ESBulkModel jyBulkMode = ConvertPipeline.convertToBulkModel(ElasticTypeEnum.OrdLis,
+                    bulkMode.getMapData(), mapperBean.getOnMapper());
+            if (jyBulkMode != null && !jyBulkMode.isEmpty()) {
+                jyBulkMode.setIndex(index);
+                jyBulkMode.setType(ElasticTypeEnum.OrdLis.getEsType());
+
+                bulkProcessor.add(jyBulkMode);
+            }
+
         }
         return true;
     }

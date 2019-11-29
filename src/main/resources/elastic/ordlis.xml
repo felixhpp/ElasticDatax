@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE elasticMapper SYSTEM "elasticmapping.dtd">
+<elasticMapper name="ordlis" theme="theme"  desc="导入检验医嘱" business="ol">
+    <propertys>
+        <!--id字段-->
+        <property sourceName="oe_ord_id"  targetName="ol_ordlis_id" valueType="String" idField="true"></property>
+        <!--关联就诊ID-->
+        <property sourceName="admno" targetName="admno" valueType="String" rowKey="true" parentField="true"></property>
+        <!--关联登记号-->
+        <property sourceName="regno" targetName="regno" valueType="String" routingField="true"></property>
+        <!--检验医嘱名称-->
+        <property sourceName="oe_ord_meddicname" targetName="ol_ordlis_name" valueType="String"></property>
+        <!--检验医嘱名称-->
+        <property sourceName="oe_ord_meddiccode" targetName="ol_ordlis_code" valueType="String"></property>
+        <!--检验医嘱时间-->
+        <property sourceName="oe_ord_starttime" targetName="ol_ordlis_datetime" valueType="String"></property>
+        <!-- 检验医嘱科室 -->
+        <property sourceName="oe_ord_execdept" targetName="ol_ordlis_deptname" valueType="String"></property>
+
+    </propertys>
+    <filters>
+        <sourceFilter>
+            <must>
+                <filter filterName="oe_ord_orcat" filterMethod="equert">检验</filter>
+            </must>
+        </sourceFilter>
+        <targetFilter>
+            <must>
+                <filter filterName="ol_ordlis_name" filterMethod="isNotEmpty"></filter>
+            </must>
+        </targetFilter>
+    </filters>
+    <outputs>
+        <output>
+            <elasticsearch index="csmsearch" type="doc"></elasticsearch>
+        </output>
+    </outputs>
+</elasticMapper>

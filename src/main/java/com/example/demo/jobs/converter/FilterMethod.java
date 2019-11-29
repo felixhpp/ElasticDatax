@@ -7,17 +7,19 @@ import java.util.Map;
 
 /**
  * 过滤方法 -- 用于过滤方法扩展
+ *
  * @author felix
  */
 public final class FilterMethod {
     /**
      * 过滤指定字段不为空的数据
-     * @param sourceObject 源数据对象
+     *
+     * @param sourceObject     源数据对象
      * @param filterSourceName 源数据过滤字段名称
      * @return 若返回true, 满足过滤， 不满足过滤
      */
-    public static boolean isNotEmpty(Map<String, Object> sourceObject, String filterSourceName){
-        if(sourceObject == null || filterSourceName == null || "".equals(filterSourceName)) {
+    public static boolean isNotEmpty(Map<String, Object> sourceObject, String filterSourceName) {
+        if (sourceObject == null || filterSourceName == null || "".equals(filterSourceName)) {
             return false;
         }
 
@@ -26,8 +28,8 @@ public final class FilterMethod {
         return !StringUtils.isEmpty(sourceValue);
     }
 
-    public static boolean isEmpty(Map<String, Object> sourceObject, String filterSourceName){
-        if(sourceObject == null || filterSourceName == null || "".equals(filterSourceName)) {
+    public static boolean isEmpty(Map<String, Object> sourceObject, String filterSourceName) {
+        if (sourceObject == null || filterSourceName == null || "".equals(filterSourceName)) {
             return true;
         }
 
@@ -36,7 +38,24 @@ public final class FilterMethod {
         return StringUtils.isEmpty(sourceValue);
     }
 
-    public static boolean equert(Map<String, Object> sourceObject, String filterSourceName){
-        return sourceObject != null && filterSourceName != null && !"".equals(filterSourceName);
+    public static boolean equert(Map<String, Object> sourceObject, String filterSourceName, String text) {
+        if (sourceObject == null || filterSourceName == null || "".equals(filterSourceName) || StringUtils.isEmpty(text)) {
+            return true;
+        }
+        Object sourceValue = sourceObject.get(filterSourceName);
+        String[] vs = null;
+        if (text.contains(",")) {
+            vs = text.split(",");
+        } else if (text.contains("，")) {
+            vs = text.split("，");
+        } else {
+            vs = new String[]{text};
+        }
+
+        if(sourceValue != null && text.contains(sourceValue.toString())){
+            return true;
+        }else {
+            return false;
+        }
     }
 }

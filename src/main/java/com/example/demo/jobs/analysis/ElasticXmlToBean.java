@@ -330,6 +330,14 @@ public final class ElasticXmlToBean {
                             filterBean.setFilterFieldName(attr.getValue());
                             break;
                         case "filterMethod":
+                            if("equert".equals(attr.getValue())){   // 等于的化需要参数
+                                String attrText = filter.getText();
+                                if(StringUtils.isEmpty(attrText)){
+                                    filterBean = null;
+                                    break;
+                                }
+                                filterBean.setParmText(attrText);
+                            }
                             filterBean.setFilterMethod(attr.getValue());
                             break;
                         default:break;
@@ -358,6 +366,14 @@ public final class ElasticXmlToBean {
                             filterBean.setFilterFieldName(attr.getValue());
                             break;
                         case "filterMethod":
+                            if("equert".equals(attr.getValue())){   // 等于的化需要参数
+                                String attrText = filter.getText();
+                                if(StringUtils.isEmpty(attrText)){
+                                    filterBean = null;
+                                    break;
+                                }
+                                filterBean.setParmText(attrText);
+                            }
                             filterBean.setFilterMethod(attr.getValue());
                             break;
                         default:break;
@@ -380,11 +396,20 @@ public final class ElasticXmlToBean {
                 FilterBean filterBean = new FilterBean();
                 for (Attribute attr : filterAttrs) {
                     String attrName = attr.getName();
+
                     switch (attrName) {
                         case "filterName":
                             filterBean.setFilterFieldName(attr.getValue());
                             break;
                         case "filterMethod":
+                            if("equert".equals(attr.getValue())){   // 等于的化需要参数
+                                String attrText = filter.getText();
+                                if(StringUtils.isEmpty(attrText)){
+                                    filterBean = null;
+                                    break;
+                                }
+                                filterBean.setParmText(attrText);
+                            }
                             filterBean.setFilterMethod(attr.getValue());
                             break;
                         default:break;

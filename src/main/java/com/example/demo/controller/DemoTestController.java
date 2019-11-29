@@ -36,7 +36,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/test")
 public class DemoTestController {
-    private int TOTAL = 100000;
+    private int TOTAL = 1000;
     private boolean isDev = false;
 
     private final static String ENV_DEV = "dev";
@@ -500,7 +500,7 @@ public class DemoTestController {
     private List<Map<String, Object>> buildOrdItemData() {
         int total = TOTAL;
         List<Map<String, Object>> maps = new ArrayList<>();
-        String[] ordName = {"JZ015", "010101011400001", "010101010100004",
+        String[] ordName = {"JZ015", "JC0221", "010101010100004",
                 "11020000118", "030205010007", "010702020000001"};
         String[] ord_type = {"S", "OUT", "NORM"};
         String[] ord_status = {"V", "U", "H", "D", "P"};
@@ -647,10 +647,19 @@ public class DemoTestController {
             for (ESBulkModel bulkModel : bulkModels) {
                 ESBulkModel otherModel = ConvertPipeline.convertToBulkModel(ElasticTypeEnum.Medicine,
                         bulkModel.getMapData(), true);
-                if (i < 10 && otherModel != null) {
+                if (i < 20 && otherModel != null) {
                     reList.add(otherModel);
+                    i++;
                 }
-                i++;
+
+                // 过滤检验医嘱
+                ESBulkModel jyBulkMode = ConvertPipeline.convertToBulkModel(ElasticTypeEnum.OrdLis,
+                        bulkModel.getMapData(), true);
+
+                if (i < 20 && jyBulkMode != null) {
+                    reList.add(jyBulkMode);
+                    i++;
+                }
             }
         }
 
